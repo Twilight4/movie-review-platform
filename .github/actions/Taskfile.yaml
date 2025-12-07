@@ -70,7 +70,7 @@ tasks:
     cmds:
       - |
         docker buildx build \
-        --platform linux/amd64 \
+        --platform linux/amd64,linux/arm64 \
         -t {{.IMAGE_REPO}}/{{.IMAGE_NAME}}:{{.IMAGE_TAG}} \
         --push \
         --cache-from=type=registry,ref={{.IMAGE_REPO}}/{{.IMAGE_NAME}}:buildcache \
