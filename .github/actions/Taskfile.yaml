@@ -71,11 +71,7 @@ tasks:
       - |
         docker buildx build \
         --platform linux/amd64 \
-        -t {{.IMAGE_REPO}}/{{.IMAGE_NAME}}:amd64-{{.IMAGE_TAG}} \
+        -t {{.IMAGE_REPO}}/{{.IMAGE_NAME}}:{{.IMAGE_TAG}} \
         --push \
         ../../app/
-        docker buildx build \
-        --platform linux/arm64 \
-        -t {{.IMAGE_REPO}}/{{.IMAGE_NAME}}:arm64-{{.IMAGE_TAG}} \
-        --push \
-        ../../app/
+
