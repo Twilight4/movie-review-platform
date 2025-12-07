@@ -95,7 +95,7 @@ full-devops-cycle-project/
                       │                      GKE Cluster                     │
                       │                                                      │
                       │   ┌────────────┐    ┌─────────────────────────────┐  │
-                      │   │ Deployment │--▶│  Horizontal Pod Autoscaler │  │
+                      │   │ Deployment │--▶│  Horizontal Pod Autoscaler  │  │
                       │   └────────────┘    └─────────────────────────────┘  │
                       │          │                 │                         │
                       │          ▼                 ▼                         │
