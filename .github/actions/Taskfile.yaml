@@ -70,7 +70,8 @@ tasks:
     cmds:
       - |
         docker buildx build \
+        -f ../../app/Dockerfile \
         --platform linux/amd64,linux/arm64 \
         -t {{.IMAGE_REPO}}/{{.IMAGE_NAME}}:{{.IMAGE_TAG}} \
         --push \
-        ../../app/
+        .
