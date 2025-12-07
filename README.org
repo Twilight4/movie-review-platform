@@ -1,0 +1,169 @@
+#+TITLE: Cloud-Native Full DevOps Cycle Project
+#+AUTHOR: Twilight4
+#+OPTIONS: toc:t num:t
+
+* Overview
+This project outlines every stage of the DevOps lifecycle, the tools you should use, and how the pieces connect. Everything fully automated end-to-end.
+
+This project demonstrates a full production-grade DevOps setup using modern tooling, demonstrating proficiency across:
+- Git / Linux / Networking
+- Containerization (Docker)
+- Container Orchestration (Kubernetes + Helm)
+- Cloud Technologies (GCP - GKE, GCR, PostgreSQL)
+- Infrastructure provisioning (Terraform)
+- CI/CD pipelines (Github Actions)
+- GitOps (ArgoCD)
+- Monitoring & Logging (Prometheus, Grafana)
+- Security
+
+** Full Project Folder Structure
+#+begin_src shell
+full-devops-cycle-project/
+├── app/                → Application source code
+│   ├── src/
+│   ├── tests/
+│   ├── package.json
+│   └── README.md
+│
+├── docker/             → Dockerfile + Compose
+│   └── Dockerfile
+│
+├── k8s/                → Deployment manifests
+│
+├── helm/               → Helm chart for deployment
+│
+├── terraform/          → Infrastructure as Code (GCP)
+│
+├── monitoring/         → Node + monitoring configuration
+│   ├── grafana-dashboards/
+│   └── prometheus/
+│
+├── .github/            → CI/CD pipelines
+│   └── workflows/
+│
+└── README.org
+#+end_src
+
+** Full Architecture Diagram
+#+begin_src shell
+                                    ┌──────────────────────────┐
+                                    │        Developers        │
+                                    └───────────┬──────────────┘
+                                                │ git push
+                                                ▼
+                                      ┌────────────────────┐
+                                      │   GitHub Repo      │
+                                      └─────────┬──────────┘
+                                                │ triggers
+                                                ▼
+                                  ┌────────────────────────────────┐
+                                  │       GitHub Actions CI/CD     │
+                                  └─────────────┬──────────────────┘
+                                                │
+                                                │
+                                                │
+                                                ▼
+                                       ┌──────────────────┐
+                                       │ Build Docker Img │
+                                       └──────────────────┘
+                                                │
+                                                ▼ push
+                                      ┌──────────────────────┐
+                                      │ GCR (Artifact Reg.)  │
+                                      └─────────┬────────────┘
+                                                │
+                                                ▼
+                                ┌─────────────────────────────────┐
+                                │  GitOps Repo (Helm / Manifests) │
+                                └───────────────┬─────────────────┘
+                                                │ watched
+                                                ▼
+                                ┌─────────────────────────────────┐
+                                │         ArgoCD (GitOps)         │
+                                └───────────────┬─────────────────┘
+                                                │ deploys
+                                                ▼
+
+                      ┌──────────────────────────────────────────────────────┐
+                      │                      GKE Cluster                     │
+                      │                                                      │
+                      │   ┌────────────┐   ┌─────────────────────────────┐   │
+                      │   │ Deployment │--▶│  Horizontal Pod Autoscaler  │   │
+                      │   └────────────┘   └─────────────────────────────┘   │
+                      │          │                 │                         │
+                      │          ▼                 ▼                         │
+                      │   ┌────────────┐    ┌──────────────┐                 │
+                      │   │   Service  │◀──▶│   Ingress    │                 │
+                      │   └────────────┘    └──────────────┘                 │
+                      │          │                                           │
+                      │          ▼                                           │
+                      │   ┌────────────┐                                     │
+                      │   │    Pods    │                                     │
+                      │   └────────────┘                                     │
+                      │                                                      │
+                      └─────────────────────────┬────────────────────────────┘
+                                                │
+                                                │
+                                                ▼
+                                   ┌───────────────────────────┐
+                                   │ Cloud SQL (PostgreSQL)    │
+                                   └────────────┬──────────────┘
+                                                │
+                                                │
+                                                ▼
+                                   ┌──────────────────────────┐
+                                   │ Monitoring Stack on GKE  │
+                                   │ - Prometheus             │
+                                   │ - Grafana                │
+                                   └──────────────────────────┘
+
+#+end_src
+
+** Skills Demonstrated
+*** Containerization
+- Dockerfile (multi-stage)
+- Docker Compose for local development
+- Image optimization and vulnerability scanning
+
+*** Kubernetes
+- Deployments, Services, Ingress
+- ConfigMaps and Secrets
+- Horizontal Pod Autoscaler (HPA)
+- Namespaces and environment separation
+- Helm chart packaging and templating
+
+*** Cloud Infrastructure (GCP + Terraform)
+Using Terraform to provision:
+- GKE cluster
+- Cloud SQL PostgreSQL
+- VPC, subnets, and firewall rules
+- Artifact Registry (GCR)
+- IAM roles and service accounts
+- Cloud Storage buckets
+
+*** CI/CD
+- Build, test, lint pipelines using GitHub Actions
+- Docker image building and pushing to GCR
+- Automated application deployment pipeline
+- Environment-specific deployments (dev, staging, prod)
+
+*** GitOps
+- Automated Kubernetes deployments with ArgoCD
+- Declarative Helm charts
+- Git-driven versioning and rollbacks
+
+*** Monitoring and Logging
+- Prometheus: metrics
+- Grafana: dashboards
+
+*** Security
+- Terraform IAM least-privilege model
+- Kubernetes Secret Management
+
+* How to Deploy
+** 1. Provision Cloud Infrastructure
+
+** 2. Apply Helm Chart
+
+** 3. Setup GitOps (ArgoCD)
+
