@@ -59,14 +59,6 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3.11.1
 
-      # Build image for multi architecture
-      - name: Build Image
-        env:
-          IMAGE_TAG: ${{ needs.generate-image-tag.outputs.image_tag }}    # pull in that image tag from the previous job
-        working-directory: ./app
-        run: |
-          task build-container-image-multi-arch IMAGE_TAG=${IMAGE_TAG}
-
       # Log in to GCR
       - name: Login to GitHub Container Registry
         uses: docker/login-action@v3
@@ -74,14 +66,14 @@ jobs:
           registry: ghcr.io
           username: ${{ github.USERNAME }}
           password: ${{ secrets.GHCR_TOKEN }}
-      
-      # Push image to GCR
-      - name: Push image
+
+      # Build and push image for multi architecture to GCR
+      - name: Build and push image
         env:
-          IMAGE_TAG: ${{ needs.generate-image-tag.outputs.image_tag }}
+          IMAGE_TAG: ${{ needs.generate-image-tag.outputs.image_tag }}    # pull in that image tag from the previous job
         working-directory: ./app
         run: |
-          task push-container-image IMAGE_TAG=${IMAGE_TAG}
+          task build-push-container-image-multi-arch IMAGE_TAG=${IMAGE_TAG}
 
 
 # WIP

@@ -65,16 +65,12 @@ tasks:
           STARTING_PATH:
             sh: git rev-parse --show-toplevel
 
-  build-container-image-multi-arch:
+  build-push-container-image-multi-arch:
     desc: Build container image
     cmds:
       - |
       docker buildx build \
       --platform linux/amd64,linux/arm64 \
       -t ${{.IMAGE_REPO}}/{{.IMAGE_NAME}}:{{.IMAGE_TAG}} \
+      --push \
       .
-
-  push-container-image:
-    desc: Push container image
-    cmds:
-      - docker push ${{.IMAGE_REPO}}/${{.IMAGE_NAME}}:{{.IMAGE_TAG}}
