@@ -73,5 +73,7 @@ tasks:
         --platform linux/amd64 \
         -t {{.IMAGE_REPO}}/{{.IMAGE_NAME}}:{{.IMAGE_TAG}} \
         --push \
+        --cache-from=type=registry,ref={{.IMAGE_REPO}}/{{.IMAGE_NAME}}:buildcache \
+        --cache-to=type=registry,ref={{.IMAGE_REPO}}/{{.IMAGE_NAME}}:buildcache,mode=max \
         ../../app/
 
