@@ -71,7 +71,7 @@ jobs:
       - name: Build and push image
         env:
           IMAGE_TAG: ${{ needs.generate-image-tag.outputs.image_tag }}    # pull in that image tag from the previous job
-        working-directory: ./app
+        working-directory: .github/actions
         run: |
           task build-push-container-image-multi-arch IMAGE_TAG=${IMAGE_TAG}
 
