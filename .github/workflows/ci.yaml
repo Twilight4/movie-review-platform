@@ -38,6 +38,7 @@ jobs:
   build-tag-push:
     runs-on: ubuntu-latest
     needs: generate-image-tag
+    steps:
       # Checkout the code
       - name: Checkout
         uses: actions/checkout@v6
