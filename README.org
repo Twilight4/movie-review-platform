@@ -3,7 +3,7 @@
 
 * Table of Contents :toc:
 - [[#overview][Overview]]
-  - [[#full-project-folder-structure][Full Project Folder Structure]]
+  - [[#full-project-directory-structure][Full Project Directory Structure]]
   - [[#full-architecture-diagram][Full Architecture Diagram]]
   - [[#technologies-used][Technologies Used]]
 - [[#steps-to-deploy-wip][Steps to Deploy (WIP)]]
@@ -25,7 +25,7 @@ This project demonstrates a full production-grade DevOps setup using modern tool
 - Monitoring & Logging (Prometheus, Grafana)
 - Security
 
-** Full Project Folder Structure
+** Full Project Directory Structure
 #+begin_src shell
 full-devops-cycle-project/
 ├── app/                → Application source code + Dockerfile
@@ -50,7 +50,10 @@ full-devops-cycle-project/
 │   └── prometheus/
 │
 ├── .github/            → CI/CD pipelines
-│   └── workflows/
+│   ├── workflows
+│   │   └── ci.yaml
+│   └── actions
+│       └── Taskfile.yaml
 │
 └── README.org
 #+end_src
