@@ -6,6 +6,7 @@ on:
     tags: "[0-9]*.[0-9]*.[0-9]*"
     paths:
       - "app/**/*"  # only rebuild when app code changes
+  workflow_dispatch:
 
 jobs:
   generate-image-tag:
@@ -34,26 +35,86 @@ jobs:
           image_tag=$(task generate-version-tag)
           echo "image_tag=$image_tag" >> $GITHUB_OUTPUT
 
-      # Build image
+  build-tag-push:
+    runs-on: ubuntu-latest
+    needs: generate-image-tag
+      # Checkout the code
+      - name: Checkout
+        uses: actions/checkout@v6
+        with:
+          # Necessary to get all tags for IMAGE_TAG generation with git describe
+          fetch-depth: 0
+
+      # Install task
+      - name: Install Task
+        uses: arduino/setup-task@v2
+        with:
+          version: 3.x
+
+      # Support for multi-arch
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3.7.0
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3.11.1
+
+      # Build image for multi architecture
       - name: Build Image
         env:
           IMAGE_TAG: ${{ needs.generate-image-tag.outputs.image_tag }}    # pull in that image tag from the previous job
         working-directory: ./app
         run: |
-          task build-container-image IMAGE_TAG=${IMAGE_TAG}
+          task build-container-image-multi-arch IMAGE_TAG=${IMAGE_TAG}
 
       # Log in to GCR
       - name: Login to GitHub Container Registry
         uses: docker/login-action@v3
         with:
           registry: ghcr.io
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
+          username: ${{ github.USERNAME }}
+          password: ${{ secrets.GHCR_TOKEN }}
       
-      # Push image
+      # Push image to GCR
       - name: Push image
         env:
           IMAGE_TAG: ${{ needs.generate-image-tag.outputs.image_tag }}
         working-directory: ./app
         run: |
           task push-container-image IMAGE_TAG=${IMAGE_TAG}
+
+
+# WIP
+  # update-tags:
+  #   runs-on: ubuntu-latest
+  #   needs: [generate-image-tag, build-tag-push]
+
+  #   steps:
+  #     - name: Checkout
+  #       uses: actions/checkout@v6
+
+  #     - name: Install Task
+  #       uses: arduino/setup-task@v2
+  #       with:
+  #         version: 3.x
+
+
+# WIP
+      # - name: Update Image Tags
+      #   working-directory: .github/actions/
+      #   env:
+      #     IMAGE_TAG: ${{ needs.generate-image-tag.outputs.image_tag }}
+      #   run: |
+      #     # Update staging tags for push to main or release tag
+      #     task update-staging-image-tags NEW_TAG=${IMAGE_TAG}            
+
+      #     # Update production tags only for release tags
+      #     if [[ $GITHUB_REF == refs/tags/*.*.* ]]; then
+      #       task update-production-image-tags NEW_TAG=${IMAGE_TAG}
+      #     fi
+
+      # - name: Create Pull Request
+      #   uses: peter-evans/create-pull-request@v7.0.9
+      #   with:
+      #     base: main
+      #     token: ${{ secrets.DEVOPS_DIRECTIVE_KUBERNETES_COURSE_GITHUB_ACTION_PAT }}
+      #     title: "Update image tags to (${{ needs.generate-image-tag.outputs.image_tag }})"

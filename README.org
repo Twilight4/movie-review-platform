@@ -5,16 +5,16 @@
 - [[#overview][Overview]]
   - [[#full-project-folder-structure][Full Project Folder Structure]]
   - [[#full-architecture-diagram][Full Architecture Diagram]]
-  - [[#skills-demonstrated][Skills Demonstrated]]
-- [[#steps-to-deploy][Steps to Deploy]]
+  - [[#technologies-used][Technologies Used]]
+- [[#steps-to-deploy-wip][Steps to Deploy (WIP)]]
   - [[#1-provision-cloud-infrastructure][1. Provision Cloud Infrastructure]]
   - [[#2-apply-helm-chart][2. Apply Helm Chart]]
   - [[#3-setup-gitops-argocd][3. Setup GitOps (ArgoCD)]]
 
 * Overview
-This project outlines every stage of the DevOps lifecycle, the tools you should use, and how the pieces connect. Everything fully automated end-to-end.
+This project outlines every stage of the DevOps lifecycle, the tools and how the pieces connect. Everything fully automated end-to-end.
 
-This project demonstrates a full production-grade DevOps setup using modern tooling, demonstrating proficiency across:
+This project demonstrates a full production-grade DevOps setup using modern tooling:
 - Git / Linux / Networking
 - Containerization (Docker)
 - Container Orchestration (Kubernetes + Helm)
@@ -128,7 +128,7 @@ full-devops-cycle-project/
 
 #+end_src
 
-** Skills Demonstrated
+** Technologies Used
 *** Containerization
 - Dockerfile (multi-stage)
 - Image optimization
@@ -168,7 +168,7 @@ Using Terraform to provision GCP infrastructure:
 - Terraform IAM least-privilege model
 - Kubernetes Secret Management
 
-* Steps to Deploy
+* Steps to Deploy (WIP)
 ** 1. Provision Cloud Infrastructure
 
 ** 2. Apply Helm Chart
