@@ -67,6 +67,14 @@ jobs:
           username: ${{ vars.GH_USERNAME }}
           password: ${{ secrets.GHCR_TOKEN }}
 
+      # Cache import for faster builds
+      - name: Restore Docker Buildx cache
+        uses: docker/build-push-action@v6
+        with:
+          builder: default
+          load: false
+          cache-from: type=registry,ref=ghcr.io/twilight4/api-node:buildcache
+
       # Build and push image for multi architecture to GCR
       - name: Build and push image
         env:
@@ -74,6 +82,16 @@ jobs:
         working-directory: .github/actions
         run: |
           task build-push-container-image-multi-arch IMAGE_TAG=${IMAGE_TAG}
+
+      # Optional: Export cache for next build
+      - name: Save Docker Buildx cache
+        uses: docker/build-push-action@v6
+        with:
+          builder: default
+          push: true
+          tags: ghcr.io/twilight4/api-node:buildcache
+          cache-to: type=registry,ref=ghcr.io/twilight4/api-node:buildcache,mode=max
+
 
 
 # WIP
