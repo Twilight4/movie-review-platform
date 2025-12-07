@@ -1,4 +1,4 @@
-#+TITLE: Cloud-Native Movie Review Platform (Full DevOps Cycle Project)
+#+TITLE: Cloud-Native Movie Review Platform
 #+AUTHOR: Twilight4
 
 * Table of Contents :toc:
@@ -28,7 +28,7 @@ This project demonstrates a full production-grade DevOps setup using modern tool
 ** Full Project Folder Structure
 #+begin_src shell
 full-devops-cycle-project/
-├── app/                → Application source code
+├── app/                → Application source code + Dockerfile
 │   ├── tests/
 │   │   └── movies.test.js
 │   ├── src/
@@ -38,10 +38,6 @@ full-devops-cycle-project/
 │   │    └── app.js
 │   ├── package.json
 │   └── README.md
-│ 
-├── docker/             → Dockerfile + Compose
-│   └── Dockerfile
-│   └── docker-compose.yaml (for local dev)
 │
 ├── k8s/                → Deployment manifests
 │
@@ -135,7 +131,6 @@ full-devops-cycle-project/
 ** Skills Demonstrated
 *** Containerization
 - Dockerfile (multi-stage)
-- Docker Compose for local development
 - Image optimization
 
 *** Kubernetes
