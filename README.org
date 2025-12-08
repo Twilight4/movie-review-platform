@@ -187,11 +187,15 @@ kubectl apply -f deploy/
 kubectl delete -f deploy/
 #+end_src
 
-Test endpoints:
+Test helath endpoint:
 #+begin_src shell
-kubectl port-forward pod/movie-api-deployment-7d4b96b98b-c9ws8 8080:80 
+# Port-forward the service
+kubectl port-forward pod/<POD_NAME> 3000:80 
+xh localhost:3000/health
 
-curl 
+# OR check from inside of the container
+kubectl exec -it <POD_NAME> -- netstat -tlnp           # to check which port the service is running on
+kubectl exec -it <POD_NAME> -- wget -qO- http://localhost:3000/health
 #+end_src
 
 
