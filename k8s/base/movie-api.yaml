@@ -18,7 +18,7 @@ spec:
       terminationGracePeriodSeconds: 20
       containers:
       - name: movie-api
-        image: ghcr.io/twilight4/api-node:latest
+        image: ghcr.io/twilight4/api-node:0.0.1-23-g068f01f
         imagePullPolicy: Always
         env:
           - name: NODE_ENV

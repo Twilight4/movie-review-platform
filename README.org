@@ -188,6 +188,11 @@ kubectl delete -f deploy/
 #+end_src
 
 Test endpoints:
+#+begin_src shell
+kubectl port-forward pod/movie-api-deployment-7d4b96b98b-c9ws8 8080:80 
+
+curl 
+#+end_src
 
 
 ** 3. Setup GitOps (ArgoCD)
