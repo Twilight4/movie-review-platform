@@ -19,7 +19,7 @@ This project demonstrates a full production-grade DevOps setup using modern tool
 - Git / Linux / Networking
 - Containerization (Docker)
 - Container Orchestration (Kubernetes + Helm)
-- Cloud Technologies (GCP - GKE, GCR, PostgreSQL)
+- Cloud Technologies (GCP - GKE, GCR, CosmosDB)
 - Infrastructure provisioning (Terraform)
 - CI/CD pipelines (Github Actions)
 - GitOps (ArgoCD)
@@ -35,9 +35,13 @@ full-devops-cycle-project/
 │   ├── src/
 │   │    ├── routes/
 │   │    │   └── movies.js
+│   │    ├── db/
+│   │    │   └── cosmos.js
 │   │    ├── server.js
 │   │    └── app.js
 │   ├── package.json
+│   ├── package-lock.json
+│   ├── Dockerfile
 │   └── README.md
 │
 ├── k8s/                → Deployment manifests
@@ -139,7 +143,7 @@ full-devops-cycle-project/
                                                 │
                                                 ▼
                                    ┌───────────────────────────┐
-                                   │ Cloud SQL (PostgreSQL)    │
+                                   │ Cloud SQL (CosmosDB NoSQL)│
                                    └────────────┬──────────────┘
                                                 │
                                                 │
@@ -170,7 +174,7 @@ full-devops-cycle-project/
 *** Cloud Infrastructure
 Using Terraform to provision GCP infrastructure:
 - GKE cluster
-- Cloud SQL PostgreSQL
+- Cloud CosmosDB NoSQL Database
 - VPC, subnets, and firewall rules
 - Artifact Registry (GCR)
 - IAM roles and service accounts
@@ -211,6 +215,7 @@ minikube start
 minikube addons enable ingress
 
 # Apply kustomize for dev OR staging
+kubectl create namespace dev            # kustomize expects existing 'dev' namespace
 kubectl apply -k k8s/overlays/dev       # k8s/overlays/staging for staging overlay
 
 # Uninstall overlay manifests
@@ -238,10 +243,11 @@ kubectl exec -it <POD_NAME> -- wget -qO- http://localhost:3000/health
 
 ** Roadmap (WIP)
 Docker application:
-- [X] Write Demo movie-review app in NodeJS using Express API
-- [X] Package app in with Dockerfile
-- [X] Image optimization best practices
-- [X] Implement API Endpoints (/health, /movies)
+- [X] Write demo movie-review app in NodeJS using Express API
+- [X] Implement app logic
+- [X] Implement API Endpoints (/health, /movies for POST/GET requests)
+- [X] Package app with Dockerfile
+- [X] Implement image optimization best practices
 - [ ] Add Azure CosmosDB integration (env vars, CRUD, routes)
 
 CI/CD:
@@ -258,14 +264,14 @@ Kubernetes:
   + namespace overrides
   + patchesStrategicMerge
   + image overrides
+- [ ] Implement Kustomize overlays
 - [ ] Implement CosmosDB integration for Azure (ConfigMap, Secret, CosmosDB ExternalName Service)
 - [ ] Implement network policy for CosmosDB database
-- [ ] Implement Kustomize overlays
 - [ ] Implement helm charts packaging and templating
 
 Terraform:
 - [ ] GKE cluster
-- [ ] Cloud SQL PostgreSQL
+- [ ] CosmosDB database
 - [ ] VPC, subnets, and firewall rules
 - [ ] Artifact Registry (GCR)
 - [ ] IAM roles and service accounts

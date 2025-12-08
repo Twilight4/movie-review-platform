@@ -5,12 +5,9 @@ resources:
   - movie-api-deployment.yaml
   - movie-api-service.yaml
   - movie-api-hpa.yaml
-  - ingress.yaml
   - ingress-nginx-namespace.yaml
+  - ingress.yaml
   - configmap.yaml
-  - cosmos-service.yaml
-  - secret.yaml
-  - netpol.yaml
-
-commonLabels:
-  app: movie-api
+#  - cosmos-service.yaml
+#  - secret.yaml
+#  - netpol.yaml

@@ -7,9 +7,13 @@ namespace: staging
 resources:
   - ../../base
 
-patchesStrategicMerge:
-  - patch-deployment.yaml
-  - patch-configmap.yaml
+patches:
+  - path: patch-deployment.yaml
+  - path: patch-configmap.yaml
+
+labels:
+  - pairs:
+      env: staging
 
 #images:
 #  - name: ghcr.io/twilight4/api-node

@@ -7,9 +7,12 @@ namespace: dev
 resources:
   - ../../base
 
-patchesStrategicMerge:
-  - patch-deployment.yaml
-  - patch-configmap.yaml
+patches:
+  - path: patch-deployment.yaml
+  - path: patch-configmap.yaml
+
+commonLabels:
+  env: dev
 
 #images:
 #  - name: ghcr.io/twilight4/api-node

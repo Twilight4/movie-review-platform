@@ -1,9 +1,9 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: cosmosdb-config
+  name: movie-api-config
 data:
-  COSMOSDB_DATABASE: "movies-db"
+  COSMOSDB_DATABASE: "movie-api"
   COSMOSDB_CONTAINER: "reviews"
   COSMOSDB_PARTITION_KEY: "/movieId"
   COSMOSDB_API: "SQL"
