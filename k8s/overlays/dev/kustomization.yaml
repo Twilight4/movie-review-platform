@@ -11,8 +11,9 @@ patches:
   - path: patch-deployment.yaml
   - path: patch-configmap.yaml
 
-commonLabels:
-  env: dev
+labels:
+  - pairs:
+      env: dev
 
 #images:
 #  - name: ghcr.io/twilight4/api-node
