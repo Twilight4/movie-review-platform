@@ -2,25 +2,29 @@ apiVersion: apps/v1
 kind: Deployment
 
 metadata:
-  name: nginx-deployment
+  name: movie-api-deployment
   labels:
-    app: nginx
+    app: movie-api
 spec:
-  replicas: 3
+  replicas: 2
   selector:
     matchLabels:
-      app: nginx
+      app: movie-api
   template:
     metadata:
       labels:
-        app: nginx
+        app: movie-api
     spec:
+      terminationGracePeriodSeconds: 20
       containers:
-      - name: nginx
-        image: twilight4/api-node:0.0.1-20-g075a4c2
+      - name: movie-api
+        image: ghcr.io/twilight4/api-node:latest
         imagePullPolicy: Always
+        env:
+          - name: NODE_ENV
+            value: "production"
         ports:
-        - containerPort: 80
+        - containerPort: 3000
         livenessProbe:
           initialDelaySeconds: 5
           periodSeconds: 10
@@ -35,6 +39,16 @@ spec:
             port: 3000
           initialDelaySeconds: 2
           periodSeconds: 5
+        securityContext:
+          runAsNonRoot: true
+          allowPrivilegeEscalation: false
+          readOnlyRootFilesystem: true
+          runAsUser: 1000
+          capabilities:
+            drop:
+              - ALL
+          seccompProfile:
+            type: RuntimeDefault
         resources:
           requests:
             cpu: "250m"
@@ -42,17 +56,4 @@ spec:
           limits:
             cpu: "500m"
             memory: "400Mi"
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: nginx-service
-spec:
-  type: ClusterIP
-  selector:
-    dem: pods
-  ports:
-    - protocol: TCP
-      port: 80
-      targetPort: 80
 
