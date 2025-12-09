@@ -85,7 +85,15 @@ full-devops-cycle-project/
 │       ├── values-staging.yaml          # qeuivelent to overlays/staging
 │       └── Chart.yaml
 │
-├── terraform/          → Infrastructure as Code (GCP)
+├── terraform/          → Infrastructure as Code (Azure)
+│   ├── versions.tf
+│   ├── variables.tf
+│   ├── providers.tf
+│   ├── main.tf
+│   ├── dev.tfvars
+│   ├── backend.sh
+│   ├── backend-staging.tf
+│   └── backend-dev.tf
 │
 ├── monitoring/         → Node + monitoring configuration
 │   ├── grafana-dashboards/
@@ -233,6 +241,14 @@ Using Terraform to provision GCP infrastructure:
 
 ** 1. Deploy Cloud Infrastructure
 *** Authenticate with Azure
+#+begin_src shell
+# Your Azure CLI will use your logged-in account for Terraform
+az login
+
+# Export subscription ID
+export ARM_SUBSCRIPTION_ID="<subscription-id>"
+#+end_src
+
 *** Deploy the infrastructure
 #+begin_src shell
 # Change directory
