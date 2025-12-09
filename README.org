@@ -2,25 +2,28 @@
 #+AUTHOR: Twilight4
 
 * Table of Contents :toc:
-- [[#overview][Overview]]
+- [[#project-overview][Project Overview]]
   - [[#full-project-directory-structure][Full Project Directory Structure]]
   - [[#full-architecture-diagram][Full Architecture Diagram]]
   - [[#project-scope--technologies-used][Project Scope / Technologies Used]]
-- [[#steps-to-deploy-wip][Steps to Deploy (WIP)]]
+- [[#deploy-cloud-infrastructure-wip][Deploy Cloud Infrastructure (WIP)]]
   - [[#prerequisites][Prerequisites]]
-  - [[#1-deploy-cloud-infrastructure][1. Deploy Cloud Infrastructure]]
-  - [[#2-deploy-kubernetes-cluster][2. Deploy Kubernetes Cluster]]
-  - [[#3-setup-gitops-argocd][3. Setup GitOps (ArgoCD)]]
+  - [[#terraform-resources][Terraform resources]]
+  - [[#authenticate-with-gcp][Authenticate with GCP]]
+  - [[#deploy-the-infrastructure-using-terraform][Deploy the infrastructure using terraform]]
+  - [[#verify-deployment][Verify deployment]]
+  - [[#clean-up][Clean up]]
+- [[#setup-gitops-argocd-wip][Setup GitOps (ArgoCD) (WIP)]]
 - [[#roadmap-wip][Roadmap (WIP)]]
 
-* Overview
+* Project Overview
 This project outlines every stage of the DevOps lifecycle, the tools and how the pieces connect. Everything fully automated end-to-end.
 
 This project demonstrates a full production-grade DevOps setup using modern tooling:
 - Git / Linux / Networking
 - Containerization (Docker)
 - Container Orchestration (Kubernetes + Helm)
-- Cloud Technologies (GCP - GKE, GCR, CosmosDB)
+- Cloud Technologies (GCP - GKE, GCR, SQL DB)
 - Infrastructure provisioning (Terraform)
 - CI/CD pipelines (Github Actions)
 - GitOps (ArgoCD)
@@ -37,7 +40,7 @@ full-devops-cycle-project/
 │   │    ├── routes/
 │   │    │   └── movies.js
 │   │    ├── db/
-│   │    │   └── cosmos.js
+│   │    │   └── DATABASE.js
 │   │    ├── server.js
 │   │    └── app.js
 │   ├── package.json
@@ -64,7 +67,7 @@ full-devops-cycle-project/
 │       ├── kustomization.yaml
 │       ├── ingress.yaml
 │       ├── ingress-nginx-namespace.yaml
-│       ├── cosmos-service.yaml
+│       ├── DATABASE-service.yaml
 │       └── configmap.yaml
 │
 ├── helm/charts/               → Helm chart for deployment
@@ -75,7 +78,7 @@ full-devops-cycle-project/
 │       │   ├── movie-api-deployment.yaml
 │       │   ├── kustomization.yaml
 │       │   ├── ingress.yaml
-│       │   ├── cosmos-service.yaml
+│       │   ├── DATABASE-service.yaml
 │       │   ├── secret.yaml
 │       │   ├── netpol.yaml
 │       │   ├── ingress-nginx-namespace.yaml
@@ -85,9 +88,10 @@ full-devops-cycle-project/
 │       ├── values-staging.yaml          # qeuivelent to overlays/staging
 │       └── Chart.yaml
 │
-├── terraform/          → Infrastructure as Code (Azure)
+├── terraform/          → Infrastructure as Code (GCP)
 │   ├── versions.tf
 │   ├── variables.tf
+│   ├── outputs.tf
 │   ├── providers.tf
 │   ├── main.tf
 │   ├── dev.tfvars
@@ -168,7 +172,7 @@ full-devops-cycle-project/
                                                 │
                                                 ▼
                                    ┌───────────────────────────┐
-                                   │ Cloud SQL (CosmosDB NoSQL)│
+                                   │ Cloud SQL (GCP DB NoSQL)│
                                    └────────────┬──────────────┘
                                                 │
                                                 │
@@ -197,9 +201,11 @@ full-devops-cycle-project/
 - Helm chart packaging and templating with namespace/env separation
 
 *** Cloud Infrastructure
-Using Terraform to provision GCP infrastructure:
+Google offers a 90-day, [[https://cloud.google.com/free][$300 free trial]] for new users. 
+
+Terraform provisions GCP infrastructure:
 - GKE cluster
-- Cloud CosmosDB NoSQL Database
+- GCP DB NoSQL Database
 - VPC, subnets, and firewall rules
 - Artifact Registry (GCR)
 - IAM roles and service accounts
@@ -224,32 +230,38 @@ Using Terraform to provision GCP infrastructure:
 - Kubernetes network policy rules:
   + Allow traffic only from the Ingress Controller
   + Deny ALL other internal pod traffic
-  + Allow outbound internet (API needs Cosmos DB)
+  + Allow outbound internet (API needs GCP DB)
 - Kubernetes Secret Management
 - Terraform IAM least-privilege model
 
-* Steps to Deploy (WIP)
+
+* Deploy Cloud Infrastructure (WIP)
 ** Prerequisites
 - git
+- go-task
 - docker
 - kubectl
 - minikube or kind
 - helm (v3)
 - terraform
-- Azure subscription (Owner or Contributor role)
-- azure-cli
+- GCP subscription
+- google-cloud-cli
 
-** 1. Deploy Cloud Infrastructure
-*** Authenticate with Azure
+** Terraform resources
+Terraform will create resources in the following sequence:
+1. GCP Network
+2. subnet
+3. firewall rules
+4. GKE cluster
+5. ...
+
+** Authenticate with GCP
 #+begin_src shell
-# Your Azure CLI will use your logged-in account for Terraform
-az login
-
-# Export subscription ID
-export ARM_SUBSCRIPTION_ID="<subscription-id>"
+# Authenticate and configure the gcloud CLI
+go-task gcp:01-init-cli
 #+end_src
 
-*** Deploy the infrastructure
+** Deploy the infrastructure using terraform
 #+begin_src shell
 # Change directory
 cd terraform/
@@ -264,77 +276,40 @@ terraform plan -out plan.tfplan
 terraform apply plan.tfplan
 #+end_src
 
-*** Verify deployment
-**** Using Azure Portal
-**** Using Azure CLI
+*** OPTIONAL: Deploy only Kubernetes Cluster Manually
+**** Minikube/KinD
+If you want to test the cluster locally, visit [[file:/movie-review-platform/k8s-cluster-local/README.org][k8s-cluster-local/README.org]].
 
-*** Clean up
+**** Google Kubernetes Engine (GKE)
+NOTE: If you have deployed additional resources (such as load balancers) that reference the VPC/Subnets/Etc... you may need to manually clean up those resources in order for this command to succeed. You should also verify that you have cleaned up all resources to avoid unwanted costs.
+
+#+begin_src shell
+# To create a cluster run
+go-task gcp:07-create-all
+go-task gcp:08-connect-to-cluster
+
+# To destroy the cluster run
+go-task gcp:09-clean-up
+#+end_src
+
+** Verify deployment
+*** Using GCP Portal
+#+begin_src shell
+
+#+end_src
+
+*** Using google-cloud-cli
+#+begin_src shell
+
+#+end_src
+
+** Clean up
 #+begin_src shell
 # Remove all terraform resources and avoid charges
 terraform destroy -var-file=dev.tfvars
 #+end_src
 
-** 2. Deploy Kubernetes Cluster
-*** Test Locally
-**** Minikube via kubectl
-#+begin_src shell
-# Start cluster and enable ingress add-on
-minikube start
-minikube addons enable ingress
-
-# Apply default env (namespace env equivelent to k8s/base)
-kubectl apply -k k8s/base
-
-# Apply kustomize for dev
-kubectl create namespace dev            # kustomize expects existing 'dev' namespace
-kubectl apply -k k8s/overlays/dev
-
-# Apply kustomize for staging env
-kubectl create namespace dev            # kustomize expects existing staging' namespace
-kubectl apply -k k8s/overlays/dev
-
-# Uninstall overlay manifest for dev env
-kubectl delete -k k8s/overlays/dev
-# OR just delete created entire namespaces
-kubectl delete namespace dev
-kubectl delete namespace ingress-nginx
-#+end_src
-
-**** Minikube via helm
-#+begin_src shell
-# Install - default env (namespace env equivelent to k8s/base)
-helm install movie-review-chart helm/charts/movie-review
-
-# Install - dev env
-helm install movie-review-chart helm/charts/movie-review -f helm/charts/movie-review/values-dev.yaml --namespace dev --create-namespace
-
-# Install - staging env
-helm install movie-review-chart helm/charts/movie-review -f helm/charts/movie-review/values-staging.yaml --namespace staging --create-namespace
-
-# List realeases
-helm list -A
-
-# Uninstall
-helm uninstall movie-review-chart --namespace dev/staging
-#+end_src
-
-**** Test health endpoint
-#+begin_src shell
-# Port-forward the service
-kubectl port-forward pod/<POD_NAME> 3000:80 
-xh localhost:3000/health
-
-# OR check from inside of the container
-kubectl exec -it <POD_NAME> -- netstat -tlnp           # to check which port the service is running on
-kubectl exec -it <POD_NAME> -- wget -qO- http://localhost:3000/health
-
-# Expected output: {"status":"ok"}
-#+end_src
-
-*** Azure Cloud
-
-** 3. Setup GitOps (ArgoCD)
-
+* Setup GitOps (ArgoCD) (WIP)
 
 * Roadmap (WIP)
 Docker application:
@@ -343,7 +318,7 @@ Docker application:
 - [X] Implement API Endpoints (/health, /movies for POST/GET requests)
 - [X] Package app with Dockerfile
 - [X] Implement image optimization best practices
-- [ ] Add Azure CosmosDB integration (env vars, CRUD, routes)
+- [ ] Add GCP DB integration (env vars, CRUD, routes)
 
 CI/CD:
 - [X] Generating image tag
@@ -360,22 +335,30 @@ Kubernetes:
   + patchesStrategicMerge
   + image overrides
 - [X] Implement Kustomize overlays
-- [ ] Implement CosmosDB integration for Azure (ConfigMap, Secret, CosmosDB ExternalName Service)
-- [ ] Implement network policy for CosmosDB database
-- [ ] Implement PersistentVolumeClaims to CosmosDB
+- [ ] Implement GCP DB integration (ConfigMap, Secret, ExternalName Service)
+- [ ] Implement network policy for GCP DB database
+- [ ] Implement PersistentVolumeClaims to GCP DB
 - [X] Implement helm charts packaging and templating with namespace/env separation
-- [ ] After CosmosDB creation Success:
-  + correct the 3 manifests (cosmos-service.yaml, secret.yaml, netpo.yaml) and test
-  + add the 3 manifests (cosmos-service.yaml, secret.yaml, netpo.yaml) to helm chart
-  + implement cosmosDB integration to node app
+- [ ] After GCP DB creation Success:
+  + correct the 3 manifests (GCP -service.yaml, secret.yaml, netpo.yaml) and test
+  + add the 3 manifests (GCP -service.yaml, secret.yaml, netpo.yaml) to helm chart
+  + implement GCP DB integration to node app
 
-Terraform:
+Terraform - replicate in GCP
+- [ ] backend config
+- [ ] EC2 instances
+- [ ] Cloud Storage bucket
+- [ ] VPC
+  + [ ] Subnet
+- [ ] Security groups + rules
+- [ ] Application load balancer
+  + [ ] ALB target group + attachment
+- [ ] Route 53 zone + record
+- [ ] RDS instance
 - [ ] GKE cluster
-- [ ] CosmosDB database
-- [ ] VPC, subnets, and firewall rules
+- [ ] GCP DB database
 - [ ] Artifact Registry (GCR)
 - [ ] IAM roles and service accounts
-- [ ] Cloud Storage buckets
 
 GitOps:
 - [ ] Automated Kubernetes deployments with ArgoCD
