@@ -13,9 +13,9 @@ replicaCount: 1
 
 env:
   - name: NODE_ENV
-  value: development
+    value: development
   - name: LOG_LEVEL
-  value: debug
+    value: debug
 
 resources:
   limits:
@@ -26,7 +26,7 @@ resources:
     memory: "300Mi"
 
 hpa:
-  minReplicas: 2
+  minReplicas: 1
   maxReplicas: 10
   cpuUtilization: 50
 
