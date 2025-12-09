@@ -238,8 +238,8 @@ Using Terraform to provision GCP infrastructure:
 # Change directory
 cd terraform/
 
-# Initialize terraform
-terraform init
+# Initialize terraform for dev env
+terraform init -backend-config=backend-dev.tf            # backend-staging.tf for staging env
 
 # Review the planned configuration
 terraform plan -out plan.tfplan
