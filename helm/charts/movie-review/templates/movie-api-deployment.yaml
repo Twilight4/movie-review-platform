@@ -6,7 +6,7 @@ metadata:
   labels:
     app: movie-api
 spec:
-  replicas: 2
+  replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
       app: movie-api
@@ -18,8 +18,8 @@ spec:
       terminationGracePeriodSeconds: 20
       containers:
       - name: movie-api
-        image: ghcr.io/twilight4/api-node:0.0.1-24-g33169f0
-        imagePullPolicy: Always
+        image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+        imagePullPolicy: {{ .Values.image.pullPolicy }}
         ports:
         - containerPort: 3000
         livenessProbe:
@@ -44,13 +44,7 @@ spec:
           capabilities:
             drop:
               - ALL
-          seccompProfile:
-            type: RuntimeDefault
-        resources:
-          requests:
-            cpu: "250m"
-            memory: "300Mi"
-          limits:
-            cpu: "500m"
-            memory: "400Mi"
-
+            seccompProfile:
+              type: RuntimeDefault
+            resources:
+              {{- toYaml .Values.resources | nindent 12 }}
