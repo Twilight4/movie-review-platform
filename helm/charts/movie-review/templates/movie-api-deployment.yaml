@@ -2,9 +2,12 @@ apiVersion: apps/v1
 kind: Deployment
 
 metadata:
-  name: movie-api-deployment
+  name: {{ printf "%s%s" (.Values.namePrefix | default "") "movie-api-deployment" }}
   labels:
     app: movie-api
+    {{- range $key, $val := .Values.labels }}
+    {{ $key }}: {{ $val }}
+    {{- end }}
 spec:
   replicas: {{ .Values.replicaCount }}
   selector:
@@ -20,6 +23,8 @@ spec:
       - name: movie-api
         image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
         imagePullPolicy: {{ .Values.image.pullPolicy }}
+        env:
+          {{- toYaml .Values.env | nindent 12 }}
         ports:
         - containerPort: 3000
         livenessProbe:

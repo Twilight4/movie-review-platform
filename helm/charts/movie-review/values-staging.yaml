@@ -1,5 +1,4 @@
 namePrefix: staging-
-namespace: staging
 
 labels:
   env: staging
@@ -11,6 +10,10 @@ image:
   pullPolicy: Always
 
 replicaCount: 2
+
+env:
+  - name: NODE_ENV
+  value: staging
 
 resources:
   limits:

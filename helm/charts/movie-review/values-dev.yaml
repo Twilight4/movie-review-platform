@@ -1,5 +1,4 @@
 namePrefix: dev-
-namespace: dev
 
 labels:
   env: dev
@@ -11,6 +10,12 @@ image:
   pullPolicy: Always
 
 replicaCount: 1
+
+env:
+  - name: NODE_ENV
+  value: development
+  - name: LOG_LEVEL
+  value: debug
 
 resources:
   limits:
