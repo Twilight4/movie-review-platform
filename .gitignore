@@ -1,0 +1,4 @@
+installation-and-setup/kind-config.yaml
+terraform/.terraform.lock.hcl
+terraform/.terraform/
+terraform/terraform.tfplan
