@@ -80,7 +80,9 @@ full-devops-cycle-project/
 │       │   ├── netpol.yaml
 │       │   ├── ingress-nginx-namespace.yaml
 │       │   └── configmap.yaml
-│       ├── values.yaml
+│       ├── values.yaml                  # equivelent to base (default)
+│       ├── values-dev.yaml              # equivelent to overlays/dev
+│       ├── values-staging.yaml          # qeuivelent to overlays/staging
 │       └── Chart.yaml
 │
 ├── terraform/          → Infrastructure as Code (GCP)
@@ -184,7 +186,7 @@ full-devops-cycle-project/
 - Network policy
 - Liveness/readiness probes
 - Kustomize overlays
-- Helm chart packaging and templating
+- Helm chart packaging and templating with namespace/env separation
 
 *** Cloud Infrastructure
 Using Terraform to provision GCP infrastructure:
@@ -227,7 +229,7 @@ Using Terraform to provision GCP infrastructure:
 - helm (v3)
 - terraform
 - Azure subscription (Owner or Contributor role)
-- az (Azure CLI)
+- azure-cli
 
 ** 1. Deploy Cloud Infrastructure
 *** Authenticate with Azure
@@ -260,27 +262,38 @@ terraform destroy -var-file=dev.tfvars
 *** Test Locally
 **** Minikube via kubectl
 #+begin_src shell
-# Test locally with minikube
+# Start cluster and enable ingress add-on
 minikube start
 minikube addons enable ingress
 
-# Apply kustomize for dev OR staging
-kubectl create namespace dev            # kustomize expects existing 'dev' namespace
-kubectl apply -k k8s/overlays/dev       # k8s/overlays/staging for staging overlay
+# Apply default env (namespace env equivelent to k8s/base)
+kubectl apply -k k8s/base
 
-# Uninstall overlay manifests
+# Apply kustomize for dev
+kubectl create namespace dev            # kustomize expects existing 'dev' namespace
+kubectl apply -k k8s/overlays/dev
+
+# Apply kustomize for staging env
+kubectl create namespace dev            # kustomize expects existing staging' namespace
+kubectl apply -k k8s/overlays/dev
+
+# Uninstall overlay manifest for dev env
 kubectl delete -k k8s/overlays/dev
-# OR just delete entire dev namespace
+# OR just delete created entire namespaces
 kubectl delete namespace dev
+kubectl delete namespace ingress-nginx
 #+end_src
 
 **** Minikube via helm
 #+begin_src shell
-# Install
+# Install - default env (namespace env equivelent to k8s/base)
 helm install movie-review-chart helm/charts/movie-review
 
-# Upgrade
-helm upgrade movie-review-chart helm/charts/movie-review
+# Upgrade - dev env
+helm upgrade --install movie-review-chart helm/charts/movie-review -f values-dev.yaml --namespace dev
+
+# Upgrade - staging env
+helm upgrade --install movie-review-chart helm/charts/movie-review -f values-staging.yaml --namespace staging
 
 # Uninstall
 helm uninstall movie-review-chart
@@ -331,7 +344,7 @@ Kubernetes:
 - [ ] Implement CosmosDB integration for Azure (ConfigMap, Secret, CosmosDB ExternalName Service)
 - [ ] Implement network policy for CosmosDB database
 - [ ] Implement PersistentVolumeClaims to CosmosDB
-- [ ] Implement helm charts packaging and templating
+- [ ] Implement helm charts packaging and templating with namespace/env separation
 - [ ] After CosmosDB creation Success:
   + correct the 3 manifests (cosmos-service.yaml, secret.yaml, netpo.yaml) and test
   + add the 3 manifests (cosmos-service.yaml, secret.yaml, netpo.yaml) to helm chart
