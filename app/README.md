@@ -1,8 +1,7 @@
 # Movie Review Starter API
 This is the starter application for the DevOps project.
 
-## Movie-review (api-node)
-
+## Running the application
 ### api-node
 ```bash
 # Check node and npm versions
@@ -10,16 +9,16 @@ node -v
 npm -v
 
 # Install dependencies
-go-task install
+go-task api-node:install
 
 # Run node server
-go-task start
+go-task api-node:start
 
 # Run tests
-go-task test
+go-task api-node:test
 
 # Start node dev mode
-go-task run
+go-task api-node:run
 ```
 
 ## Testing endpoints
