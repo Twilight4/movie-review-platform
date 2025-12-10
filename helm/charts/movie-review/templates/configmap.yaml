@@ -1,9 +1,0 @@
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: movie-api-config
-data:
-  COSMOSDB_DATABASE: {{ .Values.config.COSMOSDB_DATABASE | quote }}
-  COSMOSDB_CONTAINER: {{ .Values.config.COSMOSDB_CONTAINER | quote }}
-  COSMOSDB_PARTITION_KEY: {{ .Values.config.COSMOSDB_PARTITION_KEY | quote }}
-  COSMOSDB_API: {{ .Values.config.COSMOSDB_API | quote }}
