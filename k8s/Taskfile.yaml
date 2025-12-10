@@ -1,0 +1,10 @@
+version: "3"
+
+includes:
+  helm:
+    taskfile: ./helm/Taskfile.yaml
+    dir: ./helm/
+
+  kubectl:
+    taskfile: ./deploy-services/Taskfile.yaml
+    dir: ./deploy-services
