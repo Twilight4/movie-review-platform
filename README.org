@@ -48,36 +48,42 @@ full-devops-cycle-project/
 │   ├── Dockerfile
 │   └── README.md
 │
-├── k8s/                → Deployment manifests
-│   ├── overlays
-│   │   ├── staging
-│   │   │   ├── patch-deployment.yaml
-│   │   │   ├── patch-configmap.yaml
+├── k8s/                → Deployment manifests for multi-env setup
+│   ├── overlays/
+│   │   ├── staging/
+│   │   │   ├── movie-api/
+│   │   │   │   ├── patches/
+│   │   │   │   └── kustomization.yaml
 │   │   │   └── kustomization.yaml
-│   │   └── dev
-│   │       ├── patch-deployment.yaml
-│   │       ├── patch-configmap.yaml
+│   │   └── production/
+│   │       ├── movie-api/
+│   │       │   ├── patches/
+│   │       │   └── kustomization.yaml
 │   │       └── kustomization.yaml
-│   └── base
-│       ├── secret.yaml
-│       ├── netpol.yaml
-│       ├── movie-api-service.yaml
-│       ├── movie-api-hpa.yaml
-│       ├── movie-api-deployment.yaml
-│       ├── kustomization.yaml
-│       ├── ingress.yaml
-│       ├── ingress-nginx-namespace.yaml
-│       ├── DATABASE-service.yaml
-│       └── configmap.yaml
+│   ├── helm/
+│   │   ├── movie-review-helm-chart/
+│   │   │   ├── templates/
+│   │   │   ├── values.yaml
+│   │   │   ├── values-staging.yaml
+│   │   │   └── Chart.yaml
+│   │   └── Taskfile.yaml
+│   ├── deploy-services/
+│   │   ├── movie-api/
+│   │   │   ├── namespaces/
+│   │   │   ├── manifests/
+│   │   │   ├── hostname-staging.yaml
+│   │   │   └── hostname-production.yaml
+│   │   └── Taskfile.yaml
+│   └── Taskfile.yaml
 │
-├── k8s/                → Docs for Deploying cluster locally
+├── k8s-cluster-local/      → Docs for Deploying cluster locally
 │   ├── kind-bind-mount-2
 │   ├── kind-bind-mount-1
 │   ├── Taskfile.yaml
 │   ├── README.org
 │   └── kind-config.yaml.TEMPLATE
 │
-├── helm/charts/        → Helm chart for deployment
+├── helm/charts/            → Helm chart for deployment
 │   └── movie-review/
 │       ├── templates/
 │       │   ├── movie-api-service.yaml
@@ -90,9 +96,9 @@ full-devops-cycle-project/
 │       │   ├── netpol.yaml
 │       │   ├── ingress-nginx-namespace.yaml
 │       │   └── configmap.yaml
-│       ├── values.yaml                  # equivelent to base (default)
-│       ├── values-dev.yaml              # equivelent to overlays/dev
-│       ├── values-staging.yaml          # qeuivelent to overlays/staging
+│       ├── values.yaml
+│       ├── values-dev.yaml
+│       ├── values-staging.yaml
 │       └── Chart.yaml
 │
 ├── terraform/          → Infrastructure as Code (GCP)
@@ -112,9 +118,9 @@ full-devops-cycle-project/
 │   └── prometheus/
 │
 ├── .github/            → CI/CD pipelines
-│   ├── workflows
+│   ├── workflows/
 │   │   └── ci.yaml
-│   └── actions
+│   └── actions/
 │       └── Taskfile.yaml
 │
 ├── Taskfile.yaml
