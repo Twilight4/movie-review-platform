@@ -1,4 +1,5 @@
 installation-and-setup/kind-config.yaml
+helm/charts/*.tgz
 terraform/.terraform.lock.hcl
 terraform/.terraform/
 terraform/terraform.tfplan
