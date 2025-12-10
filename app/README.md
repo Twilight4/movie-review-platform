@@ -1,5 +1,5 @@
 # Movie Review Starter API
-This is the starter application for the DevOps project.
+This is the starter application for the DevOps project. Planning to add more services in the future.
 
 ## Running the application
 ### api-node
