@@ -91,5 +91,5 @@ jobs:
         uses: peter-evans/create-pull-request@v7.0.9
         with:
           base: main
-          token: ${{ secrets.DEVOPS_DIRECTIVE_KUBERNETES_COURSE_GITHUB_ACTION_PAT }}
+          token: ${{ secrets.PR_ACTION }}
           title: "Update image tags to (${{ needs.generate-image-tag.outputs.image_tag }})"
