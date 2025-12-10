@@ -5,7 +5,7 @@ labels:
 
 image:
   repository: ghcr.io/twilight4/api-node
-  tag: 0.0.1-59-gce98abd # STAGING_IMAGE_TAG
+  tag: 0.0.1-61-g9785050-staging # STAGING_IMAGE_TAG
   pullPolicy: Always
 
 replicaCount: 1
