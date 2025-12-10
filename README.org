@@ -227,10 +227,10 @@ Terraform provisions GCP infrastructure:
 - Cloud Storage buckets
 
 *** CI/CD
-- Build, test, lint pipelines using GitHub Actions
-- Docker image building and pushing to GCR
+- Build, test pipelines using GitHub Actions
+- Docker image building and pushing to GHCR
+- Environment-specific deployments (staging, prod)
 - Automated application deployment pipeline
-- Environment-specific deployments (dev, staging, prod)
 
 *** GitOps
 - Automated Kubernetes deployments with ArgoCD
@@ -345,8 +345,8 @@ Docker application:
 CI/CD:
 - [X] Generating image tag
 - [X] Building and pushing image to GHCR for multi-architecture
-- [ ] Update staging/production tags for push to main or release tag
-- [ ] Create Pull Request with image tag changes
+- [X] Update staging/production tags for push to main or release tag
+- [X] Create Pull Request with image tag changes
 
 Kubernetes:
 - [X] Create necessary manifest files (deployment, service, ingress)

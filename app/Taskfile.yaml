@@ -1,0 +1,15 @@
+version: "3"
+
+includes:
+  api-node:
+    taskfile: ./api-node/Taskfile.yaml
+    dir: ./api-node
+  # api-node:
+  #   taskfile: ./api-node/Taskfile.yaml
+  #   dir: ./api-node
+  # client-react:
+  #   taskfile: ./client-react/Taskfile.yaml
+  #   dir: ./client-react
+  # load-generator-python:
+  #   taskfile: ./load-generator-python/Taskfile.yaml
+  #   dir: ./load-generator-python
