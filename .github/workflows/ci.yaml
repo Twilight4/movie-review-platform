@@ -6,7 +6,6 @@ on:
     tags: "[0-9]*.[0-9]*.[0-9]*"
     paths:
       - "app/**/*"  # only rebuild when app code changes
-      - ".github/workflows/*"
   workflow_dispatch:
 
 jobs:
@@ -61,7 +60,13 @@ jobs:
           IMAGE_TAG: ${{ needs.generate-image-tag.outputs.image_tag }}    # pull in that image tag from the previous job
         working-directory: .github/actions
         run: |
-          task build-push-container-image-multi-arch IMAGE_TAG=${IMAGE_TAG}
+          # Build and push images for staging tag for push to main or release a new tag
+          task build-push-container-image-multi-arch IMAGE_TAG=${IMAGE_TAG}-staging
+
+          # Build and push images for production tag only when new release tag is pushed
+          if [[ $GITHUB_REF == refs/tags/*.*.* ]]; then
+            task build-push-container-image-multi-arch NEW_TAG=${IMAGE_TAG}
+          fi
 
   update-tags:
     runs-on: ubuntu-latest
@@ -80,7 +85,7 @@ jobs:
           IMAGE_TAG: ${{ needs.generate-image-tag.outputs.image_tag }}
         run: |
           # Update staging tags for push to main or release a tag
-          task update-staging-image-tags NEW_TAG=${IMAGE_TAG}-staging            
+          task update-staging-image-tags NEW_TAG=${IMAGE_TAG}-staging
 
           # Update production tags only for release tags
           if [[ $GITHUB_REF == refs/tags/*.*.* ]]; then
