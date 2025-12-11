@@ -21,14 +21,13 @@
 This project outlines every stage of the DevOps lifecycle, the tools and how the pieces connect. Everything fully automated end-to-end.
 
 This project demonstrates a full production-grade DevOps setup using modern tooling:
-- [[Containerization][Containerization: Docker]]
-- [[Container Orchestration][Container Orchestration: Kubernetes + Helm]]
-- [[Cloud Infrastructure][Cloud Technologies (GCP): GKE, GCR, SQL DB]]
-- [[Cloud Infrastructure][Infrastructure provisioning: Terraform]]
-- [[CI/CD][CI/CD pipeline: Github Actions]]
-- [[GitOps][GitOps: ArgoCD]]
-- [[Monitoring and Logging][Monitoring and Logging: Prometheus, Grafana]]
-- [[Security]]
+- [[#Containerization][Containerization: Docker]]
+- [[#Container Orchestration][Container Orchestration: Kubernetes + Helm]]
+- [[#Cloud Infrastructure][Cloud Technologies (GCP): GKE, GCR, SQL DB]]
+- [[#Cloud Infrastructure][Infrastructure provisioning: Terraform]]
+- [[#CI/CD][CI/CD pipeline: Github Actions]]
+- [[#GitOps][GitOps: ArgoCD]]
+- [[#Monitoring and Logging][Monitoring and Logging: Prometheus, Grafana]]
 
 ** Full Project Directory Structure
 #+begin_src shell
