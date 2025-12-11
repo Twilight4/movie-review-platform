@@ -9,10 +9,10 @@
 - [[#deploy-cloud-infrastructure-wip][Deploy Cloud Infrastructure (WIP)]]
   - [[#prerequisites][Prerequisites]]
   - [[#terraform-resources][Terraform resources]]
-  - [[#authenticate-with-gcp][Authenticate with GCP]]
-  - [[#deploy-the-infrastructure-using-terraform][Deploy the infrastructure using terraform]]
-  - [[#verify-deployment][Verify deployment]]
-  - [[#clean-up][Clean up]]
+  - [[#1-authenticate-and-set-up-gcp][1. Authenticate and set up GCP]]
+  - [[#2-deploy-the-infrastructure-using-terraform][2. Deploy the infrastructure using terraform]]
+  - [[#3-verify-deployment][3. Verify deployment]]
+  - [[#4-clean-up][4. Clean up]]
 - [[#setup-gitops-argocd-wip][Setup GitOps (ArgoCD) (WIP)]]
 - [[#roadmap-wip][Roadmap (WIP)]]
 
@@ -272,19 +272,45 @@ Terraform will create resources in the following sequence:
 4. GKE cluster
 5. ...
 
-** Authenticate with GCP
+** 1. Authenticate and set up GCP
 #+begin_src shell
-# Authenticate and configure the gcloud CLI
-go-task gcp:01-init-cli
+# Authenticate to Google Cloud
+gcloud auth application-default login
+
+# Create a project
+gcloud projects create <PROJECT_NAME>
+# Change to another project
+gcloud config set project <PROJECT_ID>
+# List projects
+gcloud projects list
+
+# Set up billing account for your project
+## List billing accounts
+gcloud billing accounts list
+## Check if billing is enabled for a projec
+gcloud billing projects describe <PROJECT_ID>
+## Link a billing account to a project
+gcloud billing projects link <PROJECT_ID> --billing-account=<ACCOUNT_ID>
+
+# Enable the Google Compute Engine API for your project
+gcloud services enable compute.googleapis.com
+gcloud services enable cloudresourcemanager.googleapis.com
+
+# Set the default region and zone
+gcloud config set compute/region <GCP_REGION>
+gcloud config set compute/zone <GCP_ZONE>
+
+# Verify configuration
+gcloud config configurations list
 #+end_src
 
-** Deploy the infrastructure using terraform
+** 2. Deploy the infrastructure using terraform
 #+begin_src shell
-# Change directory
-cd terraform/
+# Select environment to use
+cd terraform/envs/staging
 
-# Initialize terraform for dev env
-terraform init -backend-config=backend-dev.tf            # backend-staging.tf for staging env
+# Initialize terraform for staging env (inside terraform/ directory)
+terraform init
 
 # Review the planned configuration
 terraform plan -out plan.tfplan
@@ -316,7 +342,7 @@ go-task gcp:08-connect-to-cluster
 go-task gcp:09-clean-up
 #+end_src
 
-** Verify deployment
+** 3. Verify deployment
 *** Using GCP Portal
 #+begin_src shell
 
@@ -327,7 +353,7 @@ go-task gcp:09-clean-up
 
 #+end_src
 
-** Clean up
+** 4. Clean up
 #+begin_src shell
 # Remove all terraform resources and avoid charges
 terraform destroy -var-file=dev.tfvars
