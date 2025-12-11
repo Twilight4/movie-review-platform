@@ -34,18 +34,19 @@ This project demonstrates a full production-grade DevOps setup using modern tool
 #+begin_src shell
 full-devops-cycle-project/
 ├── app/                → Application source code + Dockerfile
-│   ├── tests/
-│   │   └── movies.test.js
-│   ├── src/
-│   │    ├── routes/
-│   │    │   └── movies.js
-│   │    ├── db/
-│   │    │   └── DATABASE.js
-│   │    ├── server.js
-│   │    └── app.js
-│   ├── package.json
-│   ├── package-lock.json
-│   ├── Dockerfile
+│   ├── api-node/
+│   │   ├── tests/
+│   │   │   └── movies.test.js
+│   │   ├── src/
+│   │   │   ├── db/
+│   │   │   ├── routes/
+│   │   │   ├── app.js
+│   │   │   └── server.js
+│   │   ├── Taskfile.yaml
+│   │   ├── package.json
+│   │   ├── package-lock.json
+│   │   └── Dockerfile
+│   ├── Taskfile.yaml
 │   └── README.md
 │
 ├── k8s/                → Deployment manifests for multi-env setup
@@ -303,6 +304,7 @@ If you want to test the cluster locally, visit [[file:/k8s-cluster-local/README.
 go-task --list-all
 
 # Create the GCP network, subnet, firewall rules, and cluster in sequence and connect to the GKE cluster
+go-task gcp:01-init-cli
 go-task gcp:07-create-all
 go-task gcp:08-connect-to-cluster
 
