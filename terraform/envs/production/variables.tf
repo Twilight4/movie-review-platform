@@ -6,3 +6,7 @@ variable "region" {
   description = "Value of region for GCP project."
   type        = string
 }
+variable "zone" {
+  description = "Value of zone for GCP project."
+  type        = string
+}

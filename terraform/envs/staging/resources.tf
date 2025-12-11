@@ -40,5 +40,5 @@ resource "google_compute_firewall" "gke_internal" {
     ports    = ["0-65535"]
   }
 
-  source_ranges = ["10.10.0.0/16"]
+  source_ranges = ["10.10.0.0/20"]
 }
