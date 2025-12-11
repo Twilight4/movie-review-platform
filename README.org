@@ -112,14 +112,17 @@ full-devops-cycle-project/
 │  │   │   ├── variables.tf
 │  │   │   ├── terraform.tfvars
 │  │   │   ├── main.tf
+│  │       ├── resources.tf
 │  │   │   └── backend.tf
 │  │   └── production/
 │  │       ├── variables.tf
 │  │       ├── terraform.tfvars
 │  │       ├── main.tf
+│  │       ├── resources.tf
 │  │       └── backend.tf
 │  ├── versions.tf
 │  ├── providers.tf
+│  ├── delete-backend.sh
 │  └── backend.sh
 │
 ├── monitoring/         → Node + monitoring configuration
@@ -346,7 +349,7 @@ gcloud iam service-accounts list --project <PROJECT_ID>     # List all service a
 
 # NOTE: You don't need to authenticate gcloud using that key
 # Terraform will automatically pick up the exported 'GOOGLE_APPLICATION_CREDENTIALS' value
-#  and execute actions (init, plan, apply) as the SA account
+# and execute actions (init, plan, apply) as the SA account
 # Authenticate if you want to run gcloud commands as the SA for (debugging or verifying permissions)
 gcloud auth activate-service-account --key-file=<KEY_FILE>
 # Check which account is active (The * indicates the active account)
