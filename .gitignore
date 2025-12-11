@@ -1,4 +1,4 @@
-installation-and-setup/kind-config.yaml
+k8s-cluster-local/kind-config.yaml
 helm/charts/*.tgz
 terraform/.terraform.lock.hcl
 terraform/.terraform/
