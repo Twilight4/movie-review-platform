@@ -21,15 +21,14 @@
 This project outlines every stage of the DevOps lifecycle, the tools and how the pieces connect. Everything fully automated end-to-end.
 
 This project demonstrates a full production-grade DevOps setup using modern tooling:
-- Git / Linux / Networking
-- Containerization (Docker)
-- Container Orchestration (Kubernetes + Helm)
-- Cloud Technologies (GCP - GKE, GCR, SQL DB)
-- Infrastructure provisioning (Terraform)
-- CI/CD pipelines (Github Actions)
-- GitOps (ArgoCD)
-- Monitoring & Logging (Prometheus, Grafana)
-- Security
+- [[Containerization][Containerization: Docker]]
+- [[Container Orchestration][Container Orchestration: Kubernetes + Helm]]
+- [[Cloud Infrastructure][Cloud Technologies (GCP): GKE, GCR, SQL DB]]
+- [[Cloud Infrastructure][Infrastructure provisioning: Terraform]]
+- [[CI/CD][CI/CD pipeline: Github Actions]]
+- [[GitOps][GitOps: ArgoCD]]
+- [[Monitoring and Logging][Monitoring and Logging: Prometheus, Grafana]]
+- [[Security]]
 
 ** Full Project Directory Structure
 #+begin_src shell
@@ -216,7 +215,7 @@ full-devops-cycle-project/
 - Dockerfile
 - Image optimization
 
-*** Kubernetes
+*** Container Orchestration
 - Deployments, Services, Ingress
 - ConfigMaps and Secrets
 - Horizontal Pod Autoscaler (HPA)
@@ -322,7 +321,7 @@ Terraform needs a remote backend to store its state.
 ./backend.sh
 #+end_src
 
-Then update =global/backend.tf= to point at this container.
+Then update =backend.tf= to point at this container.
 #+begin_src tf
 resource_group_name  = "rg-tfstate"
 storage_account_name = "tfstatestorage4123"
