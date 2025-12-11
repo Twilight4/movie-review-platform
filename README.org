@@ -280,8 +280,8 @@ Terraform provisions GCP infrastructure:
 * Deploy Cloud Infrastructure (WIP)
 ** Terraform resources overview
 Terraform will create resources in the following sequence:
-1. GCP Network
-2. subnet
+1. VPC network
+2. VPC subnet
 3. firewall rules
 4. GKE cluster
 5. ...
@@ -364,6 +364,8 @@ Then update backend.tf's =bucket= argument to point to the =<BUCKET_NAME>=.
 #+begin_src shell
 # Select environment to use
 cd terraform/envs/staging
+
+# Change the values for terraform.tfvars to match your project_id, region, and zone
 
 # Initialize terraform for staging env (inside terraform/ directory)
 terraform init
@@ -451,20 +453,20 @@ Kubernetes:
   + implement GCP DB integration to node app
 
 Terraform - replicate in GCP
-- [ ] backend config
+- [X] backend config
+- [X] IAM roles and service accounts
+- [X] VPC
+  + [X] Subnet
+- [X] GKE cluster
 - [ ] EC2 instances
 - [ ] Cloud Storage bucket
-- [ ] VPC
-  + [ ] Subnet
 - [ ] Security groups + rules
 - [ ] Application load balancer
   + [ ] ALB target group + attachment
 - [ ] Route 53 zone + record
 - [ ] RDS instance
-- [ ] GKE cluster
 - [ ] GCP DB database
 - [ ] Artifact Registry (GCR)
-- [ ] IAM roles and service accounts
 
 GitOps:
 - [ ] Automated Kubernetes deployments with ArgoCD
