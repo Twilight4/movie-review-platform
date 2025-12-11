@@ -3,42 +3,42 @@ version: "3"
 tasks:
   install-template-staging:
     cmds:
-      - helm upgrade --install movie-review-helm-chart ./movie-review-helm-chart/ --values=./movie-review-helm-chart/values-staging.yaml --namespace staging --create-namespace
+      - helm upgrade --install api-node-helm-chart ./api-node-helm-chart/ --values=./api-node-helm-chart/values-staging.yaml --namespace staging --create-namespace
     desc: "Render chart yaml with staging values file"
     
   install-template-production:
     cmds:
-      - helm upgrade --install movie-review-helm-chart ./movie-review-helm-chart/ --values=./movie-review-helm-chart/values.yaml
+      - helm upgrade --install api-node-helm-chart ./api-node-helm-chart/ --values=./api-node-helm-chart/values.yaml
     desc: "Render chart yaml with production/default values file"
     
   uninstall-template-staging:
     cmds:
-      - helm uninstall movie-review-helm-chart --namespace staging
+      - helm uninstall api-node-helm-chart --namespace staging
     desc: "Render chart yaml with staging values file"
     
   uninstall-template-production:
     cmds:
-      - helm uninstall movie-review-helm-chart
+      - helm uninstall api-node-helm-chart
     desc: "Render chart yaml with production/default values file"
 
   render-template-staging:
     cmds:
-      - helm template ./movie-review-helm-chart --values=./movie-review-helm-chart/values-staging.yaml  | yq
+      - helm template ./api-node-helm-chart --values=./api-node-helm-chart/values-staging.yaml  | yq
     desc: "Render chart yaml with staging values file"
 
   render-template-production:
     cmds:
-      - helm template ./movie-review-helm-chart --values=./movie-review-helm-chart/values.yaml  | yq
+      - helm template ./api-node-helm-chart --values=./api-node-helm-chart/values.yaml  | yq
     desc: "Render chart yaml with default/production values file"
 
   package:
     cmds:
-      - helm package ./movie-review-helm-chart
+      - helm package ./api-node-helm-chart
     desc: "Bundle helm chart as a .tgz OCI image"
 
   push:
     cmds:
-      - helm push movie-review-helm-chart-0.1.0.tgz oci://registry-1.docker.io/twilight4
+      - helm push api-node-helm-chart-0.1.0.tgz oci://registry-1.docker.io/twilight4
     desc: "Push the helm chart to an oci registry"
 
   build-push:
