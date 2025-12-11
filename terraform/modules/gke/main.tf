@@ -13,7 +13,7 @@ resource "google_container_cluster" "primary" {
   subnetwork = var.subnetwork
 
   remove_default_node_pool = true
-  initial_node_count       = 1
+  initial_node_count       = 2
 
   # allocate Pod + Service IP ranges automatically (Autopilot-style IP) via VPC-native routing
   ip_allocation_policy {}
