@@ -1,5 +1,7 @@
 k8s-cluster-local/kind-config.yaml
 helm/charts/*.tgz
-terraform/.terraform.lock.hcl
-terraform/.terraform/
+terraform/envs/staging/.terraform.lock.hcl
+terraform/envs/staging/.terraform/
+terraform/envs/production/.terraform.lock.hcl
+terraform/envs/production/.terraform/
 terraform/terraform.tfplan
