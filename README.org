@@ -112,16 +112,18 @@ full-devops-cycle-project/
 │  │   │   ├── variables.tf
 │  │   │   ├── terraform.tfvars
 │  │   │   ├── main.tf
-│  │       ├── resources.tf
+│  │   │   ├── providers.tf
+│  │   │   ├── versions.tf
+│  │   │   ├── resources.tf
 │  │   │   └── backend.tf
 │  │   └── production/
 │  │       ├── variables.tf
 │  │       ├── terraform.tfvars
 │  │       ├── main.tf
+│  │       ├── providers.tf
+│  │       ├── versions.tf
 │  │       ├── resources.tf
 │  │       └── backend.tf
-│  ├── versions.tf
-│  ├── providers.tf
 │  ├── delete-backend.sh
 │  └── backend.sh
 │
