@@ -1,6 +1,8 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 
+namespace: production
+
 resources:
   - ../../../deploy-services/movie-api/manifests/
   - ../../../deploy-services/movie-api/namespaces/
@@ -8,6 +10,7 @@ resources:
 patches:
   - path: ./patches/Deployment.yaml
   - path: ./patches/Ingress.yaml
+  - path: ./patches/Application.yaml
 
 images:
   - name: ghcr.io/twilight4/api-node

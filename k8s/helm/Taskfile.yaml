@@ -71,7 +71,7 @@ tasks:
     desc: "Render chart yaml with staging values file"
   install-production:
     cmds:
-      - helm upgrade --install api-node-helm-chart ./api-node-helm-chart/ --values=./api-node-helm-chart/values.yaml
+      - helm upgrade --install api-node-helm-chart ./api-node-helm-chart/ --values=./api-node-helm-chart/values.yaml --namespace production --create-namespace
     desc: "Install chart with production values"
   uninstall-staging:
     cmds:

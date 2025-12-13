@@ -32,5 +32,6 @@ tasks:
 
   deploy-production:
     cmds:
+      - kubectl create namespace production
       - kubectl apply -k ../overlays/production
     desc: "Deploy production configuration"
