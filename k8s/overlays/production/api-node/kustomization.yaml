@@ -7,6 +7,7 @@ resources:
 
 patches:
   - path: ./patches/Deployment.yaml
+  - path: ./patches/Ingress.yaml
 
 images:
   - name: ghcr.io/twilight4/api-node
