@@ -12,6 +12,7 @@ patches:
   - path: ./patches/Deployment.yaml
   - path: ./patches/Configmap.yaml
   - path: ./patches/Hpa.yaml
+  - path: ./patches/Ingress.yaml
 
 labels:
   - pairs:
