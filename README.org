@@ -51,24 +51,24 @@ full-devops-cycle-project/
 ├── k8s/                → Deployment manifests for multi-env setup
 │   ├── overlays/
 │   │   ├── staging/
-│   │   │   ├── movie-api/
+│   │   │   ├── api-node/
 │   │   │   │   ├── patches/
 │   │   │   │   └── kustomization.yaml
 │   │   │   └── kustomization.yaml
 │   │   └── production/
-│   │       ├── movie-api/
+│   │       ├── api-node/
 │   │       │   ├── patches/
 │   │       │   └── kustomization.yaml
 │   │       └── kustomization.yaml
 │   ├── helm/
-│   │   ├── movie-review-helm-chart/
+│   │   ├── api-node-helm-chart/
 │   │   │   ├── templates/
 │   │   │   ├── values.yaml
 │   │   │   ├── values-staging.yaml
 │   │   │   └── Chart.yaml
 │   │   └── Taskfile.yaml
 │   ├── deploy-services/
-│   │   ├── movie-api/
+│   │   ├── api-node/
 │   │   │   ├── namespaces/
 │   │   │   ├── manifests/
 │   │   │   ├── hostname-staging.yaml
@@ -82,24 +82,6 @@ full-devops-cycle-project/
 │   ├── Taskfile.yaml
 │   ├── README.org
 │   └── kind-config.yaml.TEMPLATE
-│
-├── helm/charts/            → Helm chart for deployment
-│   └── movie-review/
-│       ├── templates/
-│       │   ├── movie-api-service.yaml
-│       │   ├── movie-api-hpa.yaml
-│       │   ├── movie-api-deployment.yaml
-│       │   ├── kustomization.yaml
-│       │   ├── ingress.yaml
-│       │   ├── DATABASE-service.yaml
-│       │   ├── secret.yaml
-│       │   ├── netpol.yaml
-│       │   ├── ingress-nginx-namespace.yaml
-│       │   └── configmap.yaml
-│       ├── values.yaml
-│       ├── values-dev.yaml
-│       ├── values-staging.yaml
-│       └── Chart.yaml
 │
 ├── terraform/          → Infrastructure as Code (GCP)
 │  ├── modules/
@@ -127,15 +109,28 @@ full-devops-cycle-project/
 │  ├── delete-backend.sh
 │  └── backend.sh
 │
+├── cicd/            → GitOps - ArgoCD configuration
+│   ├── github-actions/
+│   │   └── Taskfile.yaml
+│   ├── argocd-gitops/
+│   │   ├── namespaces/
+│   │   │   └── argocd.yaml
+│   │   ├── clusters/
+│   │   │   ├── staging/
+│   │   │   │   └── application.yaml
+│   │   │   └── production/
+│   │   │       └── application.yaml
+│   │   └── Taskfile.yaml
+│   └── Taskfile.yaml
+│
 ├── monitoring/         → Node + monitoring configuration
 │   ├── grafana-dashboards/
 │   └── prometheus/
 │
 ├── .github/            → CI/CD pipelines
-│   ├── workflows/
-│   │   └── ci.yaml
-│   └── actions/
-│       └── Taskfile.yaml
+│   └── workflows/
+│       ├── ci.yaml
+│       └── cd.yaml
 │
 ├── Taskfile.yaml
 └── README.org
