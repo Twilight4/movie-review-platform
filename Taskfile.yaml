@@ -26,7 +26,9 @@ tasks:
           iam.googleapis.com \
           secretmanager.googleapis.com \
           servicemanagement.googleapis.com \
-          serviceusage.googleapis.com
+          serviceusage.googleapis.com \
+          monitoring.googleapis.com \
+          logging.googleapis.com
     desc: "Enable necessary APIs"
 
   gcp:03-set-region-and-zone:
