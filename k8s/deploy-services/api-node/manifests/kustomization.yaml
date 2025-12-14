@@ -5,7 +5,7 @@ resources:
   - movie-api-deployment.yaml
   - movie-api-service.yaml
   - movie-api-hpa.yaml
-#  - ingress.yaml
+  - ingress.yaml
   - configmap.yaml
 #  - DB-service.yaml
 #  - secret.yaml
