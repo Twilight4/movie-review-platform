@@ -11,7 +11,7 @@
   - [[#terraform-resources-overview][Terraform resources overview]]
   - [[#1-authenticate-and-set-up-gcp][1. Authenticate and set up GCP]]
   - [[#2-create-terraform-state-backend][2. Create Terraform State Backend]]
-  - [[#3-deploy-the-cluster][3. Deploy the cluster]]
+  - [[#3-deploy-the-cluster-on-gkelocally][3. Deploy the cluster on GKE/locally]]
   - [[#4-apply-manifest-files-into-the-cluster][4. Apply manifest files into the cluster]]
   - [[#5-verify-deployment][5. Verify deployment]]
   - [[#6-clean-up-infrastructure][6. Clean up infrastructure]]
@@ -358,7 +358,7 @@ gcloud auth list
 
 Then update backend.tf's =bucket= argument to point to the =<BUCKET_NAME>=.
 
-** 3. Deploy the cluster
+** 3. Deploy the cluster on GKE/locally
 *** Local Systems
 **** Minikube
 #+begin_src shell
@@ -406,7 +406,7 @@ xh localhost:3000/health
 # Expected output: {"status":"ok"}
 #+end_src
 
-*** Using Terraform
+*** Deploy on GKE using Terraform
 #+begin_src shell
 # Select environment to use
 cd terraform/envs/staging
@@ -428,7 +428,7 @@ go-task gcp:08-connect-to-cluster
 kubectx
 #+end_src
 
-*** Google Kubernetes Engine (GKE)
+*** Deploy on GKE using =google-cloud-cli=
 #+begin_src shell
 # View task commands from root directory
 go-task --list-all
@@ -485,6 +485,8 @@ go-task uninstall-template-production
 #+end_src
 
 *** Using GitOps Setup (ArgoCD)
+If you're deploying ArgoCD with minikube/kind, change the server in =application.yaml= to =https://kubernetes.default.svc=.
+
 #+begin_src shell
 # Navigate to gitops directory
 cd cicd/
