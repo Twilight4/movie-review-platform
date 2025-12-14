@@ -8,7 +8,7 @@ spec:
   source:
     repoURL: https://github.com/Twilight4/movie-review-platform.git
     targetRevision: HEAD
-    path: k8s/deploy-services/api-node
+    path: k8s/deploy-services/api-node/manifests
   destination:
     server: https://kubernetes.default.svc
     namespace: staging
