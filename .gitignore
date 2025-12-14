@@ -4,4 +4,5 @@ terraform/envs/staging/.terraform.lock.hcl
 terraform/envs/staging/.terraform/
 terraform/envs/production/.terraform.lock.hcl
 terraform/envs/production/.terraform/
-terraform/terraform.tfplan
+terraform/envs/staging/terraform.tfplan
+terraform/envs/production/terraform.tfplan
