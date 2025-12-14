@@ -8,7 +8,7 @@ resources:
 
 patches:
   - path: ./patches/Deployment.yaml
-#  - path: ./patches/Ingress.yaml
+#  - path: ./patches/Ingress.yaml     # I don't have a domain
 
 images:
   - name: ghcr.io/twilight4/api-node
