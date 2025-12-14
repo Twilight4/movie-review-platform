@@ -10,5 +10,5 @@ module "gke" {
   node_count        = 1
   node_machine_type = "e2-small"
   disk_type         = "pd-standard"
-  disk_size_gb      = 10
+  disk_size_gb      = 30
 }

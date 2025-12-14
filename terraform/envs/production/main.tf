@@ -6,6 +6,8 @@ module "gke" {
 
   network           = google_compute_network.gke_vpc.id
   subnetwork        = google_compute_subnetwork.gke_subnet.id
-  node_count        = 2
-  node_machine_type = "e2-medium"
+  node_count        = 1
+  node_machine_type = "e2-small"
+  disk_type         = "pd-standard"
+  disk_size_gb      = 30
 }
