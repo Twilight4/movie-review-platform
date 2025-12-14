@@ -1,9 +1,9 @@
 version: "3"
 
 env:
-  CLUSTER_NAME: movie-review-platform
-  GCP_REGION: us-central1
-  GCP_ZONE: us-central1-a
+  CLUSTER_NAME: stg-gke
+  GCP_REGION: europe-central2
+  GCP_ZONE: europe-central2-c
   # Set default gum style options
   BORDER: double
   BORDER_FOREGROUND: "212"
