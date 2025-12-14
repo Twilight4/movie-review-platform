@@ -18,7 +18,7 @@ spec:
       terminationGracePeriodSeconds: 20
       containers:
       - name: movie-api
-        image: ghcr.io/twilight4/api-node
+        image: ghcr.io/twilight4/api-node:{{ apiNode.version }}
         imagePullPolicy: Always
         ports:
         - containerPort: 3000
