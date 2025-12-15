@@ -84,6 +84,9 @@ tasks:
       - echo "Region         : $GCP_REGION"
       - echo "Zone           : $GCP_ZONE"
 
+      - echo "\n===== CLUSTER INFO  ====="
+      - kubectl cluster-info
+
       - echo "\n===== GKE CLUSTER ====="
       - gcloud container clusters list --region "$GCP_REGION"
 
@@ -127,7 +130,18 @@ tasks:
 
       - echo "\n===== VERIFY COMPLETE ====="
 
-  gcp:10-clean-up:
+  gcp:10-wait-for-ingress:
+    desc: Wait until GCE Ingress has an EXTERNAL-IP
+    cmds:
+      - |
+        until kubectl get ingress -A \
+          -o jsonpath='{.items[*].status.loadBalancer.ingress[0].ip}' | grep -q .; do
+          echo "Waiting for Ingress external IP..."
+          sleep 10
+        done
+        echo "Ingress is ready ✅"
+
+  gcp:11-clean-up:
     cmds:
       - gcloud container clusters delete ${CLUSTER_NAME} --zone ${GCP_ZONE} --quiet
       - gcloud compute networks subnets delete subnet-1 --region=${GCP_REGION} --quiet
