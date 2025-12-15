@@ -73,14 +73,66 @@ tasks:
       - task: gcp:04-create-vpc
       - task: gcp:05-create-subnet
       - task: gcp:06-create-cluster
-    desc: Create the GCP network, subnet, firewall rules, and cluster in sequence
+    desc: "Create the GCP network, subnet, firewall rules, and cluster in sequence"
 
-  gcp:09-clean-up:
+  gcp:09-verify-all:
+    desc: "Sanity-check all GCP & GKE resources for the active environment"
+    cmds:
+      - echo "===== ACTIVE CONTEXT ====="
+      - echo "Project        : $(gcloud config get-value project)"
+      - echo "Cluster        : $CLUSTER_NAME"
+      - echo "Region         : $GCP_REGION"
+      - echo "Zone           : $GCP_ZONE"
+
+      - echo "\n===== GKE CLUSTER ====="
+      - gcloud container clusters list --region "$GCP_REGION"
+
+      - echo "\n===== GKE NODE POOLS ====="
+      - gcloud container node-pools list \
+          --cluster "$CLUSTER_NAME" \
+          --region "$GCP_REGION"
+
+      - echo "\n===== KUBERNETES NODES ====="
+      - kubectl get nodes -o wide
+
+      - echo "\n===== COMPUTE VM INSTANCES ====="
+      - gcloud compute instances list --zones "$GCP_ZONE"
+
+      - echo "\n===== COMPUTE DISKS ====="
+      - gcloud compute disks list
+
+      - echo "\n===== CLOUD STORAGE BUCKETS ====="
+      - gcloud storage buckets list || gsutil ls
+
+      - echo "\n===== VPC NETWORKS ====="
+      - gcloud compute networks list
+
+      - echo "\n===== SUBNETWORKS ====="
+      - gcloud compute networks subnets list --regions "$GCP_REGION"
+
+      - echo "\n===== EXTERNAL IP ADDRESSES ====="
+      - gcloud compute addresses list --regions "$GCP_REGION"
+
+      - echo "\n===== FIREWALL RULES ====="
+      - gcloud compute firewall-rules list
+
+      - echo "\n===== ROUTES ====="
+      - gcloud compute routes list
+
+      - echo "\n===== SERVICE ACCOUNTS ====="
+      - gcloud iam service-accounts list
+
+      - echo "\n===== INGRESS ====="
+      - kubectl get ingress -A
+
+      - echo "\n===== VERIFY COMPLETE ====="
+
+  gcp:10-clean-up:
     cmds:
       - gcloud container clusters delete ${CLUSTER_NAME} --zone ${GCP_ZONE} --quiet
       - gcloud compute networks subnets delete subnet-1 --region=${GCP_REGION} --quiet
       - gcloud compute networks delete ${CLUSTER_NAME} --quiet
-    desc: Delete the GCP network, subnet, firewall rules, and cluster in reverse sequence
+    desc: "Delete the GCP network, subnet, firewall rules, and cluster in reverse sequence"
 
   gcp:08-connect-to-cluster:
     cmds:
