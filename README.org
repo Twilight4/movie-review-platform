@@ -270,15 +270,14 @@ Terraform provisions GCP infrastructure:
 
 ** Infrastructure & Deployment Model
 Important note for users testing this configuration:
-- All GKE clusters and Kubernetes manifests are **fully managed by the CD pipeline**
-- Manual deployment is **NOT required** for normal operation ([[#3-manual-cluster-deployment-cd-managed-in-production][Step 3]] and [[#4-manual-application-of-manifests-cd-managed-in-production][Step 4]])
+- All GKE clusters and Kubernetes manifests are *fully managed by the CD pipeline*
+- Manual deployment is *NOT required* for normal operation ([[#3-manual-cluster-deployment-cd-managed-in-production][Step 3]] and [[#4-manual-application-of-manifests-cd-managed-in-production][Step 4]])
 - The instructions below exist for:
   - local development / learning
   - debugging
   - reproducing CI/CD behavior manually
 
-The CD pipeline is the **source of truth**.
-Manual steps should be treated as **optional**.
+The CD pipeline is the *source of truth*. Manual steps should be treated as *optional*.
 
 * Deploy Cloud Infrastructure (WIP)
 ** Terraform resources overview
@@ -372,9 +371,7 @@ Then update backend.tf's =bucket= argument to point to the =<BUCKET_NAME>=.
 
 ** 3. Manual cluster deployment (CD-managed in production)
 WARNING:
-If the GKE cluster is deleted manually via the GCP Console or =gcloud=, Terraform state will drift.
-
-If you manually delete the cluster, run:
+If the GKE cluster is deleted manually via the GCP Console or =gcloud=, Terraform state will drift. If you manually delete the cluster, run:
 - =terraform state rm google_container_cluster.<name>=
 
 *** Local Systems
@@ -427,21 +424,18 @@ xh localhost:3000/health
 *** Deploy on GKE using Terraform
 #+begin_src shell
 # Select environment to use
-cd terraform/envs/staging
-
+cd terraform/envs
 # Change the values for terraform.tfvars to match your project_id, region, and zone
 
-# Initialize terraform for staging env (inside terraform/ directory)
-go-task 01-init-infra
-terraform init
+# Initialize terraform for production env
+go-task 01-init-production
 
-# Review the planned configuration
-go-task 02-plan-infra
-terraform plan -out plan.tfplan
+# Validate and review the planned configuration
+go-task 02-validate-production
+go-task 03-plan-production
 
 # Apply the terraform configuration
-go-task 03-apply-infra
-terraform apply plan.tfplan
+go-task 04-apply-production
 
 # Connect to the cluster
 go-task gcp:08-connect-to-cluster
@@ -656,7 +650,8 @@ xh get http://<CLUSTER_IP>/health
 ** 6. Clean up infrastructure
 #+begin_src shell
 # Remove all terraform resources and avoid charges
-terraform destroy
+go-task 05-destroy-production
+go-task 07-clean-plan-production
 
 # If you created cluster manually using gcloud, to destroy the cluster run
 go-task gcp:09-clean-up
