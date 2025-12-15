@@ -269,7 +269,7 @@ Terraform provisions GCP infrastructure:
 - google-cloud-cli-component-gke-gcloud-auth-plugin
 
 ** Infrastructure & Deployment Model
-Important note for users testing this configuration:
+*** Important note for users testing this configuration
 - All GKE clusters and Kubernetes manifests are *fully managed by the CD pipeline*
 - Manual deployment is *NOT required* for normal operation ([[#3-manual-cluster-deployment-cd-managed-in-production][Step 3]] and [[#4-manual-application-of-manifests-cd-managed-in-production][Step 4]])
 - The instructions below exist for:
@@ -278,6 +278,19 @@ Important note for users testing this configuration:
   - reproducing CI/CD behavior manually
 
 The CD pipeline is the *source of truth*. Manual steps should be treated as *optional*.
+
+*** CI/CD Pipeline Prerequisites
+If you want to use the **pre-configured CI/CD pipeline** in this repository, you must define the following *GitHub repository variables and secrets* before running it:
+
+*Secrets*:
+- =TERRAFORM_SA_KEY= – Service Account key used by Terraform
+- =GHCR_TOKEN= – Token with permission to push/pull images from GHCR
+- =PR_ACTION= – Token used by the PR automation workflow
+
+*Repository Variables*:
+- =GH_USERNAME= – GitHub username associated with the GHCR account
+
+Without these values configured, the CI/CD pipeline will fail.
 
 * Deploy Cloud Infrastructure (WIP)
 ** Terraform resources overview
@@ -702,7 +715,6 @@ gcp-nuke run \
   --project-id <PROJECT_NAME> \
   --no-dry-run
 #+end_src
-
 
 * Roadmap (WIP)
 Docker application:
