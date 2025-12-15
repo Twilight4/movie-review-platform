@@ -427,6 +427,9 @@ xh localhost:3000/health
 cd terraform/envs
 # Change the values for terraform.tfvars to match your project_id, region, and zone
 
+# View task commands from root directory
+go-task --list-all
+
 # Initialize terraform for production env
 go-task 01-init-production
 
@@ -475,13 +478,13 @@ cd k8s/deploy-services
 go-task --list-all
 
 # Render production env
-go-task render-production
+go-task 01-render-production
 
 # Apply production env
-go-task deploy-production
+go-task 02-deploy-production
 
 # To delete production env
-go-task delete-production
+go-task 03-delete-production
 #+end_src
 
 *** Using helm
@@ -504,7 +507,6 @@ go-task uninstall-template-production
 #+end_src
 
 *** Using GitOps Setup (ArgoCD)
-If you're deploying ArgoCD with minikube/kind, change the server in =application.yaml= to =https://kubernetes.default.svc=.
 
 #+begin_src shell
 # Navigate to gitops directory
@@ -514,16 +516,16 @@ cd cicd/
 go-task --list-all
 
 # Access argocd UI via port-forwarding the argocd-server
-go-task port-forward-webui
+go-task 01-port-forward-webui
 
 # The login is 'admin', to retrieve the password then login to the web UI
-go-task get-webui-password
+go-task 02-get-webui-password
 
-# Deploy staging cluster
-go-task deploy-staging-cluster 
+# Deploy production cluster
+go-task 03-deploy-production-cluster 
 
-# Delete staging cluster
-go-task delete-staging-cluster
+# Delete production cluster
+go-task 04-delete-production-cluster
 #+end_src
 
 ** 5. Verify deployment
