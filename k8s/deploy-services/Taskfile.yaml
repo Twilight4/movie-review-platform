@@ -1,37 +1,37 @@
 version: "3"
 
 tasks:
-  render-staging:
+  01-render-staging:
     cmds:
       - kubectl kustomize ../overlays/staging | yq
     desc: "Render resource yaml with staging values"
 
-  render-production:
+  01-render-production:
     cmds:
       - kubectl kustomize ../overlays/production | yq
     desc: "Render resource yaml with production values"
 
-  delete-staging:
+  03-delete-staging:
     cmds:
       - kubectl delete -k ../overlays/staging
       - kubectl delete namespace staging
       - kubectl delete namespace ingress-nginx
     desc: "Render resource yaml with staging values"
 
-  delete-production:
+  03-delete-production:
     cmds:
       - kubectl delete -k ../overlays/production
       - kubectl delete namespace ingress-nginx
     desc: "Render resource yaml with production values"
 
-  deploy-staging:
+  02-deploy-staging:
     cmds:
       - kubectl apply -f api-node/namespaces/
       - kubectl create namespace staging
       - kubectl apply -k ../overlays/staging
     desc: "Deploy staging configuration"
 
-  deploy-production:
+  02-deploy-production:
     cmds:
       - kubectl apply -f api-node/namespaces/
       - kubectl create namespace production

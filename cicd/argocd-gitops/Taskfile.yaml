@@ -1,7 +1,7 @@
 version: "3"
 
 tasks:
-  deploy-staging-cluster:
+  03-deploy-staging-cluster:
     desc: "Deploy argocd gitops staging target"
     cmds:
       - kubectl apply -f namespaces/argocd.yaml
@@ -10,7 +10,7 @@ tasks:
       - kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
       - kubectl apply -f clusters/staging/application.yaml
 
-  deploy-production-cluster:
+  03-deploy-production-cluster:
     desc: "Deploy argocd gitops production target"
     cmds:
       - kubectl apply -f namespaces/argocd.yaml
@@ -19,7 +19,7 @@ tasks:
       - kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
       - kubectl apply -f clusters/production/application.yaml
       
-  delete-staging-cluster:
+  04-delete-staging-cluster:
     desc: "Deploy argocd gitops staging target"
     cmds:
       - kubectl delete -f clusters/staging/application.yaml
@@ -27,7 +27,7 @@ tasks:
       - kubectl delete namespace staging
       - kubectl delete namespace ingress-nginx
 
-  delete-production-cluster:
+  04-delete-production-cluster:
     desc: "Deploy argocd gitops production target"
     cmds:
       - kubectl delete -f clusters/production/application.yaml
@@ -35,12 +35,12 @@ tasks:
       - kubectl delete namespace production
       - kubectl delete namespace ingress-nginx
 
-  get-webui-password:
+  02-get-webui-password:
     desc: "Get password for argocd web ui admin user"
     cmds:
       - kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath='{.data.password}' | base64 --decode
 
-  port-forward-webui:
+  01-port-forward-webui:
     desc: "Port forward web UI to localhost on port 8080"
     cmds:
       - kubectl port-forward svc/argocd-server -n argocd 8080:443
