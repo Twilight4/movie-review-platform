@@ -4,6 +4,7 @@ env:
   CLUSTER_NAME: stg-gke
   GCP_REGION: europe-central2
   GCP_ZONE: europe-central2-c
+  PROJECT_NAME: movie-review-platform8451
   # Set default gum style options
   BORDER: double
   BORDER_FOREGROUND: "212"
@@ -53,8 +54,6 @@ tasks:
 
   gcp:06-create-cluster:
     desc: "Create GKE cluster"
-    vars:
-      GCP_PROJECT_ID: movie-review-platform8451
     cmds:
       - |
         gcloud container clusters create ${CLUSTER_NAME} \
@@ -64,7 +63,7 @@ tasks:
           --machine-type e2-standard-2 \
           --num-nodes 2 \
           --gateway-api=standard \
-          --workload-pool={{.GCP_PROJECT_ID}}.svc.id.goog
+          --workload-pool=${PROJECT_NAME}.svc.id.goog
 
   gcp:07-create-all:
     cmds:
@@ -78,11 +77,12 @@ tasks:
   gcp:09-verify-all:
     desc: "Sanity-check all GCP & GKE resources for the active environment"
     cmds:
-      - echo "===== ACTIVE CONTEXT ====="
-      - echo "Project        : $(gcloud config get-value project)"
-      - echo "Cluster        : $CLUSTER_NAME"
-      - echo "Region         : $GCP_REGION"
-      - echo "Zone           : $GCP_ZONE"
+      - |
+         echo "===== ACTIVE CONTEXT ====="
+         echo "Project        : $PROJECT_NAME"
+         echo "Cluster        : $CLUSTER_NAME"
+         echo "Region         : $GCP_REGION"
+         echo "Zone           : $GCP_ZONE"
 
       - echo "\n===== CLUSTER INFO  ====="
       - kubectl cluster-info
