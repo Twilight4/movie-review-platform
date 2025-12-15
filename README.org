@@ -464,6 +464,9 @@ go-task gcp:08-connect-to-cluster
 go-task gcp:08-connect-to-cluster
 # Select cluster to use with kubectl commands
 kubectx
+
+# Verify created resoruces
+go-task gcp:09-verify-all
 #+end_src
 
 ** 4. Manual application of manifests (CD-managed in production)
@@ -565,6 +568,11 @@ Enabled APIs:
 - Navigate to APIs & Services → Dashboard
 
 *** Using =google-cloud-cli=
+To quickly check most relevant created resources, run task:
+#+begin_src shell
+go-task gcp:09-verify-all
+#+end_src
+
 **** Kubernetes Engine: Clusters / Node Pools
 #+begin_src shell
 # Check if the cluster is running
@@ -578,6 +586,12 @@ gcloud container node-pools list --cluster <CLUSTER_NAME> --region <REGION>
 
 # Get info about a specific node pool
 gcloud container node-pools describe <NODE_POOL_NAME> --cluster <CLUSTER_NAME> --region <REGION>
+
+# Kubernetes nodes
+kubectl get nodes -o wide
+
+# Kubernetes ingress
+kubectl get ingress -A
 #+end_src
 
 **** Compute Engine → Instances / Disks / Networks
@@ -594,7 +608,7 @@ gcloud compute disks list
 **** Cloud Storage → Buckets
 #+begin_src shell
 # List all buckets in a project
-gcloud storage buckets list
+gcloud storage buckets list || gsutil ls
 # or for older versions
 gcloud alpha storage buckets list
 
