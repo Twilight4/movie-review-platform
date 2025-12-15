@@ -7,12 +7,13 @@
   - [[#full-architecture-diagram][Full Architecture Diagram]]
   - [[#project-scope--technologies-used][Project Scope / Technologies Used]]
   - [[#prerequisites][Prerequisites]]
+  - [[#infrastructure--deployment-model][Infrastructure & Deployment Model]]
 - [[#deploy-cloud-infrastructure-wip][Deploy Cloud Infrastructure (WIP)]]
   - [[#terraform-resources-overview][Terraform resources overview]]
   - [[#1-authenticate-and-set-up-gcp][1. Authenticate and set up GCP]]
   - [[#2-create-terraform-state-backend][2. Create Terraform State Backend]]
-  - [[#3-deploy-the-cluster-on-gkelocally][3. Deploy the cluster on GKE/locally]]
-  - [[#4-apply-manifest-files-into-the-cluster][4. Apply manifest files into the cluster]]
+  - [[#3-manual-cluster-deployment-cd-managed-in-production][3. Manual cluster deployment (CD-managed in production)]]
+  - [[#4-manual-application-of-manifests-cd-managed-in-production][4. Manual application of manifests (CD-managed in production)]]
   - [[#5-verify-deployment][5. Verify deployment]]
   - [[#6-clean-up-infrastructure][6. Clean up infrastructure]]
 - [[#roadmap-wip][Roadmap (WIP)]]
@@ -267,6 +268,17 @@ Terraform provisions GCP infrastructure:
 - google-cloud-cli-gsutil
 - google-cloud-cli-component-gke-gcloud-auth-plugin
 
+** Infrastructure & Deployment Model
+Important note for users testing this configuration:
+- All GKE clusters and Kubernetes manifests are **fully managed by the CD pipeline**
+- Manual deployment is **NOT required** for normal operation ([[#3-manual-cluster-deployment-cd-managed-in-production][Step 3]] and [[#4-manual-application-of-manifests-cd-managed-in-production][Step 4]])
+- The instructions below exist for:
+  - local development / learning
+  - debugging
+  - reproducing CI/CD behavior manually
+
+The CD pipeline is the **source of truth**.
+Manual steps should be treated as **optional**.
 
 * Deploy Cloud Infrastructure (WIP)
 ** Terraform resources overview
@@ -358,7 +370,13 @@ gcloud auth list
 
 Then update backend.tf's =bucket= argument to point to the =<BUCKET_NAME>=.
 
-** 3. Deploy the cluster on GKE/locally
+** 3. Manual cluster deployment (CD-managed in production)
+WARNING:
+If the GKE cluster is deleted manually via the GCP Console or =gcloud=, Terraform state will drift.
+
+If you manually delete the cluster, run:
+- =terraform state rm google_container_cluster.<name>=
+
 *** Local Systems
 **** Minikube
 #+begin_src shell
@@ -414,12 +432,15 @@ cd terraform/envs/staging
 # Change the values for terraform.tfvars to match your project_id, region, and zone
 
 # Initialize terraform for staging env (inside terraform/ directory)
+go-task 01-init-infra
 terraform init
 
 # Review the planned configuration
+go-task 02-plan-infra
 terraform plan -out plan.tfplan
 
 # Apply the terraform configuration
+go-task 03-apply-infra
 terraform apply plan.tfplan
 
 # Connect to the cluster
@@ -448,7 +469,11 @@ go-task gcp:08-connect-to-cluster
 kubectx
 #+end_src
 
-** 4. Apply manifest files into the cluster
+** 4. Manual application of manifests (CD-managed in production)
+NOTE:
+In production, manifests are applied automatically via GitOps (ArgoCD).
+The following methods are provided for local testing and manual validation only.
+
 *** Using kubectl
 #+begin_src shell
 # Navigate to Taskfile.yaml directory
@@ -631,7 +656,7 @@ xh get http://<CLUSTER_IP>/health
 ** 6. Clean up infrastructure
 #+begin_src shell
 # Remove all terraform resources and avoid charges
-terraform destroy -var-file=dev.tfvars
+terraform destroy
 
 # If you created cluster manually using gcloud, to destroy the cluster run
 go-task gcp:09-clean-up
