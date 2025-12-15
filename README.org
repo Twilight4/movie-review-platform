@@ -8,7 +8,7 @@
   - [[#project-scope--technologies-used][Project Scope / Technologies Used]]
   - [[#prerequisites][Prerequisites]]
   - [[#infrastructure--deployment-model][Infrastructure & Deployment Model]]
-- [[#deploy-cloud-infrastructure-wip][Deploy Cloud Infrastructure (WIP)]]
+- [[#deploy-cloud-infrastructure][Deploy Cloud Infrastructure]]
   - [[#terraform-resources-overview][Terraform resources overview]]
   - [[#1-authenticate-and-set-up-gcp][1. Authenticate and set up GCP]]
   - [[#2-create-terraform-state-backend][2. Create Terraform State Backend]]
@@ -16,7 +16,7 @@
   - [[#4-manual-application-of-manifests-cd-managed-in-production][4. Manual application of manifests (CD-managed in production)]]
   - [[#5-verify-deployment][5. Verify deployment]]
   - [[#6-clean-up-infrastructure][6. Clean up infrastructure]]
-- [[#roadmap-wip][Roadmap (WIP)]]
+- [[#roadmap][Roadmap]]
 
 * Project Overview
 This project outlines every stage of the DevOps lifecycle, the tools and how the pieces connect. Everything fully automated end-to-end.
@@ -99,14 +99,22 @@ full-devops-cycle-project/
 │  │   │   ├── versions.tf
 │  │   │   ├── resources.tf
 │  │   │   └── backend.tf
-│  │   └── production/
-│  │       ├── variables.tf
-│  │       ├── terraform.tfvars
-│  │       ├── main.tf
-│  │       ├── providers.tf
-│  │       ├── versions.tf
-│  │       ├── resources.tf
-│  │       └── backend.tf
+│  │   ├── production/
+│  │   │   ├── variables.tf
+│  │   │   ├── terraform.tfvars
+│  │   │   ├── main.tf
+│  │   │   ├── providers.tf
+│  │   │   ├── versions.tf
+│  │   │   ├── resources.tf
+│  │   │   └── backend.tf
+│  │   └── Taskfile.yaml
+│  ├── tests/
+│  │   └── terratest/
+│  │       ├── test.go
+│  │       ├── Taskfile.yaml
+│  │       ├── go.sum
+│  │       └── go.mod
+│  ├── Taskfile.yaml
 │  ├── delete-backend.sh
 │  └── backend.sh
 │
@@ -280,7 +288,7 @@ Terraform provisions GCP infrastructure:
 The CD pipeline is the *source of truth*. Manual steps should be treated as *optional*.
 
 *** CI/CD Pipeline Prerequisites
-If you want to use the **pre-configured CI/CD pipeline** in this repository, you must define the following *GitHub repository variables and secrets* before running it:
+If you want to use the *pre-configured CI/CD pipeline* in this repository, you must define the following *GitHub repository variables and secrets* before running it:
 
 *Secrets*:
 - =TERRAFORM_SA_KEY= – Service Account key used by Terraform
@@ -292,14 +300,13 @@ If you want to use the **pre-configured CI/CD pipeline** in this repository, you
 
 Without these values configured, the CI/CD pipeline will fail.
 
-* Deploy Cloud Infrastructure (WIP)
+* Deploy Cloud Infrastructure
 ** Terraform resources overview
 Terraform will create resources in the following sequence:
 1. VPC network
 2. VPC subnet
 3. firewall rules
 4. GKE cluster
-5. ...
 
 ** 1. Authenticate and set up GCP
 #+begin_src shell
@@ -436,7 +443,71 @@ xh localhost:3000/health
 # Expected output: {"status":"ok"}
 #+end_src
 
-*** Deploy on GKE using Terraform
+*** Test and deploy on GKE using Terraform
+**** Testing with [[https://github.com/gruntwork-io/terratest][Terratest]]
+This project uses *Terratest* to validate the Terraform configuration by deploying infrastructure to GKE and verifying it behaves as expected.
+
+The test runs against the example configuration located in: =terraform/tests/terratest=.
+Go module dependencies are locked in =go.sum= to ensure consistent and reproducible test runs across environments.
+
+***** Prerequisites
+Before running the tests, ensure you have:
+- Go installed (version compatible with Terratest)
+- Terraform installed
+- Valid GCP credentials available in your environment
+- Permissions to create and destroy GKE-related resources
+
+***** Running the Tests
+#+begin_src shell
+# Navigate to the terratest directory
+cd terraform/tests/terratest
+
+# View task commands
+go-task --list-all
+
+# Download GO dependencies and run test
+go-task 01-download-dependencies
+go-task 02-run-test
+#+end_src
+
+***** What the Terratest Script Does
+The =test.go= script performs the following steps:
+1. *Configures Terraform execution*
+   - Points Terratest to the Terraform example located at:
+     =terraform/envs/staging/=
+   - Enables default retry logic to handle transient Terraform or API errors
+
+2. *Initializes and applies Terraform*
+   - Runs =terraform init= and =terraform apply=
+   - Provisions all required infrastructure on GKE
+
+3. *Registers automatic cleanup*
+   - Ensures =terraform destroy= is executed at the end of the test
+   - Cleanup runs even if the test fails
+
+4. *Fetches Terraform outputs*
+   - Reads the =url= output value from Terraform
+   - This URL represents the exposed application endpoint
+
+5. *Validates the deployed application*
+   - Sends HTTP GET requests to the application endpoint
+   - Retries up to 30 times with a 10-second delay between attempts
+   - Confirms:
+     - HTTP status code is =200=
+     - Application responds successfully
+
+6. *Prints response output*
+   - Logs the HTTP response body for debugging and visibility
+
+***** Test Success Criteria
+The test passes if:
+- Terraform applies successfully
+- The application endpoint becomes reachable
+- The HTTP response returns status =200=
+
+If any of these conditions fail, the test will fail and Terraform resources will still be destroyed.
+
+**** Deploying terraform infrastructure
 #+begin_src shell
 # Select environment to use
 cd terraform/envs
@@ -689,8 +760,8 @@ xh get http://<CLUSTER_IP>/health
 #+begin_src shell
 # Remove all terraform resources and avoid charges
 cd terraform/
-go-task terraform:05-destroy-production
-go-task terraform:07-clean-plan-production
+go-task terraform:05-destroy-staging
+go-task terraform:07-clean-plan-staging
 
 # If you created cluster manually using gcloud, to destroy the cluster run
 go-task gcp:09-clean-up
@@ -716,7 +787,7 @@ gcp-nuke run \
   --no-dry-run
 #+end_src
 
-* Roadmap (WIP)
+* Roadmap
 Docker application:
 - [X] Write demo movie-review app in NodeJS using Express API
 - [X] Implement app logic
@@ -730,14 +801,15 @@ CI/CD:
 - [X] Building and pushing image to GHCR for multi-architecture
 - [X] Update staging/production tags for push to main or release tag
 - [X] Create Pull Request with image tag changes
-- [ ] Create the infrastructure using terraform
+- [X] Create the infrastructure using terraform
+- [X] Implement checks for terraform CD deployment (fmt/validate/plan)
 - [ ] Apply the updated manifests into cluster
 
 Kubernetes:
 - [X] Create necessary manifest files (deployment, service, ingress)
 - [X] Implement Horizontal Pod Autoscaler for movie-api deployment
 - [X] Namespaces and environment separation (Dev → debug mode, Staging → test mode)
-  + =namePrefix: dev-= for dev overlay
+  + =namePrefix: staging-= for staging overlay
   + namespace overrides
   + patchesStrategicMerge
   + image overrides
@@ -746,10 +818,6 @@ Kubernetes:
 - [ ] Implement network policy for GCP database
 - [ ] Implement PersistentVolumeClaims to GCP
 - [X] Implement helm charts packaging and templating with namespace/env separation
-- [ ] After GCP DB creation Success:
-  + correct the 3 manifests (GCP -service.yaml, secret.yaml, netpo.yaml) and test
-  + add the 3 manifests (GCP -service.yaml, secret.yaml, netpo.yaml) to helm chart
-  + implement GCP DB integration to node app
 - [X] Automated Kubernetes deployments with ArgoCD
 - [X] Git-driven versioning and rollbacks 
 
