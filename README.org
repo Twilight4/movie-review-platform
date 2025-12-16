@@ -453,7 +453,7 @@ xh localhost:3000/health
 
 *** Test and deploy on GKE using Terraform
 **** Testing Terraform infrastructure before deployment
-This project includes a test script validate the Terraform configuration by deploying infrastructure to GKE and verifying it behaves as expected.
+This project includes a Bash-based test script to validate the Terraform configuration by deploying infrastructure to GKE and verifying it behaves as expected.
 
 The CD pipeline also includes testing for production environment if a pull request was issued.
 
@@ -465,48 +465,51 @@ Before running the tests, ensure you have:
 
 ***** Running the Tests
 #+begin_src shell
-# Navigate to the terratest directory
+# Navigate to the Bash test directory
 cd terraform/tests/bash
 
-# Run the script
+# Run the script (staging environment)
 ./test-staging.sh
 #+end_src
 
 ***** What the Test Script Does
 The script performs the following steps:
 1. *Configures Terraform execution*
-   - Points to the specified Terraform environment
-   - Enables default retry logic to handle transient Terraform or API errors
+   - Changes to the specified Terraform environment
+   - Optionally checks and applies formatting (=terraform fmt=)
+   - Validates configuration (=terraform validate=)
 
 2. *Initializes and applies Terraform*
    - Runs =terraform init= and =terraform apply=
    - Provisions all required infrastructure on GKE
 
 3. *Registers automatic cleanup*
-   - Ensures =terraform destroy= is executed at the end of the test
-   - Cleanup runs even if the test fails
+   - Ensures =terraform destroy= is executed at the end of the script
+   - Cleanup runs even if the test fails (via =trap=)
 
 4. *Fetches Terraform outputs*
-   - Reads the =url= output value from Terraform
-   - This URL represents the exposed application endpoint
+   - Reads the health-check URL output from Terraform
+   - This URL represents the exposed application endpoint (supports HTTP or HTTPS)
+
+APPLIES HELM GITOPS APPLICATIONSET
 
 5. *Validates the deployed application*
-   - Sends HTTP GET requests to the application endpoint
-   - Retries up to 30 times with a 10-second delay between attempts
+   - Sends HTTP(S) GET requests to the endpoint
+   - Retries up to 60 times with a 10-second delay between attempts
    - Confirms:
      - HTTP status code is =200=
-     - Application responds successfully
+     - Application responds with =ok=
 
 6. *Prints response output*
-   - Logs the HTTP response body for debugging and visibility
+   - Logs HTTP response and status code for debugging and visibility
 
 ***** Test Success Criteria
 The test passes if:
 - Terraform applies successfully
 - The application endpoint becomes reachable
-- The HTTP response returns status =200=
+- The HTTP response returns status =200= and body =ok=
 
-If any of these conditions fail, the test will fail and Terraform resources will still be destroyed.
+If any of these conditions fail, the test fails and Terraform resources are destroyed automatically.
 
 **** Deploying terraform infrastructure
 #+begin_src shell
