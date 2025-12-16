@@ -49,43 +49,87 @@ tasks:
       - helm show values oci://registry-1.docker.io/twilight4/movie-review --version=${NODE_VERSION_1}
     desc: "Show values for movie-review chart"
   ### Local release commands
-  helm:07-rollback:
+  argocd:02-install-staging:
+    cmds:
+      - |
+        helm upgrade --install argocd-application ./argocd-application/ \
+        --namespace argocd \
+        --version 7.7.11 \
+        --values values-staging.yaml
+        --create-namespace
+    desc: "Install argocd-application chart with staging values file"
+  argocd:02-install-production:
+    cmds:
+      - |
+        helm upgrade --install argocd-application ./argocd-application/ \
+        --namespace argocd \
+        --version 7.7.11 \
+        --values values.yaml
+        --create-namespace
+    desc: "Install argocd-application chart with production values file"
+  argocd:01-render-staging:
+    cmds:
+      - helm template ./argocd-application --values=./argocd-application/values-staging.yaml  | yq
+    desc: "Render chart yaml with staging values file"
+  argocd:01-render-production:
+    cmds:
+      - helm template ./argocd-application --values=./argocd-application/values.yaml  | yq
+    desc: "Render chart yaml with production values file"
+  argocd:03-uninstall-staging:
+    cmds:
+      - helm uninstall argocd-application --namespace staging
+    desc: "Uninstall chart with staging values file"
+  argocd:03-uninstall-production:
+    cmds:
+      - helm uninstall argocd-application --namespace production
+    desc: "Uninstall chart with production values file"
+  chart:08-add-argocd-repo:
+    cmds:
+      - |
+        helm repo add argo https://argoproj.github.io/argo-helm
+        helm repo update
+    desc: "Add ArgoCD repository and update"
+  chart:07-rollback:
     cmds:
       - helm rollback api-node-helm-chart
     desc: "Rollback api-node-helm-chart chart"
-  helm:03-list:
+  chart:03-list:
     cmds:
-      - helm list -n ${NAMESPACE}
+      - helm list -A
     desc: "List Helm releases"
-  helm:06-get-values:
+  chart:06-get-values:
     cmds:
       - helm get values api-node-helm-chart
     desc: "Get values for api-node-helm-chart release"
-  helm:05-get-manifests:
+  chart:05-get-manifests:
     cmds:
       - helm get manifest api-node-helm-chart
     desc: "Get manifests for api-node-helm-chart release"
-  helm:02-install-staging:
+  chart:02-install-staging:
     cmds:
+      - kubectl create namespace ingress-nginx
       - helm upgrade --install api-node-helm-chart ./api-node-helm-chart/ --values=./api-node-helm-chart/values-staging.yaml --namespace staging --create-namespace
-    desc: "Render chart yaml with staging values file"
-  helm:02-install-production:
+    desc: "Install chart with staging values file"
+  chart:02-install-production:
     cmds:
+      - kubectl create namespace ingress-nginx
       - helm upgrade --install api-node-helm-chart ./api-node-helm-chart/ --values=./api-node-helm-chart/values.yaml --namespace production --create-namespace
     desc: "Install chart with production values"
-  helm:04-uninstall-staging:
+  chart:04-uninstall-staging:
     cmds:
+      - kubectl delete namespace ingress-nginx
       - helm uninstall api-node-helm-chart --namespace staging
     desc: "Uninstall chart with staging values"
-  helm:04-uninstall-production:
+  chart:04-uninstall-production:
     cmds:
-      - helm uninstall api-node-helm-chart
+      - kubectl delete namespace ingress-nginx
+      - helm uninstall api-node-helm-chart --namespace production
     desc: "Uninstall chart with production values file"
-  helm:01-render-staging:
+  chart:01-render-staging:
     cmds:
       - helm template ./api-node-helm-chart --values=./api-node-helm-chart/values-staging.yaml  | yq
     desc: "Render chart yaml with staging values file"
-  helm:02-render-production:
+  chart:01-render-production:
     cmds:
       - helm template ./api-node-helm-chart --values=./api-node-helm-chart/values.yaml  | yq
     desc: "Render chart yaml with production values file"
