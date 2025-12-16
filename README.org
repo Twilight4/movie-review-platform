@@ -426,14 +426,21 @@ If the GKE cluster is deleted manually via the GCP Console or =gcloud=, Terrafor
 *** Local Systems
 **** Minikube
 #+begin_src shell
+# View task commands
+cd k8s-cluster-local
+go-task --list-all
+
 # Start cluster 
 go-task minikube:01-create-cluster
 
 # Enable ingress add-on
 go-task minikube:02-enable-ingress
 
+# Verify
+go-task minikube:03-check-status
+
 # Delete the cluster
-go-task minikube:03-delete-cluster
+go-task minikube:04-delete-cluster
 #+end_src
 
 **** KinD
