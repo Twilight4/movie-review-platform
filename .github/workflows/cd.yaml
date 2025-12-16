@@ -84,10 +84,10 @@ jobs:
         if: steps.plan.outcome == 'failure'
         run: exit 1
 
-      # - name : Terraform Test Execution
-      #   if: github.event_name == 'pull_request'
-      #   working-directory: terraform/tests/bash
-      #   run: ./test-production.sh
+      - name : Terraform Test Execution
+        if: github.event_name == 'pull_request'
+        working-directory: terraform/tests/bash
+        run: ./test-production.sh
 
       # Apply staging env for a push to main
       - name: Terraform Apply Staging
