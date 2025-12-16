@@ -4,6 +4,3 @@ includes:
   terraform:
     taskfile: ./envs/Taskfile.yaml
     dir: ./envs/
-  terratest:
-    taskfile: ./tests/terratest/Taskfile.yaml
-    dir: ./tests/terratest/
