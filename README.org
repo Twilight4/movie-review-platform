@@ -67,6 +67,11 @@ full-devops-cycle-project/
 │   │   │   ├── values.yaml
 │   │   │   ├── values-staging.yaml
 │   │   │   └── Chart.yaml
+│   │   ├── argocd-application/       → ArgoCD installation with helm for CD pipeline
+│   │   │   ├── templates/
+│   │   │   ├── values.yaml
+│   │   │   ├── values-staging.yaml
+│   │   │   └── Chart.yaml
 │   │   └── Taskfile.yaml
 │   ├── deploy-services/
 │   │   ├── api-node/
@@ -532,7 +537,7 @@ go-task gcp:08-connect-to-cluster
 kubectx
 #+end_src
 
-*** Deploy on GKE using =google-cloud-cli=
+*** Deploy GKE using =google-cloud-cli=
 #+begin_src shell
 # View task commands from root directory
 go-task --list-all
@@ -583,16 +588,16 @@ cd k8s/helm
 go-task --list-all
 
 # Render production env
-go-task render-template-production
+go-task 01-render-production
 
 # Install production env
-go-task install-template-production
+go-task 02-install-production
 
 # List realeases
-go-task list
+go-task 03-list
 
 # Uninstall production env
-go-task uninstall-template-production
+go-task 04-uninstall-production
 #+end_src
 
 *** Using GitOps Setup (ArgoCD)
