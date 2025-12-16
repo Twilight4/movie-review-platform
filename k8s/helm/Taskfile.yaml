@@ -48,23 +48,22 @@ tasks:
     cmds:
       - helm show values oci://registry-1.docker.io/twilight4/movie-review --version=${NODE_VERSION_1}
     desc: "Show values for movie-review chart"
-  ### Local release commands
   argocd:02-install-staging:
     cmds:
       - |
-        helm upgrade --install argocd-application ./argocd-application/ \
-        --namespace argocd \
-        --version 7.7.11 \
-        --values values-staging.yaml
+        helm upgrade --install argocd-application \
+        ./argocd-application/ \
+        --namespace staging \
+        --values values-staging.yaml \
         --create-namespace
     desc: "Install argocd-application chart with staging values file"
   argocd:02-install-production:
     cmds:
       - |
-        helm upgrade --install argocd-application ./argocd-application/ \
-        --namespace argocd \
-        --version 7.7.11 \
-        --values values.yaml
+        helm upgrade --install argocd-application \
+        ./argocd-application/ \
+        --namespace production \
+        --values values.yaml \
         --create-namespace
     desc: "Install argocd-application chart with production values file"
   argocd:01-render-staging:
@@ -83,12 +82,16 @@ tasks:
     cmds:
       - helm uninstall argocd-application --namespace production
     desc: "Uninstall chart with production values file"
-  chart:08-add-argocd-repo:
+  argocd:00-install-argocd-applicationset:
     cmds:
       - |
         helm repo add argo https://argoproj.github.io/argo-helm
         helm repo update
-    desc: "Add ArgoCD repository and update"
+        helm upgrade --install argocd argo/argo-cd \
+        --namespace argocd \
+        --version 7.7.11 \
+        --create-namespace
+    desc: "Add ArgoCD repository and install ArgoCD"
   chart:07-rollback:
     cmds:
       - helm rollback api-node-helm-chart
