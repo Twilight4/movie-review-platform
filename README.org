@@ -296,7 +296,10 @@ The CD pipeline is the *source of truth*. Manual steps should be treated as *opt
 If you want to use the *pre-configured CI/CD pipeline* in this repository, you must define the following *GitHub repository variables and secrets* before running it:
 
 *Secrets*:
-- =TERRAFORM_SA_KEY= – Service Account key used by Terraform
+- =GCP_SA_KEY= – Service Account key used by Terraform/google-cloud-cli
+- =GKE_CLUSTER_NAME= - Cluster name used by google-cloud-cli
+- =GKE_REGION= - Region used by google-cloud-cli
+- =GCP_PROJECT_ID= - Project name used by google-cloud-cli
 - =GHCR_TOKEN= – Token with permission to push/pull images from GHCR
 - =PR_ACTION= – Token used by the PR automation workflow
 
