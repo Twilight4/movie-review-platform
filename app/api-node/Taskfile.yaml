@@ -9,14 +9,23 @@ tasks:
   run:
     desc: Start node dev mode
     cmds:
-      - npm run dev
+      - |
+        export FIRESTORE_PROJECT_ID=movie-review-platform8451
+        export FIRESTORE_COLLECTION=movies
+        npm run dev
 
   start:
     desc: Run node server
     cmds:
-      - npm start
+      - |
+        export FIRESTORE_PROJECT_ID=movie-review-platform8451
+        export FIRESTORE_COLLECTION=movies
+        npm start
 
   test:
     desc: Run tests
     cmds:
-      - npm test
+      - |
+        export FIRESTORE_PROJECT_ID=movie-review-platform8451
+        export FIRESTORE_COLLECTION=movies
+        npm test
