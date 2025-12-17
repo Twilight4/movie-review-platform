@@ -67,7 +67,6 @@ jobs:
           IMAGE_TAG: ${{ needs.generate-image-tag.outputs.image_tag }}    # pull in that image tag from the previous job
         working-directory: cicd/github-actions
         run: |
-        run: |
           # Build and push images for staging tag for push to main or release a new tag
           task build-push-container-image-multi-arch IMAGE_TAG=${IMAGE_TAG}-staging
 
