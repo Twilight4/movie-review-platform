@@ -22,7 +22,5 @@ ingress:
   className: gce
 
 config:
-  COSMOSDB_DATABASE: "movie-api"
-  COSMOSDB_CONTAINER: "reviews"
-  COSMOSDB_PARTITION_KEY: "/movieId"
-  COSMOSDB_API: "SQL"
+  FIRESTORE_PROJECT_ID: "movie-review-platform8451"
+  FIRESTORE_COLLECTION: "movies"
