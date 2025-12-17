@@ -18,4 +18,4 @@ labels:
 
 images:
   - name: ghcr.io/twilight4/api-node
-    newTag: 0.0.1-64-g35bdb85-staging # STAGING_IMAGE_TAG
+    newTag: 0.0.1-199-g5ed2ad2-staging # STAGING_IMAGE_TAG
