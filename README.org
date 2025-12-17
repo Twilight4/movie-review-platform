@@ -86,7 +86,6 @@ full-devops-cycle-project/
 │   ├── kind-bind-mount-2
 │   ├── kind-bind-mount-1
 │   ├── Taskfile.yaml
-│   ├── README.org
 │   └── kind-config.yaml.TEMPLATE
 │
 ├── terraform/          → Infrastructure as Code (GCP)
@@ -183,9 +182,9 @@ full-devops-cycle-project/
                                 └───────────────┬─────────────────┘
                                                 │ 
                                                 ▼
-                                ┌─────────────────────────────────┐
-                                │  Terraform: Deploy GKE Cluster  │
-                                └───────────────┬─────────────────┘
+                            ┌──────────────────────────────────────────┐
+                            │  Terraform: Deploys Cloud Infrastructure │
+                            └───────────────────┬──────────────────────┘
                                                 │
                                                 ▼
                                 ┌─────────────────────────────────┐
@@ -220,7 +219,7 @@ full-devops-cycle-project/
                                                 │
                                                 ▼
                                    ┌───────────────────────────┐
-                                   │ GCP NoSQL Firestore DB    │
+                                   │   GCP NoSQL Firestore DB  │
                                    └────────────┬──────────────┘
                                                 │
                                                 │
@@ -670,9 +669,6 @@ go-task gcp:db:02-create-db
 
 # Verify Firestore exists
 go-task gcp:db:03-list-db
-
-# Delete the database
-go-task gcp:db:04-delete-db
 #+end_src
 
 ** 4. Manual application of manifests (CD-managed in production)
@@ -918,8 +914,9 @@ cd terraform/
 go-task terraform:05-destroy-staging
 go-task terraform:07-clean-plan-staging
 
-# If you created cluster manually using gcloud, to destroy the cluster run
+# If you created cluster and firestore database manually using gcloud, to delete those resoruces run
 go-task gcp:09-clean-up
+go-task gcp:db:04-delete-db
 #+end_src
 
 *** GCP-nuke
