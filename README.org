@@ -91,9 +91,12 @@ full-devops-cycle-project/
 │
 ├── terraform/          → Infrastructure as Code (GCP)
 │  ├── modules/
-│  │   └── gke/
+│  │   ├── gke/
+│  │   │   ├── variables.tf
+│  │   │   ├── outputs.tf
+│  │   │   └── main.tf
+│  │   └── firestore/
 │  │       ├── variables.tf
-│  │       ├── outputs.tf
 │  │       └── main.tf
 │  ├── envs/
 │  │   ├── staging/
