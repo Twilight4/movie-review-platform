@@ -257,6 +257,8 @@ Terraform provisions GCP infrastructure:
 - IAM roles and service accounts
 - Cloud Storage buckets
 
+Because Firestore is an external, fully managed database, application data persists independently of Kubernetes pods. When pods are restarted, rescheduled, or scaled, all data remains intact and immediately available to new instances.
+
 The Terraform Bash test script:
 - Uses Terraform outputs to dynamically determine application endpoints
 - Supports ApplicationSet for cluster-wide deployment orchestration
@@ -338,6 +340,7 @@ Terraform will create resources in the following sequence:
 2. VPC subnet
 3. firewall rules
 4. GKE cluster
+5. Firestore database
 
 ** 1. Authenticate and set up GCP
 #+begin_src shell
@@ -866,7 +869,7 @@ gcloud projects get-iam-policy <PROJECT_ID> \
     --filter="bindings.members:<SA_NAME>@<PROJECT_ID>.iam.gserviceaccount.com"
 #+end_src
 
-*** Verify GKE api-node service
+*** Verify GKE cluster and firestore
 **** Verify the service is working as expected
 #+begin_src shell
 # GET /movies - Returns list of movies
@@ -882,11 +885,12 @@ xh get http://<CLUSTER_IP>/health
 #+end_src
 
 **** Verify the firestore database is working as expected
+
 #+begin_src shell
 # One-liner smoke test - If this returns a number → Firestore + K8s + API are all working
 curl -s http://<CLUSTER_IP>:<PORT>/movies | jq 'length'
 
-# Test your Node app against Firestore - save the 'id' key from the output
+# Add new document to your Node app against Firestore - save the 'id' key from the output
 curl -X POST http://<CLUSTER_IP>:<PORT>/movies \
   -H "Content-Type: application/json" \
   -d '{"title":"Blade Runner","rating":5}'
