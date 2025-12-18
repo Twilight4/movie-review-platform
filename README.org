@@ -94,7 +94,13 @@ full-devops-cycle-project/
 │  │   │   ├── variables.tf
 │  │   │   ├── outputs.tf
 │  │   │   └── main.tf
-│  │   └── firestore/
+│  │   ├── firestore/
+│  │   │   ├── variables.tf
+│  │   │   └── main.tf
+│  │   ├── iam/
+│  │   │   ├── outputs.tf
+│  │   │   └── main.tf
+│  │   └── workloads/
 │  │       ├── variables.tf
 │  │       └── main.tf
 │  ├── envs/
@@ -284,12 +290,14 @@ The Terraform Bash test script:
 - Grafana: dashboards
 
 *** Security
-- Kubernetes network policy rules:
-  + Allow traffic only from the Ingress Controller
-  + Deny ALL other internal pod traffic
-  + Allow outbound internet (API needs GCP Firestore)
-- Kubernetes Secret Management
+- Kubernetes Service Account (movie-api-sa) is mapped to GCP Service Account
+- No service account keys are stored in pods
 - Terraform IAM least-privilege model
+- Egress is allowed only to TCP port 443 to reach Google APIs / Firestore
+- Pods cannot initiate arbitrary outbound connections
+- Pods are stateless; data persists across restarts or rescheduling
+- GCS bucket stores terraform state outside the cluster
+- Firestore creation, IAM, and Workload Identity bindings are managed as code
 
 ** Prerequisites
 - git
