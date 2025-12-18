@@ -540,14 +540,17 @@ Also you must create the [[#Deploy-the-Firestore-database-using-=google-cloud-cl
 
 **** Test health endpoint
 #+begin_src shell
-# Port-forward the service
-kubectl port-forward svc/<SVC_NAME> 3000:80 
+# Check the IP address using minikube
+minikube service list
+# Check the IP using kubectl
+kubectl get svc
 
-# OR check from inside of the container
+# Check running service from inside of the container
 kubectl exec -it <POD_NAME> -- netstat -tlnp           # to sanity-check which port the service is running on
 kubectl exec -it <POD_NAME> -- wget -qO- http://localhost:3000/health
 
-xh localhost:3000/health
+# Validate
+curl <CLUSTER_IP>:<PORT>/health | jq
 # Expected output: {"status":"ok"}
 #+end_src
 
