@@ -12,4 +12,4 @@ patches:
 
 images:
   - name: ghcr.io/twilight4/api-node
-    newTag: 0.0.1-49-g97a530e # PRODUCTION_IMAGE_TAG
+    newTag: 0.0.2 # PRODUCTION_IMAGE_TAG
