@@ -1,6 +1,6 @@
 image:
   repository: ghcr.io/twilight4/api-node
-  tag: 0.0.1-49-g97a530e # PRODUCTION_IMAGE_TAG
+  tag: 0.0.2 # PRODUCTION_IMAGE_TAG
   pullPolicy: Always
 
 replicaCount: 2
