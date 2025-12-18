@@ -18,16 +18,6 @@ output "endpoint" {
   value       = google_container_cluster.primary.endpoint
 }
 
-output "ingress_ip" {
-  description = "Public IP of the GCE Ingress load balancer"
-  value       = kubernetes_ingress_v1.movie_api.status[0].load_balancer[0].ingress[0].ip
-}
-
-output "healthcheck_url" {
-  description = "Health check endpoint of the application"
-  value       = "http://${kubernetes_ingress_v1.movie_api.status[0].load_balancer[0].ingress[0].ip}/health"
-}
-
 output "node_pool_names" {
   description = "List of names of the created node pools."
   value       = google_container_node_pool.primary_nodes[*].name
