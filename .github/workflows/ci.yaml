@@ -82,6 +82,11 @@ jobs:
           IMAGE_TAG: ${{ needs.generate-image-tag-prod.outputs.image_tag_prod }}
         working-directory: cicd/github-actions
         run: |
+          echo "IMAGE_TAG value: ${IMAGE_TAG}"
+          if [ -z "${IMAGE_TAG}" ]; then
+            echo "ERROR: IMAGE_TAG is empty"
+            exit 1
+          fi
           task build-push-container-image-multi-arch IMAGE_TAG=${IMAGE_TAG}
 
   update-tags:
@@ -95,7 +100,7 @@ jobs:
       - name: Install Task
         uses: arduino/setup-task@v2
 
-      - name: Update Image Tags
+      - name: Update Image Tags staging
         working-directory: cicd/github-actions
         env:
           IMAGE_TAG: ${{ needs.generate-image-tag.outputs.image_tag }}
@@ -103,10 +108,13 @@ jobs:
           # Update staging tags for push to main or release a tag
           task update-staging-image-tags NEW_TAG=${IMAGE_TAG}-staging
 
-          # Update production tags only for release tags
-          if [[ $GITHUB_REF == refs/tags/*.*.* ]]; then
+      - name: Update Image Tags production
+        if: startsWith(github.ref, 'refs/tags/')
+        working-directory: cicd/github-actions
+        env:
+          IMAGE_TAG: ${{ needs.generate-image-tag-prod.outputs.image_tag_prod }}
+        run: |
             task update-production-image-tags NEW_TAG=${IMAGE_TAG}
-          fi
 
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v7.0.9
