@@ -56,7 +56,7 @@ tasks:
             sh: git rev-parse --show-toplevel
 
   update-production-image-tags:
-    desc: "Update image tags for kluctl production config"
+    desc: "Update image tags for kubectl production config"
     cmds:
       - task: check-new-tag-var
       - task: update-image-tags
