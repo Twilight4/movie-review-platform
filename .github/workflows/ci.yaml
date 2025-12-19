@@ -82,7 +82,7 @@ jobs:
           IMAGE_TAG_PROD: ${{ needs.generate-image-tag-prod.outputs.image_tag_prod }}
         working-directory: cicd/github-actions
         run: |
-          task build-push-container-image-multi-arch IMAGE_TAG=${IMAGE_TAG_PROD}
+          task build-push-container-image-multi-arch IMAGE_TAG_PROD=${IMAGE_TAG_PROD}
 
   update-tags:
     runs-on: ubuntu-latest
