@@ -74,10 +74,6 @@ jobs:
         run: |
           IMAGE_TAG=$(git describe --tags --first-parent --match "[0-9]*.[0-9]*.[0-9]*" --abbrev=0)
           echo "IMAGE_TAG=$IMAGE_TAG"
-          if [ -z "${IMAGE_TAG}" ]; then
-            echo "ERROR: IMAGE_TAG is empty"
-            exit 1
-          fi
           task build-push-container-image-multi-arch IMAGE_TAG=${IMAGE_TAG}
 
   update-tags:
@@ -102,9 +98,9 @@ jobs:
       - name: Update Image Tags production
         if: startsWith(github.ref, 'refs/tags/')
         working-directory: cicd/github-actions
-        env:
-          IMAGE_TAG: ${{ needs.generate-image-tag-prod.outputs.image_tag_prod }}
         run: |
+            IMAGE_TAG=$(git describe --tags --first-parent --match "[0-9]*.[0-9]*.[0-9]*" --abbrev=0)
+            echo "IMAGE_TAG=$IMAGE_TAG"
             task update-production-image-tags NEW_TAG=${IMAGE_TAG}
 
       - name: Create Pull Request
