@@ -10,7 +10,7 @@ resources:
 patches:
   - path: ./patches/Deployment.yaml
   - path: ./patches/Hpa.yaml
-#  - path: ./patches/Ingress.yaml      # I don't have a domain
+  - path: ./patches/Ingress.yaml
 
 labels:
   - pairs:

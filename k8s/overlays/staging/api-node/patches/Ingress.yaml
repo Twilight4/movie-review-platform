@@ -3,4 +3,11 @@ kind: Ingress
 metadata:
   name: ingress
 spec:
-  host: "movie-api-staging.GOOGLE_DOMAIN.com"
+  rules:
+    - http:
+        paths:
+        - path: /
+          pathType: ImplementationSpecific
+          backend:
+            service:
+              name: staging-movie-api-service
