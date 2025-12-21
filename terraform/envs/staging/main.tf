@@ -1,6 +1,7 @@
 module "gke" {
   source = "../../modules/gke"
 
+  project_id   = "movie-review-platform8451"
   cluster_name = "${var.prefix}-gke"
   prefix       = "stg"
   region       = var.region
@@ -36,4 +37,5 @@ module "workloads" {
   project_id = "movie-review-platform8451"
 
   gcp_service_account_name = module.iam.service_account_name
+  depends_on               = [module.gke]
 }
