@@ -1,8 +1,8 @@
 version: "3"
 
 vars:
-  STAGING_DIR: envs/staging
-  PROD_DIR: envs/production
+  STAGING_DIR: staging
+  PROD_DIR: production
   PLAN_FILE: plan.tfplan
   # Set default gum style options
   BORDER: double
