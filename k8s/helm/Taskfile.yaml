@@ -77,10 +77,12 @@ tasks:
   argocd:03-uninstall-staging:
     cmds:
       - helm uninstall argocd-application --namespace staging
+      - helm uninstall argocd --namespace argocd
     desc: "Uninstall chart with staging values file"
   argocd:03-uninstall-production:
     cmds:
       - helm uninstall argocd-application --namespace production
+      - helm uninstall argocd --namespace argocd
     desc: "Uninstall chart with production values file"
   argocd:00-install-argocd-applicationset:
     cmds:
