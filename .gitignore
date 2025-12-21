@@ -1,6 +1,10 @@
 app/api-node/node_modules/
 k8s-cluster-local/kind-config.yaml
 helm/charts/*.tgz
+terraform/backend.sh
+terraform/delete-backend.sh
+terraform/Taskfile.yaml
+terraform/envs/Taskfile.yaml
 terraform/envs/staging/.terraform.lock.hcl
 terraform/envs/staging/.terraform/
 terraform/envs/production/.terraform.lock.hcl
