@@ -6,5 +6,5 @@ includes:
     dir: ./github-actions
 
   gitops:
-    taskfile: ./argocd-gitops/Taskfile.yaml
-    dir: ./argocd-gitops
+    taskfile: ./argocd-gitops/clusters/Taskfile.yaml
+    dir: ./argocd-gitops/clusters

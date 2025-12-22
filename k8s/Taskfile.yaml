@@ -10,8 +10,8 @@ includes:
     dir: ./helm/apps/api-node/
 
   kubectl:
-    taskfile: ./deploy-services/Taskfile.yaml
-    dir: ./deploy-services
+    taskfile: ./overlays/base/Taskfile.yaml
+    dir: ./overlays/base/
 
   monitoring:
     taskfile: ./helm/monitoring/Taskfile.yaml
