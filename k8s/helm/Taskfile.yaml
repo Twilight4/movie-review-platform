@@ -4,6 +4,9 @@ includes:
   api-node:
     taskfile: ./apps/api-node/Taskfile.yaml
     dir: ./apps/api-node/
+  monitoring:
+    taskfile: ./monitoring/Taskfile.yaml
+    dir: ./monitoring
 
 env:
   BORDER: double
@@ -13,7 +16,6 @@ env:
   NODE_VERSION_1: 0.1.0
 
 tasks:
-  ### OCI registry commands
   oci:09-search-repo:
     cmds:
       - helm search repo bitnami/api-node --versions
