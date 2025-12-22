@@ -814,6 +814,10 @@ kubectl get nodes -o wide
 
 # Check if GCE Ingress controller is enabled - if you don't see output, it means it's disabled
 kubectl get pods -n kube-system | grep ingress
+# Using gcloud: true - disabled, false - enabled
+gcloud container clusters describe <CLUSTER_NAME> \
+  --region <REGION> \
+  --format="value(addonsConfig.httpLoadBalancing.disabled)"
 
 # Check kubernetes ingress external IP
 kubectl get ingress -A
