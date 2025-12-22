@@ -5,6 +5,10 @@ includes:
     taskfile: ./helm/Taskfile.yaml
     dir: ./helm/
 
+  api-node:
+    taskfile: ./helm/apps/api-node/Taskfile.yaml
+    dir: ./helm/apps/api-node/
+
   kubectl:
     taskfile: ./deploy-services/Taskfile.yaml
     dir: ./deploy-services
