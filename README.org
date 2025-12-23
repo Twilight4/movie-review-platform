@@ -754,16 +754,16 @@ cd cicd/
 go-task --list-all
 
 # Deploy production cluster
-go-task api-node:03-deploy-production-cluster
+go-task api-node:deploy-production-cluster
 
 # Access argocd UI via port-forwarding the argocd-server
-go-task webui:01-port-forward-argocd
+go-task webui:port-forward-argocd
 
 # The login is 'admin', to retrieve the password then login to the web UI
-go-task webui:02-get-argocd-password
+go-task webui:get-argocd-password
 
 # Delete production cluster
-go-task api-node:04-delete-production-cluster
+go-task api-node:delete-production-cluster
 #+end_src
 
 *** Monitoring Setup (Grafana & Prometheus)
@@ -790,8 +790,8 @@ go-task monitoring:chart:04-uninstall-monitoring
 
 # Accessing Prometheus and Grafana WebUI
 cd cicd/
-go-task webui:03-port-forward-grafana
-go-task webui:04-port-forward-prometheus
+go-task webui:port-forward-grafana
+go-task webui:port-forward-prometheus
 #+end_src
 
 ** 5. Verify deployment
