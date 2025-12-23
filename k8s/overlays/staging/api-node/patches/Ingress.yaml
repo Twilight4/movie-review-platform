@@ -10,4 +10,7 @@ spec:
             pathType: ImplementationSpecific
             backend:
               service:
-                name: movie-api-service
+                name: staging-movie-api-service
+                port:
+                  number: 80
+
