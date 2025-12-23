@@ -757,10 +757,10 @@ go-task --list-all
 go-task api-node:03-deploy-production-cluster
 
 # Access argocd UI via port-forwarding the argocd-server
-go-task webui:01-port-forward-webui
+go-task webui:01-port-forward-argocd
 
 # The login is 'admin', to retrieve the password then login to the web UI
-go-task webui:02-get-webui-password
+go-task webui:02-get-argocd-password
 
 # Delete production cluster
 go-task api-node:04-delete-production-cluster
@@ -775,7 +775,8 @@ cd k8s/helm
 go-task --list-all
 
 # Install ArgoCD application to monitor prometheus
-go-task monitoring:argocd:00-install-argocd-applicationset
+# if you didn't use tasks that deplyoed ArgoCD with kubectl (like api-node:03-deploy-production-cluster), install argocd with helm
+#go-task monitoring:argocd:00-install-argocd-applicationset
 go-task monitoring:argocd:01-render-application
 go-task monitoring:argocd:02-install-application
 
