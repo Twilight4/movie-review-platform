@@ -453,6 +453,9 @@ If the GKE cluster is deleted manually via the GCP Console or =gcloud=, Terrafor
 *** Local Systems
 **** Minikube
 #+begin_src shell
+# Change the service type to ClusterIP (set to LoadBalancer)
+sed -i 's/^  type: .*/  type: ClusterIP/' k8s/overlays/base/api-node/manifests/movie-api-service.yaml
+
 # View task commands
 cd k8s-cluster-local
 go-task --list-all
@@ -474,6 +477,9 @@ go-task minikube:04-delete-cluster
 The =kind-config.yaml.TEMPLATE= is a template for generating =kind-config.yaml= with =go-task kind:01-generate-config= command which uses 2 extra mounts that the kind cluster is going to mount in to each node for persisting data.
 
 #+begin_src shell
+# Change the service type to ClusterIP (set to LoadBalancer)
+sed -i 's/^  type: .*/  type: ClusterIP/' k8s/overlays/base/api-node/manifests/movie-api-service.yaml
+
 # View task commands
 cd k8s-cluster-local
 go-task --list-all
