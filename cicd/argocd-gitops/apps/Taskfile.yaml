@@ -1,22 +1,22 @@
 version: "3"
 
 tasks:
-  02-get-argocd-password:
+  get-argocd-password:
     desc: "Get password for argocd web ui admin user"
     cmds:
       - kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath='{.data.password}' | base64 --decode
 
-  01-port-forward-argocd:
+  port-forward-argocd:
     desc: "Port forward web UI to localhost on port 8080"
     cmds:
       - kubectl port-forward svc/argocd-server -n argocd 8080:443
 
-  03-port-forward-grafana:
+  port-forward-grafana:
     desc: "Port forward web UI to localhost on port 3000"
     cmds:
       - kubectl port-forward -n monitoring svc/monitoring-grafana 3000:80
 
-  04-port-forward-prometheus:
+  port-forward-prometheus:
     desc: "Port forward web UI to localhost on port 9090"
     cmds:
       - kubectl port-forward svc/monitoring-kube-prometheus-prometheus -n monitoring 9090
