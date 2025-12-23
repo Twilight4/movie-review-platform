@@ -48,5 +48,5 @@ tasks:
     desc: "Uninstall kube-prometheus-stack helm chart"
   chart:01-render-monitoring:
     cmds:
-      - helm template ./kube-prometheus-stack --values=./kube-prometheus-stack/values.yaml  | yq
+      - helm template prometheus-community/kube-prometheus-stack --values=./kube-prometheus-stack/values.yaml  | yq
     desc: "Render kube-prometheus-stack helm chart yaml"
