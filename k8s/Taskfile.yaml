@@ -1,7 +1,7 @@
 version: "3"
 
 includes:
-  helm:
+  oci:
     taskfile: ./helm/Taskfile.yaml
     dir: ./helm/
 
@@ -10,8 +10,8 @@ includes:
     dir: ./helm/apps/api-node/
 
   kubectl:
-    taskfile: ./overlays/base/Taskfile.yaml
-    dir: ./overlays/base/
+    taskfile: ./overlays/base/api-node/Taskfile.yaml
+    dir: ./overlays/base/api-node
 
   monitoring:
     taskfile: ./helm/monitoring/Taskfile.yaml

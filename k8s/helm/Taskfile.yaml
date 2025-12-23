@@ -1,13 +1,5 @@
 version: "3"
 
-includes:
-  api-node:
-    taskfile: ./apps/api-node/Taskfile.yaml
-    dir: ./apps/api-node/
-  monitoring:
-    taskfile: ./monitoring/Taskfile.yaml
-    dir: ./monitoring
-
 env:
   BORDER: double
   BORDER_FOREGROUND: "212"
@@ -16,42 +8,42 @@ env:
   NODE_VERSION_1: 0.1.0
 
 tasks:
-  oci:09-search-repo:
+  09-search-repo:
     cmds:
       - helm search repo bitnami/api-node --versions
     desc: "Search Bitnami repository for node-app"
-  oci:01-login-oci-registry:
+  01-login-oci-registry:
     cmds:
       - cmd: gum style "Use your dockerhub username and password!"
         silent: true
       - "helm registry login registry-1.docker.io"
     desc: Login to OCI registry
-  oci:05-list-registry:
+  05-list-registry:
     cmds:
       - oras repo tags registry-1.docker.io/twilight4/api-node-helm-chart
     desc: "List tags in the OCI registry"
-  oci:02-build:
+  02-build:
     cmds:
       - helm package ./api-node-helm-chart
     desc: "Bundle helm chart as a .tgz OCI image"
-  oci:03-push:
+  03-push:
     cmds:
       - helm push api-node-helm-chart-0.1.0.tgz oci://registry-1.docker.io/twilight4
     desc: "Push the helm chart to an oci registry"
-  oci:04-build-push:
+  04-build-push:
     cmds:
-      - task: oci:02-build
-      - task: oci:03-push
+      - task: 02-build
+      - task: 03-push
     desc: "Build & Push the helm chart to an oci registry"
-  oci:06-pull:
+  06-pull:
     cmds:
       - helm pull oci://registry-1.docker.io/twilight4/movie-review --version=${NODE_VERSION_1}
     desc: "Pull movie-review chart from Dockerhub repository"
-  oci:07-untar:
+  07-untar:
     cmds:
       - tar -xzf movie-review-${NODE_VERSION_1}.tgz
     desc: "Untar movie-review chart"
-  oci:08-show-values:
+  08-show-values:
     cmds:
       - helm show values oci://registry-1.docker.io/twilight4/api-node-helm-chart --version=${NODE_VERSION_1}
     desc: "Show values for movie-review chart"
