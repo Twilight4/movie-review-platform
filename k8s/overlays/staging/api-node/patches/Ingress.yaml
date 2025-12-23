@@ -1,13 +1,13 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: ingress
+  name: movie-api-ingress
 spec:
   rules:
     - http:
         paths:
-        - path: /
-          pathType: ImplementationSpecific
-          backend:
-            service:
-              name: staging-movie-api-service
+          - path: /
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name: staging-movie-api-service
