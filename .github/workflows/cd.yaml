@@ -139,12 +139,6 @@ jobs:
             --region ${{ secrets.GKE_REGION }} \
             --project ${{ secrets.GCP_PROJECT_ID }}
   
-      # Sanity check for cluster access
-      - name: Verify cluster access
-        run: |
-          kubectl cluster-info
-          kubectl get ns
-  
       # ==========================================================
       # RENDER (FAIL FAST)
       # ==========================================================
