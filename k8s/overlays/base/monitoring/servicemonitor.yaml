@@ -9,7 +9,7 @@ spec:
       app: movie-api
   namespaceSelector:
     matchNames:
-      - default
+      - staging
   endpoints:
     - port: http
       path: /metrics
