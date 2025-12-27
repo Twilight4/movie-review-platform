@@ -781,12 +781,11 @@ go-task monitoring:argocd:01-render-application
 go-task monitoring:argocd:02-install-application
 
 # Install prometheus
-go-task monitoring:chart:01-render-monitoring
-go-task monitoring:chart:02-install-monitoring
+go-task monitoring:chart:01-install-monitoring
 
 # Uninstall ArgoCD and prometheus
 go-task monitoring:argocd:03-uninstall-application
-go-task monitoring:chart:04-uninstall-monitoring
+go-task monitoring:chart:02-uninstall-monitoring
 
 # Accessing Prometheus and Grafana WebUI
 cd cicd/
