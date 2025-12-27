@@ -8,41 +8,13 @@ env:
   NODE_VERSION_1: 0.1.0
 
 tasks:
-  argocd:02-install-application:
-    cmds:
-      - |
-        helm upgrade --install argocd-application \
-        ./argocd-application/ \
-        --namespace argo-monitoring \
-        --values ./argocd-application/values.yaml \
-        --create-namespace
-    desc: "Install argocd-application helm chart"
-  argocd:01-render-application:
-    cmds:
-      - helm template ./argocd-application --values=./argocd-application/values.yaml  | yq
-    desc: "Render helm chart yaml"
-  argocd:03-uninstall-application:
-    cmds:
-      - helm uninstall argocd-application -n argo-monitoring
-      - helm uninstall argocd --namespace argo-monitoring
-    desc: "Uninstall helm chart"
-  argocd:00-install-argocd-applicationset:
-    cmds:
-      - |
-        helm repo add argo https://argoproj.github.io/argo-helm
-        helm repo update
-        helm upgrade --install argocd argo/argo-cd \
-        --namespace argocd \
-        --version 7.7.11 \
-        --create-namespace
-    desc: "Add ArgoCD repository and install ArgoCD"
-  chart:01-install-monitoring:
+  install-monitoring:
     cmds:
       - helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
       - helm repo update
       - helm upgrade --install kube-prometheus-stack prometheus-community/kube-prometheus-stack --values=./kube-prometheus-stack/values.yaml --namespace monitoring --create-namespace
     desc: "Install kube-prometheus-stack helm chart"
-  chart:02-uninstall-monitoring:
+  uninstall-monitoring:
     cmds:
       - helm uninstall kube-prometheus-stack --namespace monitoring
       - kubectl delete crd alertmanagerconfigs.monitoring.coreos.com
