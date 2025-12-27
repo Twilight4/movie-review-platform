@@ -13,9 +13,10 @@ grafana:
     size: 3Gi
 
 prometheus:
+  enabled: true
   prometheusSpec:
     retention: 7d
-    serviceMonitorSelectorNilUsesHelmValues: false
+    serviceMonitorSelectorNilUsesHelmValues: true
     storageSpec:
       volumeClaimTemplate:
         spec:
@@ -37,3 +38,23 @@ alertmanager:
             requests:
               storage: 2Gi
 
+# -------- NODE EXPORTER (system metrics) --------
+nodeExporter:
+  enabled: true
+
+# -------- KUBELET / cADVISOR (container metrics) --------
+kubelet:
+  enabled: true
+  serviceMonitor:
+    enabled: true
+    # these endpoints are CRITICAL for cAdvisor
+    endpoints:
+      - port: https-metrics
+        scheme: https
+        tlsConfig:
+          insecureSkipVerify: true
+      - port: https-metrics
+        path: /metrics/cadvisor
+        scheme: https
+        tlsConfig:
+          insecureSkipVerify: true
