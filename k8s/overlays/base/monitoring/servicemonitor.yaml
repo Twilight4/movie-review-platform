@@ -1,12 +1,12 @@
 apiVersion: monitoring.coreos.com/v1
 kind: ServiceMonitor
 metadata:
-  name: api-node
+  name: movie-api
   namespace: monitoring
 spec:
   selector:
     matchLabels:
-      app: api-node
+      app: movie-api
   namespaceSelector:
     matchNames:
       - default
