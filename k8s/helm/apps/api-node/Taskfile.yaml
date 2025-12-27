@@ -13,7 +13,7 @@ tasks:
       - |
         helm upgrade --install argocd-application \
         ./argocd-application/ \
-        --namespace argo-staging \
+        --namespace staging \
         --values ./argocd-application/values-staging.yaml \
         --create-namespace
     desc: "Install argocd-application chart with staging values file"
@@ -22,7 +22,7 @@ tasks:
       - |
         helm upgrade --install argocd-application \
         ./argocd-application/ \
-        --namespace argo-production \
+        --namespace production \
         --values ./argocd-application/values.yaml \
         --create-namespace
     desc: "Install argocd-application chart with production values file"
