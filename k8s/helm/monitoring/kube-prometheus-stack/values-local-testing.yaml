@@ -1,0 +1,37 @@
+grafana:
+  enabled: true
+  adminPassword: admin
+  service:
+    type: ClusterIP
+  ingress:
+    enabled: false
+
+prometheus:
+  enabled: true
+  prometheusSpec:
+    retention: 7d
+    serviceMonitorSelectorNilUsesHelmValues: true
+
+alertmanager:
+  enabled: true
+
+# -------- NODE EXPORTER (system metrics) --------
+nodeExporter:
+  enabled: true
+
+# -------- KUBELET / cADVISOR (container metrics) --------
+kubelet:
+  enabled: true
+  serviceMonitor:
+    enabled: true
+    # these endpoints are CRITICAL for cAdvisor
+    endpoints:
+      - port: https-metrics
+        scheme: https
+        tlsConfig:
+          insecureSkipVerify: true
+      - port: https-metrics
+        path: /metrics/cadvisor
+        scheme: https
+        tlsConfig:
+          insecureSkipVerify: true
