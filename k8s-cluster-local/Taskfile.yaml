@@ -11,6 +11,7 @@ tasks:
   minikube:01-create-cluster:
     cmds:
       - minikube start --driver docker
+      - kubectl create namespace ingress-nginx --dry-run=client -o yaml | kubectl apply -f -
     desc: "Create a Kubernetes cluster using Minikube (docker driver)"
   minikube:02-enable-ingress:
     cmds:
@@ -18,6 +19,7 @@ tasks:
     desc: "Enable Minikube ingress add-on"
   minikube:04-delete-cluster:
     cmds:
+      - kubectl delete namespace ingress-nginx
       - minikube stop
     desc: "Delete and existing minikube Kubernetes cluster"
   minikube:03-check-status:
@@ -32,6 +34,7 @@ tasks:
   kind:02-create-cluster:
     cmds:
       - kind create cluster --config kind-config.yaml
+      - kubectl create namespace ingress-nginx --dry-run=client -o yaml | kubectl apply -f -
     desc: "Create a Kubernetes cluster using kind"
 
   kind:03-run-cloud-provider-kind:
@@ -41,5 +44,6 @@ tasks:
 
   kind:04-delete-cluster:
     cmds:
+      - kubectl delete namespace ingress-nginx
       - kind delete cluster
     desc: "Delete and existing kind Kubernetes cluster"
