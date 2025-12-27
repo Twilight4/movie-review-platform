@@ -13,7 +13,7 @@ tasks:
       - |
         helm upgrade --install argocd-application \
         ./argocd-application/ \
-        --namespace staging \
+        --namespace argo-staging \
         --values ./argocd-application/values-staging.yaml \
         --create-namespace
     desc: "Install argocd-application chart with staging values file"
@@ -22,7 +22,7 @@ tasks:
       - |
         helm upgrade --install argocd-application \
         ./argocd-application/ \
-        --namespace production \
+        --namespace argo-production \
         --values ./argocd-application/values.yaml \
         --create-namespace
     desc: "Install argocd-application chart with production values file"
@@ -72,22 +72,18 @@ tasks:
     desc: "Get manifests for api-node-helm-chart release"
   chart:02-install-staging:
     cmds:
-      - kubectl create namespace ingress-nginx --dry-run=client -o yaml | kubectl apply -f - 
       - helm upgrade --install api-node-helm-chart ./api-node-helm-chart/ --values=./api-node-helm-chart/values-staging.yaml --namespace staging --create-namespace
     desc: "Install chart with staging values file"
   chart:02-install-production:
     cmds:
-      - kubectl create namespace ingress-nginx --dry-run=client -o yaml | kubectl apply -f - 
       - helm upgrade --install api-node-helm-chart ./api-node-helm-chart/ --values=./api-node-helm-chart/values.yaml --namespace production --create-namespace
     desc: "Install chart with production values"
   chart:04-uninstall-staging:
     cmds:
-      - kubectl delete namespace ingress-nginx
       - helm uninstall api-node-helm-chart --namespace staging
     desc: "Uninstall chart with staging values"
   chart:04-uninstall-production:
     cmds:
-      - kubectl delete namespace ingress-nginx
       - helm uninstall api-node-helm-chart --namespace production
     desc: "Uninstall chart with production values file"
   chart:01-render-staging:
