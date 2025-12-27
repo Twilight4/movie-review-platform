@@ -54,7 +54,7 @@ terraform apply -auto-approve
 # ==========================================================
 # Navigate to Helm manifests directory
 log_info "Navigating to Helm manifests directory..."
-cd ../../../k8s/helm/ || { log_error "Failed to navigate to k8s/helm"; exit 1; }
+cd ../../../k8s/helm/apps/api-node/ || { log_error "Failed to navigate to k8s/helm"; exit 1; }
 
 # Render environment manifests for production
 log_info "Rendering production manifests..."
