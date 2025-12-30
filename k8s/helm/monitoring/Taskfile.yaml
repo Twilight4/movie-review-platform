@@ -11,12 +11,17 @@ tasks:
   install-monitoring:
     cmds:
       - helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
+      - helm repo add grafana https://grafana.github.io/helm-charts
       - helm repo update
       - helm upgrade --install kube-prometheus-stack prometheus-community/kube-prometheus-stack --values=./kube-prometheus-stack/values.yaml --namespace monitoring --create-namespace
-    desc: "Install kube-prometheus-stack helm chart"
+      - helm upgrade --install loki grafana/loki --namespace monitoring --create-namespace
+      - helm upgrade --install alloy grafana/alloy --values=./grafana-alloy/values.yaml --namespace observability --create-namespace
+    desc: "Install kube-prometheus-stack, loki and alloy helm charts"
   uninstall-monitoring:
     cmds:
       - helm uninstall kube-prometheus-stack --namespace monitoring
+      - helm uninstall loki --namespace monitoring
+      - helm uninstall alloy --namespace observability
       - kubectl delete crd alertmanagerconfigs.monitoring.coreos.com
       - kubectl delete crd alertmanagers.monitoring.coreos.com
       - kubectl delete crd podmonitors.monitoring.coreos.com
@@ -28,9 +33,3 @@ tasks:
       - kubectl delete crd servicemonitors.monitoring.coreos.com
       - kubectl delete crd thanosrulers.monitoring.coreos.com
     desc: "Uninstall kube-prometheus-stack helm chart"
-  install-grafana-alloy:
-    cmds:
-      - helm repo add grafana https://grafana.github.io/helm-charts
-      - helm repo update
-      - helm upgrade --install grafana-alloy grafana/alloy --values=./grafana-alloy/values.yaml --namespace alloy --create-namespace
-    desc: "Install grafana alloy helm chart"
