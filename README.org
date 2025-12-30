@@ -33,7 +33,7 @@ This project demonstrates a full production-grade DevOps setup using modern tool
 ** Full Project Directory Structure
 #+begin_src shell
 movie-review-platform
-├── terraform           → Infrastructure as Code (GCP)
+├── terraform           → Infrastructure as Code
 │   ├── tests
 │   │   └── bash
 │   │       ├── test-staging.sh
@@ -81,7 +81,7 @@ movie-review-platform
 │   │   └── hello-from-host
 │   ├── Taskfile.yaml
 │   └── kind-config.yaml.TEMPLATE
-├── k8s                 → Deployment manifests for multi-env setup
+├── k8s                    → Deployment manifests for multi-env setup
 │   ├── overlays
 │   │   ├── staging
 │   │   │   ├── api-node
@@ -115,7 +115,7 @@ movie-review-platform
 │   │   ├── production.yaml
 │   │   ├── monitoring.yaml
 │   │   └── argocd.yaml
-│   ├── helm            → Node + monitoring templates
+│   ├── helm               → Node + monitoring templates
 │   │   ├── monitoring
 │   │   │   ├── kube-prometheus-stack
 │   │   │   │   ├── values.yaml
@@ -149,7 +149,7 @@ movie-review-platform
 │   │   │       └── Taskfile.yaml
 │   │   └── Taskfile.yaml
 │   └── Taskfile.yaml
-├── cicd                → GitOps - ArgoCD configuration
+├── cicd                   → GitOps - ArgoCD configuration
 │   ├── github-actions
 │   │   └── Taskfile.yaml
 │   ├── argocd-gitops
@@ -163,7 +163,7 @@ movie-review-platform
 │   │           │   └── application.yaml
 │   │           └── Taskfile.yaml
 │   └── Taskfile.yaml
-├── app                 → Application source code + Dockerfile
+├── app                    → Application source code + Dockerfile
 │   ├── api-node
 │   │   ├── tests
 │   │   │   └── movies.test.js
@@ -180,7 +180,7 @@ movie-review-platform
 │   │   └── Dockerfile
 │   ├── Taskfile.yaml
 │   └── README.md
-├── .github/            → CI/CD pipelines
+├── .github/               → CI/CD pipelines
 │   └── workflows/
 │       ├── ci.yaml
 │       └── cd.yaml
