@@ -927,6 +927,9 @@ kubectl get pods -n monitoring
 # Check if pods are running for alloy agent
 kubectl get pods -n observability
 
+# Verify Alloy ConfigMap content
+kubectl get configmap alloy -n observability -o yaml
+
 # Verify it’s sending data by checking alloy logs (Look for: remote_write succeeded ; loki write succeeded)
 kubectl logs -n observability daemonset/alloy
 
