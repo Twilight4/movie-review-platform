@@ -33,7 +33,7 @@ alloy:
     # -- Create a new ConfigMap for the config file.
     create: true
     # -- Content to assign to the new ConfigMap.  This is passed into `tpl` allowing for templating from values.
-    content: '|
+    content: |
       discovery.kubernetes "pods" {
         role = "pod"
       }
@@ -54,16 +54,16 @@ alloy:
 
       prometheus.remote_write "local" {
         endpoint {
-          url = "http://prometheus.monitoring.svc:9090/api/v1/write"
+          url = "http://kube-prometheus-stack-prometheus.monitoring.svc:9090"
         }
       }
 
       loki.write "local" {
         endpoint {
-          url = "http://loki.monitoring.svc:3100/loki/api/v1/push"
+          url = "http://loki.monitoring.svc:3100"
           }
         }
-      }'
+      }
 
     # -- Name of existing ConfigMap to use. Used when create is false.
     name: null
@@ -88,7 +88,7 @@ alloy:
   # By default, data is lost between reboots.
   storagePath: /tmp/alloy
 
-  # -- Enables Grafana Alloy container's http server port.
+  # -- Enables Grafana Alloy containers http server port.
   enableHttpServerPort: true
 
   # -- Address to listen for traffic on. 0.0.0.0 exposes the UI to other
@@ -152,7 +152,14 @@ alloy:
   securityContext: {}
 
   # -- Resource requests and limits to apply to the Grafana Alloy container.
-  resources: {}
+  resources: {
+    requests:
+      cpu: 100m
+      memory: 128Mi
+    limits:
+      cpu: 500m
+      memory: 256Mi
+  }
 
   # -- Set lifecycle hooks for the Grafana Alloy container.
   lifecycle: {}
