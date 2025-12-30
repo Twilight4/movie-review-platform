@@ -5,10 +5,6 @@ includes:
     taskfile: ./github-actions/Taskfile.yaml
     dir: ./github-actions
 
-  webui:
-    taskfile: ./argocd-gitops/apps/Taskfile.yaml
-    dir: ./argocd-gitops/apps
-
   api-node:
     taskfile: ./argocd-gitops/apps/api-node/Taskfile.yaml
     dir: ./argocd-gitops/apps/api-node
