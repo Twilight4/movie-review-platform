@@ -149,7 +149,7 @@ movie-review-platform
 │   │   │       └── Taskfile.yaml
 │   │   └── Taskfile.yaml
 │   └── Taskfile.yaml
-├── cicd                   → GitOps - ArgoCD configuration
+├── cicd                   → GitOps configuration (ArgoCD)
 │   ├── github-actions
 │   │   └── Taskfile.yaml
 │   ├── argocd-gitops
@@ -265,7 +265,8 @@ movie-review-platform
                                    ┌──────────────────────────┐
                                    │ Monitoring Stack on GKE  │
                                    │ - Prometheus             │
-                                   │ - Grafana                │
+                                   │ - Grafana Alloy Agent    │
+                                   │ - Loki                   │
                                    └──────────────────────────┘
 
 #+end_src
