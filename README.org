@@ -935,8 +935,9 @@ kubectl get pods -n monitoring -l app.kubernetes.io/name=loki
 
 # Check prometheus targets & access Grafana WebUI
 cd k8s/helm/monitoring
-go-task port-forward-prometheus
+go-task port-forward-prometheus      # confirm targets are up at http://localhost:9090/targets
 go-task port-forward-grafana
+go-task port-forward-alloy           # validate enabled components
 
 # Access ArgoCD UI and get default password
 go-task port-forward-argocd
@@ -1062,8 +1063,9 @@ Terraform:
 - [X] GCP Firestore database
 
 Grafana, Prometheus:
-- [X] Grafana deployment
+- [X] Grafana deployment with Alloy agent
 - [X] Prometheus data source
+- [X] Alertmanager deployment
+- [X] Node Exporter metrics for system performance monitoring
+- [X] System logs collection with Loki
 - [X] Persistent storage for dashboards
-- [ ] Node Exporter
-- [ ] Alertmanager deployment
