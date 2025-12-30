@@ -1,6 +1,7 @@
 // ###############################
 // #### Metrics Configuration ####
 // ###############################
+// #### Docker monitoring
 // Host Cadvisor on the Docker socket to expose container metrics.
 prometheus.exporter.cadvisor "example" {
   docker_only = true
@@ -29,6 +30,7 @@ prometheus.scrape "scraper" {
   scrape_interval = "10s"
 }
 
+// #### Linux Monitoring
 discovery.kubernetes "pods" {
   role = "pod"
 }
@@ -36,11 +38,6 @@ discovery.kubernetes "pods" {
 prometheus.scrape "k8s_pods" {
   targets = discovery.kubernetes.pods.targets
   forward_to = [prometheus.remote_write.local.receiver]
-}
-
-loki.source.kubernetes "k8s_logs" {
-  targets    = discovery.kubernetes.pods.targets
-  forward_to = [loki.write.local.receiver]
 }
 
 // This block relabels metrics coming from node_exporter to add standard labels
@@ -95,18 +92,16 @@ scrape_interval = "15s"
   forward_to = [prometheus.remote_write.local.receiver]
 }
 
-// Define where to send the metrics for storage
-prometheus.remote_write "local" {
-  endpoint {
-    // Send metrics to a locally running Prometheus instance
-    url = "http://kube-prometheus-stack-prometheus.monitoring.svc:9090/api/v1/write"
-  }
-}
-
 
 // ###############################
 // #### Logging Configuration ####
 // ###############################
+// #### Docker monitoring
+loki.source.kubernetes "k8s_logs" {
+  targets    = discovery.kubernetes.pods.targets
+  forward_to = [loki.write.local.receiver]
+}
+
 // Discover Docker containers and extract metadata.
 discovery.docker "linux" {
   host = "unix:///var/run/docker.sock"
@@ -137,6 +132,7 @@ loki.source.docker "default" {
   forward_to = [loki.write.local.receiver]
 }
 
+// #### Linux Monitoring
 // Collect logs from systemd journal for node_exporter integration
 loki.source.journal "logs_integrations_integrations_node_exporter_journal_scrape" {
   // Only collect logs from the last 24 hours
@@ -199,6 +195,18 @@ loki.source.file "logs_integrations_integrations_node_exporter_direct_scrape" {
   forward_to = [loki.write.local.receiver]
 }
 
+
+// ###############################
+// #### Targets Configuration ####
+// ###############################
+// Define where to send the metrics for storage
+prometheus.remote_write "local" {
+  endpoint {
+    // Send metrics to a locally running Prometheus instance
+    url = "http://kube-prometheus-stack-prometheus.monitoring.svc:9090/api/v1/write"
+  }
+}
+
 // Define where to send logs for storage
 loki.write "local" {
   endpoint {
@@ -206,4 +214,3 @@ loki.write "local" {
     url = "http://loki.monitoring.svc:3100/loki/api/v1/push"
     }
   }
-}
