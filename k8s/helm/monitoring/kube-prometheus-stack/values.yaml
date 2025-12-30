@@ -1,6 +1,13 @@
 grafana:
   enabled: true
   adminPassword: admin
+  resources:
+    requests:
+      cpu: 100m
+      memory: 256Mi
+    limits:
+      cpu: 500m
+      memory: 512Mi
   service:
     type: ClusterIP
   ingress:
@@ -18,6 +25,16 @@ prometheus:
     retention: 7d
     serviceMonitorSelectorNilUsesHelmValues: true
     enableRemoteWriteReceiver: true
+    # Prevent duplicate scraping (Alloy scrapes apps, Prometheus scrapes infra)
+    podMonitorSelectorNilUsesHelmValues: false
+    serviceMonitorSelectorNilUsesHelmValues: true
+    resources:
+      requests:
+        cpu: 500m
+        memory: 1Gi
+      limits:
+        cpu: 2
+        memory: 4Gi
     storageSpec:
       volumeClaimTemplate:
         spec:
