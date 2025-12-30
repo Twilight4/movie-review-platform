@@ -33,7 +33,37 @@ alloy:
     # -- Create a new ConfigMap for the config file.
     create: true
     # -- Content to assign to the new ConfigMap.  This is passed into `tpl` allowing for templating from values.
-    content: ''
+    content: '|
+      discovery.kubernetes "pods" {
+        role = "pod"
+      }
+
+      discovery.kubernetes "nodes" {
+        role = "node"
+      }
+
+      prometheus.scrape "k8s_pods" {
+        targets = discovery.kubernetes.pods.targets
+        forward_to = [prometheus.remote_write.local.receiver]
+      }
+
+      loki.source.kubernetes "k8s_logs" {
+        targets    = discovery.kubernetes.pods.targets
+        forward_to = [loki.write.local.receiver]
+      }
+
+      prometheus.remote_write "local" {
+        endpoint {
+          url = "http://prometheus.monitoring.svc:9090/api/v1/write"
+        }
+      }
+
+      loki.write "local" {
+        endpoint {
+          url = "http://loki.monitoring.svc:3100/loki/api/v1/push"
+          }
+        }
+      }'
 
     # -- Name of existing ConfigMap to use. Used when create is false.
     name: null
