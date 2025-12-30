@@ -28,3 +28,9 @@ tasks:
       - kubectl delete crd servicemonitors.monitoring.coreos.com
       - kubectl delete crd thanosrulers.monitoring.coreos.com
     desc: "Uninstall kube-prometheus-stack helm chart"
+  install-grafana-alloy:
+    cmds:
+      - helm repo add grafana https://grafana.github.io/helm-charts
+      - helm repo update
+      - helm upgrade --install grafana-alloy grafana/alloy --namespace alloy --create-namespace
+    desc: "Install grafana alloy helm chart"
