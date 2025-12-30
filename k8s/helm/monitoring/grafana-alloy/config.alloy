@@ -24,7 +24,7 @@ discovery.relabel "example" {
 // Configure a prometheus.scrape component to collect cadvisor metrics.
 prometheus.scrape "scraper" {
   targets    = discovery.relabel.example.output
-  forward_to = [ prometheus.remote_write.demo.receiver ]
+  forward_to = [ prometheus.remote_write.local.receiver ]
 
 
   scrape_interval = "10s"
