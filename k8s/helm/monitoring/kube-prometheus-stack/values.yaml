@@ -23,6 +23,8 @@ prometheus:
   enabled: true
   prometheusSpec:
     retention: 7d
+    interval: 15s
+    evaluationInterval: 15s
     serviceMonitorSelectorNilUsesHelmValues: true
     enableRemoteWriteReceiver: true
     # Prevent duplicate scraping (Alloy scrapes apps, Prometheus scrapes infra)
