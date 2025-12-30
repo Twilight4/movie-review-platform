@@ -49,3 +49,7 @@ tasks:
     desc: "Port forward web UI to localhost on port 9090"
     cmds:
       - kubectl port-forward svc/kube-prometheus-stack-prometheus -n monitoring 9090:9090
+  port-forward-alloy:
+    desc: "Port forward web UI to localhost on port 12345"
+    cmds:
+      - kubectl port-forward svc/alloy -n observability 12345:12345
