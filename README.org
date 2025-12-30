@@ -930,6 +930,20 @@ gcloud projects get-iam-policy <PROJECT_ID> \
     --filter="bindings.members:<SA_NAME>@<PROJECT_ID>.iam.gserviceaccount.com"
 #+end_src
 
+*** Verify Observability setup (Grafana / Prometheus / Alloy)
+#+begin_src shell
+# Check if pods are running for kube-prometheus-stack and loki
+kubectl get pods -n monitoring
+
+# Check if pods are running for alloy agent
+kubectl get pods -n observability
+
+# Verify it’s sending data by checking alloy logs (Look for: remote_write succeeded ; loki write succeeded)
+kubectl logs -n alloy daemonset/alloy
+
+
+#+end_src
+
 *** Verify GKE cluster and firestore
 **** Verify the service is working as expected
 #+begin_src shell
