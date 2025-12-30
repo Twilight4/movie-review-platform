@@ -15,7 +15,7 @@ tasks:
       - helm repo update
       - helm upgrade --install kube-prometheus-stack prometheus-community/kube-prometheus-stack --values=./kube-prometheus-stack/values.yaml --namespace monitoring --create-namespace
       - helm upgrade --install loki grafana/loki --namespace monitoring --create-namespace
-      - helm upgrade --install alloy grafana/alloy --values=./grafana-alloy/values.yaml --namespace observability --create-namespace
+      - helm upgrade --install alloy grafana/alloy --values=./grafana-alloy/values.yaml --set-file alloy.configMap.content=./grafana-alloy/config.alloy --namespace observability --create-namespace
     desc: "Install kube-prometheus-stack, loki and alloy helm charts"
   uninstall-monitoring:
     cmds:
