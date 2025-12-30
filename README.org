@@ -755,12 +755,6 @@ go-task --list-all
 # Deploy production cluster
 go-task api-node:deploy-production-cluster
 
-# Access argocd UI via port-forwarding the argocd-server
-go-task webui:port-forward-argocd
-
-# The login is 'admin', to retrieve the password then login to the web UI
-go-task webui:get-argocd-password
-
 # Delete production cluster
 go-task api-node:delete-production-cluster
 #+end_src
@@ -780,11 +774,6 @@ go-task monitoring:install-monitoring
 
 # Uninstall prometheus
 go-task monitoring:uninstall-monitoring
-
-# Accessing Prometheus and Grafana WebUI
-cd cicd/
-go-task webui:port-forward-grafana
-go-task webui:port-forward-prometheus
 #+end_src
 
 ** 5. Verify deployment
@@ -939,9 +928,19 @@ kubectl get pods -n monitoring
 kubectl get pods -n observability
 
 # Verify it’s sending data by checking alloy logs (Look for: remote_write succeeded ; loki write succeeded)
-kubectl logs -n alloy daemonset/alloy
+kubectl logs -n observability daemonset/alloy
 
+# Loki readiness
+kubectl get pods -n monitoring -l app.kubernetes.io/name=loki
 
+# Check prometheus targets & access Grafana WebUI
+cd k8s/helm/monitoring
+go-task port-forward-prometheus
+go-task port-forward-grafana
+
+# Access ArgoCD UI and get default password
+go-task port-forward-argocd
+go-task get-argocd-password
 #+end_src
 
 *** Verify GKE cluster and firestore
