@@ -32,52 +32,109 @@ This project demonstrates a full production-grade DevOps setup using modern tool
 
 ** Full Project Directory Structure
 #+begin_src shell
-full-devops-cycle-project/
-├── app/                → Application source code + Dockerfile
-│   ├── api-node/
-│   │   ├── tests/
-│   │   │   └── movies.test.js
-│   │   ├── src/
-│   │   │   ├── db/
-│   │   │   ├── routes/
-│   │   │   ├── app.js
-│   │   │   └── server.js
-│   │   ├── Taskfile.yaml
-│   │   ├── package.json
-│   │   ├── package-lock.json
-│   │   └── Dockerfile
+movie-review-platform
+├── terraform           → Infrastructure as Code (GCP)
+│   ├── tests
+│   │   └── bash
+│   │       ├── test-staging.sh
+│   │       └── test-production.sh
+│   ├── modules
+│   │   ├── workloads
+│   │   │   ├── variables.tf
+│   │   │   └── main.tf
+│   │   ├── iam
+│   │   │   ├── variables.tf
+│   │   │   ├── outputs.tf
+│   │   │   └── main.tf
+│   │   ├── gke
+│   │   │   ├── variables.tf
+│   │   │   ├── outputs.tf
+│   │   │   └── main.tf
+│   │   └── firestore
+│   │       ├── variables.tf
+│   │       └── main.tf
+│   ├── envs
+│   │   ├── staging
+│   │   │   ├── versions.tf
+│   │   │   ├── variables.tf
+│   │   │   ├── terraform.tfvars
+│   │   │   ├── resources.tf
+│   │   │   ├── providers.tf
+│   │   │   ├── main.tf
+│   │   │   └── backend.tf
+│   │   ├── production
+│   │   │   ├── versions.tf
+│   │   │   ├── variables.tf
+│   │   │   ├── terraform.tfvars
+│   │   │   ├── resources.tf
+│   │   │   ├── providers.tf
+│   │   │   ├── main.tf
+│   │   │   └── backend.tf
+│   │   └── Taskfile.yaml
 │   ├── Taskfile.yaml
-│   └── README.md
-│
-├── k8s/                → Deployment manifests for multi-env setup
-│   ├── overlays/
-│   │   ├── staging/
-│   │   │   ├── api-node/
-│   │   │   │   ├── patches/
+│   ├── delete-backend.sh
+│   └── backend.sh
+├── k8s-cluster-local      → Docs for Deploying cluster locally
+│   ├── kind-bind-mount-2
+│   │   └── hello-from-host
+│   ├── kind-bind-mount-1
+│   │   └── hello-from-host
+│   ├── Taskfile.yaml
+│   └── kind-config.yaml.TEMPLATE
+├── k8s                 → Deployment manifests for multi-env setup
+│   ├── overlays
+│   │   ├── staging
+│   │   │   ├── api-node
+│   │   │   │   ├── patches
+│   │   │   │   │   ├── Ingress.yaml
+│   │   │   │   │   ├── Hpa.yaml
+│   │   │   │   │   └── Deployment.yaml
 │   │   │   │   └── kustomization.yaml
 │   │   │   └── kustomization.yaml
-│   │   └── production/
-│   │       ├── api-node/
-│   │       │   ├── patches/
-│   │       │   └── kustomization.yaml
-│   │       └── kustomization.yaml
-│   ├── helm/           → Node + monitoring templates
-│   │   ├── monitoring/
-│   │   │   ├── kube-prometheus-stack/
-│   │   │   │   ├── templates/
+│   │   ├── production
+│   │   │   ├── api-node
+│   │   │   │   ├── patches
+│   │   │   │   │   ├── Ingress.yaml
+│   │   │   │   │   └── Deployment.yaml
+│   │   │   │   └── kustomization.yaml
+│   │   │   └── kustomization.yaml
+│   │   └── base
+│   │       └── api-node
+│   │           ├── manifests
+│   │           │   ├── serviceaccount.yaml
+│   │           │   ├── netpol.yaml
+│   │           │   ├── movie-api-service.yaml
+│   │           │   ├── movie-api-hpa.yaml
+│   │           │   ├── movie-api-deployment.yaml
+│   │           │   ├── kustomization.yaml
+│   │           │   ├── ingress.yaml
+│   │           │   └── configmap.yaml
+│   │           └── Taskfile.yaml
+│   ├── namespaces
+│   │   ├── staging.yaml
+│   │   ├── production.yaml
+│   │   ├── monitoring.yaml
+│   │   └── argocd.yaml
+│   ├── helm            → Node + monitoring templates
+│   │   ├── monitoring
+│   │   │   ├── kube-prometheus-stack
 │   │   │   │   ├── values.yaml
-│   │   │   │   └── Chart.yaml
-│   │   │   └── Taskfile.yaml
-│   │   ├── apps/
-│   │   │   └── api-node/
-│   │   │       ├── argocd-application/
+│   │   │   │   └── values-local-testing.yaml
+│   │   │   ├── grafana-alloy
+│   │   │   │   ├── values.yaml
+│   │   │   │   └── config.alloy
+│   │   │   ├── Taskfile.yaml
+│   │   │   └── README.org
+│   │   ├── apps
+│   │   │   └── api-node
+│   │   │       ├── argocd-application
 │   │   │       │   ├── templates
 │   │   │       │   │   └── application.yaml
 │   │   │       │   ├── values.yaml
 │   │   │       │   ├── values-staging.yaml
 │   │   │       │   └── Chart.yaml
-│   │   │       ├── api-node-helm-chart/
-│   │   │       │   ├── templates/
+│   │   │       ├── api-node-helm-chart
+│   │   │       │   ├── templates
 │   │   │       │   │   ├── serviceaccount.yaml
 │   │   │       │   │   ├── netpol.yaml
 │   │   │       │   │   ├── movie-api-service.yaml
@@ -91,81 +148,42 @@ full-devops-cycle-project/
 │   │   │       │   └── Chart.yaml
 │   │   │       └── Taskfile.yaml
 │   │   └── Taskfile.yaml
-│   ├── deploy-services/
-│   │   ├── api-node/
-│   │   │   ├── namespaces/
-│   │   │   ├── manifests/
-│   │   │   ├── hostname-staging.yaml
-│   │   │   └── hostname-production.yaml
-│   │   └── Taskfile.yaml
 │   └── Taskfile.yaml
-│
-├── k8s-cluster-local/      → Docs for Deploying cluster locally
-│   ├── kind-bind-mount-2
-│   ├── kind-bind-mount-1
+├── cicd                → GitOps - ArgoCD configuration
+│   ├── github-actions
+│   │   └── Taskfile.yaml
+│   ├── argocd-gitops
+│   │   └── apps
+│   │       ├── monitoring
+│   │       │   └── application.yaml
+│   │       └── api-node
+│   │           ├── staging
+│   │           │   └── application.yaml
+│   │           ├── production
+│   │           │   └── application.yaml
+│   │           └── Taskfile.yaml
+│   └── Taskfile.yaml
+├── app                 → Application source code + Dockerfile
+│   ├── api-node
+│   │   ├── tests
+│   │   │   └── movies.test.js
+│   │   ├── src
+│   │   │   ├── routes
+│   │   │   │   └── movies.js
+│   │   │   ├── db
+│   │   │   │   └── firestore.js
+│   │   │   ├── server.js
+│   │   │   └── app.js
+│   │   ├── Taskfile.yaml
+│   │   ├── package.json
+│   │   ├── package-lock.json
+│   │   └── Dockerfile
 │   ├── Taskfile.yaml
-│   └── kind-config.yaml.TEMPLATE
-│
-├── terraform/          → Infrastructure as Code (GCP)
-│  ├── modules/
-│  │   ├── gke/
-│  │   │   ├── variables.tf
-│  │   │   ├── outputs.tf
-│  │   │   └── main.tf
-│  │   ├── firestore/
-│  │   │   ├── variables.tf
-│  │   │   └── main.tf
-│  │   ├── iam/
-│  │   │   ├── outputs.tf
-│  │   │   └── main.tf
-│  │   └── workloads/
-│  │       ├── variables.tf
-│  │       └── main.tf
-│  ├── envs/
-│  │   ├── staging/
-│  │   │   ├── variables.tf
-│  │   │   ├── terraform.tfvars
-│  │   │   ├── main.tf
-│  │   │   ├── providers.tf
-│  │   │   ├── versions.tf
-│  │   │   ├── resources.tf
-│  │   │   └── backend.tf
-│  │   ├── production/
-│  │   │   ├── variables.tf
-│  │   │   ├── terraform.tfvars
-│  │   │   ├── main.tf
-│  │   │   ├── providers.tf
-│  │   │   ├── versions.tf
-│  │   │   ├── resources.tf
-│  │   │   └── backend.tf
-│  │   └── Taskfile.yaml
-│  ├── tests/
-│  │   └── bash/
-│  │       ├── test-staging.sh
-│  │       └── test-production.sh
-│  ├── Taskfile.yaml
-│  ├── delete-backend.sh
-│  └── backend.sh
-│
-├── cicd/            → GitOps - ArgoCD configuration
-│   ├── github-actions/
-│   │   └── Taskfile.yaml
-│   ├── argocd-gitops/
-│   │   ├── namespaces/
-│   │   │   └── argocd.yaml
-│   │   ├── clusters/
-│   │   │   ├── staging/
-│   │   │   │   └── application.yaml
-│   │   │   └── production/
-│   │   │       └── application.yaml
-│   │   └── Taskfile.yaml
-│   └── Taskfile.yaml
-│
+│   └── README.md
 ├── .github/            → CI/CD pipelines
 │   └── workflows/
 │       ├── ci.yaml
 │       └── cd.yaml
-│
 ├── Taskfile.yaml
 └── README.org
 #+end_src

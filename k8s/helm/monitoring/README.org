@@ -9,6 +9,7 @@ logs:
    - Upload the JSON file from
      [[https://grafana.com/api/dashboards/1860/revisions/37/download][here]]
    - Select the Prometheus data source and click Import
+3. Access Grafana Alloy UI at http://localhost:12345
 
 This community dashboard provides comprehensive system metrics including
 CPU, memory, disk, and network usage.
