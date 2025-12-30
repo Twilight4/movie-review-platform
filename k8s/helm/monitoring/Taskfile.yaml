@@ -32,5 +32,5 @@ tasks:
     cmds:
       - helm repo add grafana https://grafana.github.io/helm-charts
       - helm repo update
-      - helm upgrade --install grafana-alloy grafana/alloy --namespace alloy --create-namespace
+      - helm upgrade --install grafana-alloy grafana/alloy --values=./grafana-alloy/values.yaml --namespace alloy --create-namespace
     desc: "Install grafana alloy helm chart"
