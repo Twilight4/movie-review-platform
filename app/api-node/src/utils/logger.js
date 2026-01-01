@@ -5,7 +5,7 @@ const logFormat = winston.format.combine(
   winston.format.timestamp({ format: 'YYYY-MM-DD HH:mm:ss' }),
   winston.format.errors({ stack: true }),
   winston.format.splat(),
-  winston.format.json()
+  winston.format.json(),
 );
 
 // Create the logger
@@ -25,7 +25,7 @@ const logger = winston.createLogger({
             msg += ` ${JSON.stringify(meta)}`;
           }
           return msg;
-        })
+        }),
       ),
     }),
     // Write error logs to error.log file
