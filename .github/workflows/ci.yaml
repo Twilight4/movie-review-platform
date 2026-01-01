@@ -104,7 +104,7 @@ jobs:
             task update-production-image-tags NEW_TAG=${IMAGE_TAG}
 
       - name: Create Pull Request
-        uses: peter-evans/create-pull-request@v7.0.9
+        uses: peter-evans/create-pull-request@v8.0.0
         with:
           base: main
           token: ${{ secrets.PR_ACTION }}
