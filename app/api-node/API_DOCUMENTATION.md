@@ -458,14 +458,3 @@ LOG_LEVEL=debug npm start
 | LOG_LEVEL | info        | Logging level (debug, info, warn, error) |
 | NODE_ENV  | development | Environment (development, production)    |
 
----
-
-## Next Steps
-
-- [ ] Add authentication (JWT)
-- [ ] Add pagination for GET /movies
-- [ ] Add movie genres/categories
-- [ ] Add movie descriptions
-- [ ] Add user ratings (multiple users)
-- [ ] Add OpenAPI/Swagger spec
-
