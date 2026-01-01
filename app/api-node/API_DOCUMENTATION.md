@@ -2,13 +2,24 @@
 
 ## Overview
 
-A simple REST API for managing movie reviews with ratings.
+A simple REST API case study for managing movie reviews with ratings.
 
 **Base URL**: `http://localhost:3000`
 
 **Version**: 1.0.0
 
 ---
+
+## Features
+- ✅ RESTful API for movie reviews
+- ✅ Input validation with express-validator
+- ✅ Structured logging with Winston
+- ✅ Comprehensive test coverage (Jest)
+- ✅ Code quality tools (ESLint, Prettier)
+- ✅ Pre-commit hooks (Husky + lint-staged)
+- ✅ Security scanning (Trivy in CI)
+- ✅ Automated dependency updates (Dependabot)
+
 
 ## Prerequisities
 Need to export two variables first and firestore db has to be running already in GCP:
@@ -457,3 +468,4 @@ LOG_LEVEL=debug npm start
 - [ ] Add movie descriptions
 - [ ] Add user ratings (multiple users)
 - [ ] Add OpenAPI/Swagger spec
+
