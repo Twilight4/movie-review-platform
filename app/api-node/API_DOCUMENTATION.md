@@ -11,6 +11,7 @@ A simple REST API case study for managing movie reviews with ratings.
 ---
 
 ## Features
+
 - ✅ RESTful API for movie reviews
 - ✅ Input validation with express-validator
 - ✅ Structured logging with Winston
@@ -20,9 +21,10 @@ A simple REST API case study for managing movie reviews with ratings.
 - ✅ Security scanning (Trivy in CI)
 - ✅ Automated dependency updates (Dependabot)
 
-
 ## Prerequisities
+
 Need to export two variables first and firestore db has to be running already in GCP:
+
 ```bash
 # Project ID created with terraform and collection name
 export FIRESTORE_PROJECT_ID=movie-review-platform8451
@@ -457,4 +459,3 @@ LOG_LEVEL=debug npm start
 | PORT      | 3000        | Server port                              |
 | LOG_LEVEL | info        | Logging level (debug, info, warn, error) |
 | NODE_ENV  | development | Environment (development, production)    |
-
