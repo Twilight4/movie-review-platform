@@ -226,7 +226,7 @@ All files |   85.5  |   75.2   |   90.1  |   86.3  |
 
 ---
 
-## 🚨 CI/CD Pipeline
+## 🚨 CI Pipeline
 
 When you push code, GitHub Actions runs:
 
@@ -236,39 +236,15 @@ When you push code, GitHub Actions runs:
 4. **Run Prettier check** ❌ Fails if not formatted
 5. **Run tests** ❌ Fails if tests don't pass
 6. **Build Docker image**
-7. **Scan with Trivy** ⚠️ Warns on vulnerabilities
+7. **Pushes Docker images to GHCR**
+8. **Updates the tags version for docker images inside k8s configs**
+9. **Creates a PR with the image tag changes**
 
 ### View CI results
 
 - Go to GitHub → Actions tab
 - Click on your workflow run
 - Check each job's logs
-
----
-
-## 🔐 Security Best Practices
-
-### Dependabot PRs
-
-1. Review the changelog
-2. Check if tests pass
-3. Merge if safe
-
-### Trivy Findings
-
-1. Check severity (CRITICAL > HIGH > MEDIUM)
-2. Update vulnerable packages: `npm update`
-3. Or update base Docker image
-
-### Never commit secrets
-
-```bash
-# Bad ❌
-API_KEY = "sk_live_abc123..."
-
-# Good ✅
-API_KEY = process.env.API_KEY
-```
 
 ---
 
@@ -341,7 +317,6 @@ npm test -- --verbose
 ## 📖 More Documentation
 
 - [API_DOCUMENTATION.md](API_DOCUMENTATION.md) - Complete API reference
-- [IMPROVEMENTS_SUMMARY.md](../../IMPROVEMENTS_SUMMARY.md) - What was added and why
 
 ---
 
