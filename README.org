@@ -1089,5 +1089,6 @@ Grafana, Prometheus:
 - [X] Prometheus data source
 - [X] Alertmanager deployment
 - [X] Node Exporter metrics for system performance monitoring
+- [X] Docker monitoring metrics
 - [X] System logs collection with Loki
 - [X] Persistent storage for dashboards
