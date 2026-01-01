@@ -370,6 +370,7 @@ If you want to use the *pre-configured CI/CD pipeline* in this repository, you m
 
 *Repository Variables*:
 - =GH_USERNAME= – GitHub username associated with the GHCR account
+- =PROJECT_ID= – GCP project name you deployed
 
 Without these values configured, the CI/CD pipeline will fail.
 
