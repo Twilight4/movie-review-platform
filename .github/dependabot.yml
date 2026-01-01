@@ -1,0 +1,64 @@
+# Dependabot configuration
+# This tool automatically checks for dependency updates and creates PRs
+# Learn more: https://docs.github.com/en/code-security/dependabot
+
+version: 2
+updates:
+  # Monitor npm dependencies in the Node.js API
+  - package-ecosystem: "npm"
+    directory: "/app/api-node"
+    schedule:
+      interval: "weekly"  # Check every week
+      day: "monday"       # On Mondays
+    open-pull-requests-limit: 5  # Max 5 PRs at a time
+    labels:
+      - "dependencies"
+      - "automated"
+    # Group minor and patch updates together to reduce PR noise
+    groups:
+      development-dependencies:
+        dependency-type: "development"
+        update-types:
+          - "minor"
+          - "patch"
+      production-dependencies:
+        dependency-type: "production"
+        update-types:
+          - "patch"
+
+  # Monitor GitHub Actions versions
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    labels:
+      - "github-actions"
+      - "automated"
+
+  # Monitor Terraform provider versions
+  - package-ecosystem: "terraform"
+    directory: "/terraform/envs/staging"
+    schedule:
+      interval: "weekly"
+    labels:
+      - "terraform"
+      - "infrastructure"
+      - "automated"
+
+  - package-ecosystem: "terraform"
+    directory: "/terraform/envs/production"
+    schedule:
+      interval: "weekly"
+    labels:
+      - "terraform"
+      - "infrastructure"
+      - "automated"
+
+  # Monitor Docker base images
+  - package-ecosystem: "docker"
+    directory: "/app/api-node"
+    schedule:
+      interval: "weekly"
+    labels:
+      - "docker"
+      - "automated"
