@@ -304,7 +304,7 @@ The Terraform Bash test script:
 - Performs end-to-end validation with a health-check URL to ensure applications are fully functional
 
 *** CI/CD
-- Build, test pipelines using GitHub Actions
+- Build, test, check formatting and find bugs in application code in CI pipeline
 - Docker image building and pushing to GitHub Container Registry (GHCR)
 - Environment-specific deployments for staging and production
 - Automated application deployment pipeline, including:
@@ -317,10 +317,17 @@ The Terraform Bash test script:
 - Automated Kubernetes deployments managed with ArgoCD
 - Declarative Helm charts for applications and environment-specific configuration
 - Git-driven versioning and rollback of deployments
+- Dependabot Configuration
 
 *** Monitoring and Logging
-- Prometheus: metrics
-- Grafana: dashboards
+- Prometheus as data source
+- Grafana for dashboards
+- Grafana Alloy agent
+- Alertmanager 
+- Node Exporter metrics
+- Docker monitoring metrics
+- System logs collection with Loki
+- Persistent storage for dashboards
 
 *** Security
 - Kubernetes Service Account (movie-api-sa) is mapped to GCP Service Account
