@@ -1,16 +1,16 @@
-const admin = require("firebase-admin");
+const admin = require('firebase-admin');
 
 /**
  * Configuration from environment variables (ConfigMap + Secret)
  */
 const FIRESTORE_PROJECT_ID = process.env.FIRESTORE_PROJECT_ID;
-const FIRESTORE_COLLECTION = process.env.FIRESTORE_COLLECTION || "movies";
+const FIRESTORE_COLLECTION = process.env.FIRESTORE_COLLECTION || 'movies';
 
 /**
  * Fail fast if misconfigured
  */
 if (!FIRESTORE_PROJECT_ID) {
-  throw new Error("Missing FIRESTORE_PROJECT_ID");
+  throw new Error('Missing FIRESTORE_PROJECT_ID');
 }
 
 let db = null;
@@ -23,7 +23,7 @@ let collection = null;
 function initFirestore() {
   if (db && collection) return { db, collection };
 
-  console.log("🔌 Connecting to Firestore...");
+  console.log('🔌 Connecting to Firestore...');
 
   if (!admin.apps.length) {
     admin.initializeApp({
@@ -35,7 +35,7 @@ function initFirestore() {
   db = admin.firestore();
   collection = db.collection(FIRESTORE_COLLECTION);
 
-  console.log("✅ Firestore initialized:", {
+  console.log('✅ Firestore initialized:', {
     project: FIRESTORE_PROJECT_ID,
     collection: FIRESTORE_COLLECTION,
   });
@@ -67,7 +67,7 @@ async function getItem(id) {
 async function queryItems(field, operator, value) {
   initFirestore();
   const snapshot = await collection.where(field, operator, value).get();
-  return snapshot.docs.map(doc => ({
+  return snapshot.docs.map((doc) => ({
     id: doc.id,
     ...doc.data(),
   }));
