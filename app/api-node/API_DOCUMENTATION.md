@@ -10,6 +10,14 @@ A simple REST API for managing movie reviews with ratings.
 
 ---
 
+## Prerequisities
+Need to export two variables first and firestore db has to be running already in GCP:
+```bash
+# Project ID created with terraform and collection name
+export FIRESTORE_PROJECT_ID=movie-review-platform8451
+export FIRESTORE_COLLECTION=movies
+```
+
 ## Endpoints
 
 ### Health Check
