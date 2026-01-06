@@ -32,6 +32,14 @@ hpa:
 ingress:
   className: gce
 
+# GCP Configuration
+gcp:
+  projectId: "movie-review-platform8451"  # Override in CI/CD
+
+# Pod Disruption Budget - staging allows zero availability briefly
+pdb:
+  minAvailable: 0
+
 config:
-  FIRESTORE_PROJECT_ID: "movie-review-platform8451"
+  FIRESTORE_PROJECT_ID: "{{ .Values.gcp.projectId }}"
   FIRESTORE_COLLECTION: "movies"
