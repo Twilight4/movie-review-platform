@@ -1,7 +1,7 @@
 module "gke" {
   source = "../../modules/gke"
 
-  project_id   = "movie-review-platform8451"
+  project_id   = var.project_id
   cluster_name = "${var.prefix}-gke"
   prefix       = "stg"
   region       = var.region
@@ -16,7 +16,7 @@ module "gke" {
 
 module "firestore" {
   source     = "../../modules/firestore/"
-  project_id = "movie-review-platform8451"
+  project_id = var.project_id
 
   database_name = "${var.prefix}-firestore"
   prefix        = "stg"
@@ -29,12 +29,12 @@ module "firestore" {
 
 module "iam" {
   source     = "../../modules/iam/"
-  project_id = "movie-review-platform8451"
+  project_id = var.project_id
 }
 
 module "workloads" {
   source     = "../../modules/workloads/"
-  project_id = "movie-review-platform8451"
+  project_id = var.project_id
 
   gcp_service_account_name = module.iam.service_account_name
   depends_on               = [module.gke]
