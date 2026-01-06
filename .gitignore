@@ -11,3 +11,9 @@ terraform/envs/production/.terraform.lock.hcl
 terraform/envs/production/.terraform/
 terraform/envs/staging/plan.tfplan
 terraform/envs/production/plan.tfplan
+
+# Terraform state files - CRITICAL: Never commit these!
+*.tfstate
+*.tfstate.*
+*.tfstate.backup
+.terraform.tfstate.lock.info
