@@ -2,6 +2,7 @@
 resource "google_service_account" "gke_nodes" {
   account_id   = "${var.prefix}-gke-nodes"
   display_name = "GKE Node Service Account"
+  description  = "Service account for GKE nodes in ${var.prefix} environment"
 }
 
 # Create container cluster itself
@@ -31,6 +32,11 @@ resource "google_container_cluster" "primary" {
 
   # allocate Pod + Service IP ranges automatically (Autopilot-style IP) via VPC-native routing
   ip_allocation_policy {}
+
+  # Resource labels for tracking and cost management
+  resource_labels = {
+    component = "gke-cluster"
+  }
 }
 
 # Create node pool for container cluster using that SA
@@ -51,5 +57,9 @@ resource "google_container_node_pool" "primary_nodes" {
     oauth_scopes = [
       "https://www.googleapis.com/auth/cloud-platform"
     ]
+
+    labels = {
+      component = "gke-node"
+    }
   }
 }

@@ -11,3 +11,7 @@ terraform/envs/production/.terraform.lock.hcl
 terraform/envs/production/.terraform/
 terraform/envs/staging/plan.tfplan
 terraform/envs/production/plan.tfplan
+*.tfstate
+*.tfstate.*
+*.tfstate.backup
+.terraform.tfstate.lock.info
