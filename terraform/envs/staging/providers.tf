@@ -4,10 +4,10 @@ provider "google" {
   zone    = var.zone
 
   default_labels = {
-    environment  = "staging"
-    managed_by   = "terraform"
-    project      = "movie-review-platform"
-    team         = "devops"
+    environment = "staging"
+    managed_by  = "terraform"
+    project     = "movie-review-platform"
+    team        = "devops"
   }
 }
 
