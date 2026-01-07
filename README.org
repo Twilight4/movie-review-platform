@@ -866,6 +866,11 @@ go-task gcp:09-verify-all
 # Check if the cluster is running
 gcloud container clusters list --region <REGION>
 
+# Check GKE cluster labels
+gcloud container clusters describe stg-gke \
+  --region=europe-central2 \
+  --format="value(resourceLabels)"
+
 # Get info about the cluster
 gcloud container clusters describe <CLUSTER_NAME> --region <REGION>
 
@@ -964,6 +969,10 @@ kubectl get pods -n monitoring
 # Check if pods are running for alloy agent
 kubectl get pods -n observability
 
+# Check Kubernetes resources
+kubectl get pdb -A
+kubectl get prometheusrule -n monitoring
+
 # Verify Alloy ConfigMap content
 kubectl get configmap alloy -n observability -o yaml
 
@@ -982,6 +991,14 @@ go-task port-forward-alloy           # validate enabled components
 # Access ArgoCD UI and get default password
 go-task port-forward-argocd
 go-task get-argocd-password
+
+### Test Monitoring Alerts
+# Test pod restart alert (optional)
+kubectl delete pod -n staging -l app=movie-api
+
+# Watch for alerts in Prometheus - Open: http://localhost:9090/alerts
+# Check AlertManager - Open: http://localhost:9093
+kubectl port-forward -n monitoring svc/kube-prometheus-stack-alertmanager 9093:9093
 #+end_src
 
 *** Verify GKE cluster and firestore
