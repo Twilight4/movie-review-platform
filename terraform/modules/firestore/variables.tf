@@ -1,21 +1,24 @@
-variable "prefix" {
-  type = string
-}
 variable "region" {
-  type = string
+  description = "GCP region for Firestore database"
+  type        = string
 }
 variable "type" {
-  type = string
+  description = "Firestore database type (FIRESTORE_NATIVE or DATASTORE_MODE)"
+  type        = string
 }
 variable "database_name" {
-  type = string
+  description = "Name of the Firestore database"
+  type        = string
 }
 variable "deletion_policy" {
-  type = string
+  description = "Deletion policy for the database (DELETE or ABANDON)"
+  type        = string
 }
 variable "delete_protection_state" {
-  type = string
+  description = "Delete protection state (DELETE_PROTECTION_ENABLED or DELETE_PROTECTION_DISABLED)"
+  type        = string
 }
 variable "project_id" {
-  type = string
+  description = "GCP project ID"
+  type        = string
 }

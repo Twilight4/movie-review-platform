@@ -78,11 +78,11 @@ tasks:
     desc: "Sanity-check all GCP & GKE resources for the active environment"
     cmds:
       - |
-         echo "===== ACTIVE CONTEXT ====="
-         echo "Project        : $PROJECT_NAME"
-         echo "Cluster        : $CLUSTER_NAME"
-         echo "Region         : $GCP_REGION"
-         echo "Zone           : $GCP_ZONE"
+        echo "===== ACTIVE CONTEXT ====="
+        echo "Project        : $PROJECT_NAME"
+        echo "Cluster        : $CLUSTER_NAME"
+        echo "Region         : $GCP_REGION"
+        echo "Zone           : $GCP_ZONE"
 
       - echo "\n===== CLUSTER INFO  ====="
       - kubectl cluster-info
@@ -92,8 +92,8 @@ tasks:
 
       - echo "\n===== GKE NODE POOLS ====="
       - gcloud container node-pools list \
-          --cluster "$CLUSTER_NAME" \
-          --region "$GCP_REGION"
+        --cluster "$CLUSTER_NAME" \
+        --region "$GCP_REGION"
 
       - echo "\n===== KUBERNETES NODES ====="
       - kubectl get nodes -o wide
@@ -172,4 +172,3 @@ tasks:
     cmds:
       - gcloud container clusters get-credentials ${CLUSTER_NAME} --region ${GCP_REGION}
     desc: "Connect to the GKE cluster"
-

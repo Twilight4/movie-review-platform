@@ -4,6 +4,7 @@ module "gke" {
   project_id   = var.project_id
   cluster_name = "${var.prefix}-gke"
   region       = var.region
+  prefix       = var.prefix
 
   network           = google_compute_network.gke_vpc.id
   subnetwork        = google_compute_subnetwork.gke_subnet.id

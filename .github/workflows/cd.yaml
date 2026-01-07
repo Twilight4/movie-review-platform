@@ -47,7 +47,7 @@ jobs:
 
       - name: Terraform Plan
         id: plan
-        if: github.event_name == 'pull_request'        # Issue terraform plan only for pull requests
+        if: github.event_name == 'pull_request' # Issue terraform plan only for pull requests
         run: terraform plan -no-color
         continue-on-error: true
 
@@ -63,15 +63,15 @@ jobs:
             #### Terraform Initialization ⚙️\`${{ steps.init.outcome }}\`
             #### Terraform Plan 📖\`${{ steps.plan.outcome }}\`
             <details><summary>Show Plan</summary>
-            
+
             \`\`\`
             ${process.env.PLAN}
             \`\`\`
-            
+
             </details>
-            
+
             *Pusher: @${{ github.actor }}, Action: \`${{ github.event_name }}\`*`;
-              
+
             github.rest.issues.createComment({
               issue_number: context.issue.number,
               owner: context.repo.owner,
@@ -110,17 +110,17 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v6
-  
+
       # --- Tools ---
       - name: Install kubectl
         uses: azure/setup-kubectl@v4
-  
+
       - name: Install Helm
         uses: azure/setup-helm@v4
 
       - name: Install Task
         uses: arduino/setup-task@v2
-        
+
       - name: Install yq
         run: |
           sudo snap install yq
@@ -130,19 +130,19 @@ jobs:
         uses: google-github-actions/auth@v3
         with:
           credentials_json: ${{ secrets.GCP_SA_KEY }}
-  
+
       - name: GCP get credentials
         uses: google-github-actions/get-gke-credentials@v3
         with:
           cluster_name: ${{ secrets.GKE_CLUSTER_NAME }}
           location: ${{ secrets.GKE_REGION }}
-  
+
       # The KUBECONFIG env var is automatically exported and picked up by kubectl
       - name: Kubectl validate cluster
         run: |
           kubectl cluster-info
           kubectl get ns
-  
+
       # ==========================================================
       # RENDER (FAIL FAST)
       # ==========================================================
@@ -152,13 +152,13 @@ jobs:
         if: github.ref == 'refs/heads/main'
         run: |
           task argocd:01-render-staging
-          
+
       - name: Render ArgoCD production applications
         working-directory: k8s/helm/apps/api-node
         if: startsWith(github.ref, 'refs/tags/')
         run: |
           task argocd:01-render-production
-  
+
       # ==========================================================
       # APPLY GITOPS ARGOCD ONLY IF RENDER PASSED
       # ==========================================================
@@ -167,14 +167,14 @@ jobs:
         working-directory: k8s/helm/apps/api-node
         run: |
           task argocd:00-install-argocd-applicationset
-  
+
       # Apply staging env manifests for a push to main
       - name: Apply ArgoCD staging applications
         working-directory: k8s/helm/apps/api-node
         if: github.ref == 'refs/heads/main'
         run: |
           task argocd:02-install-staging
-  
+
       # Apply production env manifests for a release tag
       - name: Apply ArgoCD production applications
         working-directory: k8s/helm/apps/api-node

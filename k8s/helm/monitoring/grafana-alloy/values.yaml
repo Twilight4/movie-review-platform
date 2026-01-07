@@ -121,14 +121,13 @@ alloy:
   securityContext: {}
 
   # -- Resource requests and limits to apply to the Grafana Alloy container.
-  resources: {
+  resources:
     requests:
       cpu: 100m
       memory: 128Mi
     limits:
       cpu: 500m
       memory: 256Mi
-  }
 
   # -- Set lifecycle hooks for the Grafana Alloy container.
   lifecycle: {}
@@ -406,19 +405,20 @@ controller:
       resourcePolicy:
         # -- Configures the container policies for the Vertical Pod Autoscaler.
         containerPolicies:
-        - containerName: alloy
-          # -- The controlled resources for the Vertical Pod Autoscaler.
-          controlledResources:
-          - cpu
-          - memory
-          # -- The controlled values for the Vertical Pod Autoscaler. Needs to be either RequestsOnly or RequestsAndLimits.
-          controlledValues: "RequestsAndLimits"
-          # -- The maximum allowed values for the pods.
-          maxAllowed: {}
-          # cpu: 200m
-          # memory: 100Mi
-          # -- Defines the min allowed resources for the pod
-          minAllowed: {}
+          - containerName: alloy
+            # -- The controlled resources for the Vertical Pod Autoscaler.
+            controlledResources:
+              - cpu
+              - memory
+            # -- The controlled values for the Vertical Pod Autoscaler.
+            # Needs to be either RequestsOnly or RequestsAndLimits.
+            controlledValues: "RequestsAndLimits"
+            # -- The maximum allowed values for the pods.
+            maxAllowed: {}
+            # cpu: 200m
+            # memory: 100Mi
+            # -- Defines the min allowed resources for the pod
+            minAllowed: {}
           # cpu: 200m
           # memory: 100Mi
 

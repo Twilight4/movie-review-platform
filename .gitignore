@@ -5,12 +5,9 @@ terraform/backend.sh
 terraform/delete-backend.sh
 terraform/Taskfile.yaml
 terraform/envs/Taskfile.yaml
-terraform/envs/staging/.terraform.lock.hcl
-terraform/envs/staging/.terraform/
-terraform/envs/production/.terraform.lock.hcl
-terraform/envs/production/.terraform/
-terraform/envs/staging/plan.tfplan
-terraform/envs/production/plan.tfplan
+terraform/**/.terraform/
+terraform/**/.terraform.lock.hcl
+*plan.tfplan
 *.tfstate
 *.tfstate.*
 *.tfstate.backup

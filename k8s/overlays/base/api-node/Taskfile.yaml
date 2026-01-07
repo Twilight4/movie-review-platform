@@ -27,14 +27,14 @@ tasks:
 
   02-deploy-staging:
     cmds:
-      - kubectl create namespace ingress-nginx --dry-run=client -o yaml | kubectl apply -f - 
+      - kubectl create namespace ingress-nginx --dry-run=client -o yaml | kubectl apply -f -
       - kubectl apply -f ../../../namespaces/staging.yaml
       - kubectl apply -k ../staging
     desc: "Deploy staging configuration"
 
   02-deploy-production:
     cmds:
-      - kubectl create namespace ingress-nginx --dry-run=client -o yaml | kubectl apply -f - 
+      - kubectl create namespace ingress-nginx --dry-run=client -o yaml | kubectl apply -f -
       - kubectl apply -f ../../../namespaces/production.yaml
       - kubectl apply -k ../production
     desc: "Deploy production configuration"

@@ -4,7 +4,7 @@ vars:
   DATABASE_URL: "postgres://postgres:foobarbaz@localhost:5432/postgres"
   IMAGE_NAME: api-node
   IMAGE_REPO: "ghcr.io/twilight4"
-  IMAGE_TAG: ''
+  IMAGE_TAG: ""
 
 tasks:
   generate-version-tag:

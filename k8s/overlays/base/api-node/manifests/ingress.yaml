@@ -7,10 +7,10 @@ spec:
   rules:
     - http:
         paths:
-        - path: /
-          pathType: ImplementationSpecific
-          backend:
-            service:
-              name: movie-api-service
-              port:
-                number: 80
+          - path: /
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name: movie-api-service
+                port:
+                  number: 80

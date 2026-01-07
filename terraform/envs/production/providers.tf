@@ -10,4 +10,3 @@ provider "google" {
     team        = "devops"
   }
 }
-

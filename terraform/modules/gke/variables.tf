@@ -1,30 +1,40 @@
 variable "prefix" {
-  type = string
+  description = "Prefix for resource naming"
+  type        = string
 }
 variable "project_id" {
-  type = string
+  description = "GCP project ID"
+  type        = string
 }
 variable "cluster_name" {
-  type = string
+  description = "Name of the GKE cluster"
+  type        = string
 }
 variable "region" {
-  type = string
+  description = "GCP region for the GKE cluster"
+  type        = string
 }
 variable "network" {
-  type = string
+  description = "VPC network for the GKE cluster"
+  type        = string
 }
 variable "subnetwork" {
-  type = string
+  description = "VPC subnetwork for the GKE cluster"
+  type        = string
 }
 variable "node_count" {
-  type = string
+  description = "Number of nodes in the default node pool"
+  type        = string
 }
 variable "node_machine_type" {
-  type = string
+  description = "Machine type for GKE nodes"
+  type        = string
 }
 variable "disk_size_gb" {
-  type = string
+  description = "Disk size in GB for each node"
+  type        = string
 }
 variable "disk_type" {
-  type = string
+  description = "Disk type for nodes (pd-standard, pd-balanced, or pd-ssd)"
+  type        = string
 }

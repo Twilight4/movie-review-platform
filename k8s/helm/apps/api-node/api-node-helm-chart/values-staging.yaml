@@ -34,7 +34,7 @@ ingress:
 
 # GCP Configuration
 gcp:
-  projectId: "movie-review-platform8451"  # Override in CI/CD
+  projectId: "movie-review-platform8451" # Override in CI/CD
 
 # Pod Disruption Budget - staging allows zero availability briefly
 pdb:

@@ -214,7 +214,7 @@ movie-review-platform
                                        │ Build Docker Image │
                                        └────────┬───────────┘
                                                 │ push
-                                                ▼ 
+                                                ▼
                                       ┌──────────────────────┐
                                       │ GCR (Artifact Reg.)  │
                                       └─────────┬────────────┘
@@ -223,7 +223,7 @@ movie-review-platform
                                 ┌─────────────────────────────────┐
                                 │  CD Pipeline (Terraform / Helm) │
                                 └───────────────┬─────────────────┘
-                                                │ 
+                                                │
                                                 ▼
                             ┌──────────────────────────────────────────┐
                             │  Terraform: Deploys Cloud Infrastructure │
@@ -328,7 +328,7 @@ The Terraform Bash test script:
 - Prometheus as data source
 - Grafana for dashboards
 - Grafana Alloy agent
-- Alertmanager 
+- Alertmanager
 - Node Exporter metrics
 - Docker monitoring metrics
 - System logs collection with Loki
@@ -418,7 +418,7 @@ gcloud billing projects describe <PROJECT_ID>
 gcloud billing projects link <PROJECT_ID> --billing-account=<ACCOUNT_ID>
 
 # Manually enable critical APIs which can not be enabled by Terraform unless they are already enabled
-go-task gcp:02-enable-apis 
+go-task gcp:02-enable-apis
 
 # Set the default region and zone
 gcloud config set compute/region <GCP_REGION>
@@ -491,7 +491,7 @@ sed -i 's/^  type: .*/  type: ClusterIP/' k8s/overlays/base/api-node/manifests/m
 cd k8s-cluster-local
 go-task --list-all
 
-# Start cluster 
+# Start cluster
 go-task minikube:01-create-cluster
 
 # Enable ingress add-on
@@ -524,7 +524,7 @@ kubectl get nodes
 
 # The cloud-provider-kind tool enables to run load-balancers within the kind cluster so we'll be able to access it from the host
 # when we'll deploy a service with kind: LoadBalancer, install it when you want to deploy LoadBalancer services
-#go-task kind:03-run-cloud-provider-kind  
+#go-task kind:03-run-cloud-provider-kind
 
 # Delete the cluster
 go-task kind:04-delete-cluster
@@ -710,8 +710,8 @@ go-task gcp:01-init-cli          # to run gcloud init for automated setup
 go-task gcp:07-create-all
 go-task gcp:08-connect-to-cluster
 
-# NOTE: If you have deployed additional resources (such as load balancers) that reference the VPC/Subnets/Etc... 
-# you may need to manually clean up those resources in order for 'go-task gcp:09-clean-up' command to succeed. 
+# NOTE: If you have deployed additional resources (such as load balancers) that reference the VPC/Subnets/Etc...
+# you may need to manually clean up those resources in order for 'go-task gcp:09-clean-up' command to succeed.
 # You should also verify that you have cleaned up all resources to avoid unwanted costs.
 
 # Connect to the cluster
@@ -814,6 +814,11 @@ go-task monitoring:uninstall-monitoring
 Clusters/Node Pools:
 - Navigate to Kubernetes Engine → Clusters
 - Click on a specific cluster → Node pools tab
+
+Verify labels in GCP Console:
+- Go to GKE > Clusters > Your cluster
+- Check "Labels" section
+- Should see: =environment=, =managed_by=, =project=, =team=
 
 **** Compute Engine
 VM Instances/Disks/Networks & Subnets/Firewall Rules:
@@ -970,7 +975,7 @@ kubectl get pods -n monitoring -l app.kubernetes.io/name=loki
 
 # Check prometheus targets & access Grafana WebUI
 cd k8s/helm/monitoring
-go-task port-forward-prometheus      # confirm targets are up at http://localhost:9090/targets
+go-task port-forward-prometheus      # confirm targets are up at http://localhost:9090/targets, for alerts: http://localhost:9090/alerts
 go-task port-forward-grafana
 go-task port-forward-alloy           # validate enabled components
 
@@ -1043,7 +1048,7 @@ export GOOGLE_APPLICATION_CREDENTIALS=/path/to/service-account-key.json
 # Dry-run first (STRONGLY RECOMMENDED)
 gcp-nuke run \
   --config test-config.yaml \
-  --project-id <PROJECT_NAME> 
+  --project-id <PROJECT_NAME>
 
 # Execute destructive cleanup
 gcp-nuke run \
@@ -1083,7 +1088,7 @@ Kubernetes:
 - [X] Implement network policy for GCP database
 - [X] Implement helm charts packaging and templating with namespace/env separation
 - [X] Automated Kubernetes deployments with ArgoCD
-- [X] Git-driven versioning and rollbacks 
+- [X] Git-driven versioning and rollbacks
 
 Terraform:
 - [X] backend config

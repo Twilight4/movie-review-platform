@@ -23,11 +23,11 @@ ingress:
 
 # GCP Configuration
 gcp:
-  projectId: "movie-review-platform8451"  # Override in CI/CD or values-*.yaml
+  projectId: "movie-review-platform8451" # Override in CI/CD or values-*.yaml
 
 # Pod Disruption Budget
 pdb:
-  minAvailable: 1  # Ensure at least 1 pod is available during disruptions
+  minAvailable: 1 # Ensure at least 1 pod is available during disruptions
 
 config:
   FIRESTORE_PROJECT_ID: "{{ .Values.gcp.projectId }}"

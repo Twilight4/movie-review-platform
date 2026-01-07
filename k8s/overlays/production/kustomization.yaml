@@ -3,5 +3,5 @@ kind: Kustomization
 namespace: production
 resources:
   - api-node
-  #- client-react
-  #- load-generator-python
+  # - client-react
+  # - load-generator-python

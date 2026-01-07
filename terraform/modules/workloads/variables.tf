@@ -1,6 +1,8 @@
 variable "project_id" {
-  type = string
+  description = "GCP project ID"
+  type        = string
 }
 variable "gcp_service_account_name" {
-  type = string
+  description = "GCP service account name for workload identity binding"
+  type        = string
 }

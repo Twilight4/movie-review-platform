@@ -33,6 +33,13 @@ repos:
       - id: shellcheck
         args: [--severity=warning]
 
+  # Add helm-specific linting
+  - repo: https://github.com/gruntwork-io/pre-commit
+    rev: v0.1.23
+    hooks:
+      - id: helmlint
+        files: ^k8s/helm/.*/(Chart\.yaml|values\.yaml)$
+
   # General file checks
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v4.6.0
@@ -41,6 +48,7 @@ repos:
       - id: end-of-file-fixer
       - id: check-yaml
         args: [--allow-multiple-documents]
+        exclude: '^k8s/helm/'
       - id: check-json
       - id: check-added-large-files
         args: [--maxkb=1000]

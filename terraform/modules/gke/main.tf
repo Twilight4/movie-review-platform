@@ -1,3 +1,13 @@
+terraform {
+  required_version = ">= 1.0"
+  required_providers {
+    google = {
+      source  = "hashicorp/google"
+      version = ">= 4.0"
+    }
+  }
+}
+
 # Create SA for GKE cluster
 resource "google_service_account" "gke_nodes" {
   account_id   = "${var.prefix}-gke-nodes"

@@ -16,7 +16,7 @@ tasks:
       - kubectl apply -f ../../../../k8s/namespaces/production.yaml
       - kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
       - kubectl apply -f production/application.yaml
-      
+
   delete-staging-cluster:
     desc: "Deploy argocd gitops staging target"
     cmds:

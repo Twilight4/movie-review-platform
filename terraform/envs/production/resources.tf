@@ -17,7 +17,7 @@ resource "google_compute_firewall" "gke_internal" {
   name    = "${var.prefix}-gke-internal"
   network = google_compute_network.gke_vpc.name
 
-  allows {
+  allow {
     protocol = "tcp"
     ports    = ["0-65535"]
   }

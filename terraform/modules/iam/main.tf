@@ -1,3 +1,13 @@
+terraform {
+  required_version = ">= 1.0"
+  required_providers {
+    google = {
+      source  = "hashicorp/google"
+      version = ">= 4.0"
+    }
+  }
+}
+
 resource "google_service_account" "movie_api" {
   account_id   = "movie-api-gsa"
   display_name = "Movie API Firestore access"
