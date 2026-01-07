@@ -3,7 +3,7 @@ module "gke" {
 
   project_id   = var.project_id
   cluster_name = "${var.prefix}-gke"
-  prefix       = "stg"
+  prefix       = var.prefix
   region       = var.region
 
   network           = google_compute_network.gke_vpc.id
@@ -19,7 +19,6 @@ module "firestore" {
   project_id = var.project_id
 
   database_name = "${var.prefix}-firestore"
-  prefix        = "stg"
   region        = var.region
 
   type                    = "FIRESTORE_NATIVE"

@@ -1,10 +1,10 @@
-version: "3"
+version: '3'
 
 env:
   BORDER: double
-  BORDER_FOREGROUND: "212"
-  PADDING: "1 1"
-  MARGIN: "1 1"
+  BORDER_FOREGROUND: '212'
+  PADDING: '1 1'
+  MARGIN: '1 1'
   NODE_VERSION_1: 0.1.0
 
 tasks:
@@ -16,7 +16,7 @@ tasks:
       - helm upgrade --install kube-prometheus-stack prometheus-community/kube-prometheus-stack --values=./kube-prometheus-stack/values.yaml --namespace monitoring --create-namespace
       - helm upgrade --install loki grafana/loki --namespace monitoring --create-namespace
       - helm upgrade --install alloy grafana/alloy --values=./grafana-alloy/values.yaml --set-file alloy.configMap.content=./grafana-alloy/config.alloy --namespace observability --create-namespace
-    desc: "Install kube-prometheus-stack, loki and alloy helm charts"
+    desc: 'Install kube-prometheus-stack, loki and alloy helm charts'
   uninstall-monitoring:
     cmds:
       - helm uninstall kube-prometheus-stack --namespace monitoring
@@ -32,24 +32,24 @@ tasks:
       - kubectl delete crd scrapeconfigs.monitoring.coreos.com
       - kubectl delete crd servicemonitors.monitoring.coreos.com
       - kubectl delete crd thanosrulers.monitoring.coreos.com
-    desc: "Uninstall kube-prometheus-stack helm chart"
+    desc: 'Uninstall kube-prometheus-stack helm chart'
   get-argocd-password:
-    desc: "Get password for argocd web ui admin user"
+    desc: 'Get password for argocd web ui admin user'
     cmds:
       - kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath='{.data.password}' | base64 --decode
   port-forward-argocd:
-    desc: "Port forward web UI to localhost on port 8080"
+    desc: 'Port forward web UI to localhost on port 8080'
     cmds:
       - kubectl port-forward svc/argocd-server -n argocd 8080:443
   port-forward-grafana:
-    desc: "Port forward web UI to localhost on port 3000"
+    desc: 'Port forward web UI to localhost on port 3000'
     cmds:
       - kubectl port-forward -n monitoring svc/kube-prometheus-stack-grafana 3000:80
   port-forward-prometheus:
-    desc: "Port forward web UI to localhost on port 9090"
+    desc: 'Port forward web UI to localhost on port 9090'
     cmds:
       - kubectl port-forward svc/kube-prometheus-stack-prometheus -n monitoring 9090:9090
   port-forward-alloy:
-    desc: "Port forward web UI to localhost on port 12345"
+    desc: 'Port forward web UI to localhost on port 12345'
     cmds:
       - kubectl port-forward svc/alloy -n observability 12345:12345

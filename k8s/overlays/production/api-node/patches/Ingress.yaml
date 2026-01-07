@@ -3,4 +3,4 @@ kind: Ingress
 metadata:
   name: ingress
 spec:
-  host: "movie-api.GOOGLE_DOMAIN.com"
+  host: 'movie-api.GOOGLE_DOMAIN.com'

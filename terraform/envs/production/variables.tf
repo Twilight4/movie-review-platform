@@ -1,7 +1,6 @@
 variable "prefix" {
   description = "Name prefix for production resources"
   type        = string
-  default     = "prod"
 }
 variable "project_id" {
   description = "Value of the GCP Project name."

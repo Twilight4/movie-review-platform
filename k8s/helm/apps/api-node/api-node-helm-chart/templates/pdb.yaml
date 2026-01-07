@@ -1,0 +1,14 @@
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: {{ .Values.namePrefix }}movie-api-pdb
+  labels:
+    app: movie-api
+    {{- range $key, $value := .Values.labels }}
+    {{ $key }}: {{ $value }}
+    {{- end }}
+spec:
+  minAvailable: {{ .Values.pdb.minAvailable | default 1 }}
+  selector:
+    matchLabels:
+      app: movie-api

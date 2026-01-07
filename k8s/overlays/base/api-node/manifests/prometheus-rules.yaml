@@ -1,0 +1,164 @@
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: movie-api-alerts
+  namespace: monitoring
+  labels:
+    app: kube-prometheus-stack
+    release: kube-prometheus-stack
+spec:
+  groups:
+    - name: movie-api
+      interval: 30s
+      rules:
+        # High error rate alert
+        - alert: HighErrorRate
+          expr: |
+            (
+              sum(rate(http_requests_total{job="movie-api",status=~"5.."}[5m]))
+              /
+              sum(rate(http_requests_total{job="movie-api"}[5m]))
+            ) > 0.05
+          for: 5m
+          labels:
+            severity: warning
+            component: movie-api
+          annotations:
+            summary: 'High error rate detected in movie-api'
+            description: 'Error rate is {{ $value | humanizePercentage }} (threshold: 5%)'
+
+        # Pod restart loop alert
+        - alert: PodRestartLoop
+          expr: |
+            rate(kube_pod_container_status_restarts_total{
+              namespace=~"staging|production",pod=~".*movie-api.*"
+            }[15m]) > 0.1
+          for: 5m
+          labels:
+            severity: critical
+            component: movie-api
+          annotations:
+            summary: 'Pod {{ $labels.pod }} is in restart loop'
+            description: >-
+              Pod {{ $labels.pod }} in namespace {{ $labels.namespace }}
+              has restarted {{ $value }} times in the last 15 minutes
+
+        # High CPU usage alert
+        - alert: HighCPUUsage
+          expr: |
+            sum(rate(container_cpu_usage_seconds_total{
+              namespace=~"staging|production",pod=~".*movie-api.*"
+            }[5m])) by (pod, namespace)
+            /
+            sum(kube_pod_container_resource_limits{
+              resource="cpu",namespace=~"staging|production",pod=~".*movie-api.*"
+            }) by (pod, namespace)
+            > 0.8
+          for: 10m
+          labels:
+            severity: warning
+            component: movie-api
+          annotations:
+            summary: 'High CPU usage for {{ $labels.pod }}'
+            description: >-
+              CPU usage is at {{ $value | humanizePercentage }}
+              of limit in {{ $labels.namespace }}
+
+        # High memory usage alert
+        - alert: HighMemoryUsage
+          expr: |
+            sum(container_memory_working_set_bytes{
+              namespace=~"staging|production",pod=~".*movie-api.*"
+            }) by (pod, namespace)
+            /
+            sum(kube_pod_container_resource_limits{
+              resource="memory",namespace=~"staging|production",pod=~".*movie-api.*"
+            }) by (pod, namespace)
+            > 0.9
+          for: 5m
+          labels:
+            severity: warning
+            component: movie-api
+          annotations:
+            summary: 'High memory usage for {{ $labels.pod }}'
+            description: >-
+              Memory usage is at {{ $value | humanizePercentage }}
+              of limit in {{ $labels.namespace }}
+
+        # Pod not ready alert
+        - alert: PodNotReady
+          expr: |
+            kube_pod_status_phase{namespace=~"staging|production",pod=~".*movie-api.*",phase!="Running"} > 0
+          for: 5m
+          labels:
+            severity: warning
+            component: movie-api
+          annotations:
+            summary: 'Pod {{ $labels.pod }} is not ready'
+            description: >-
+              Pod {{ $labels.pod }} in namespace {{ $labels.namespace }}
+              has been in {{ $labels.phase }} state for more than 5 minutes
+
+        # Deployment replica mismatch
+        - alert: DeploymentReplicaMismatch
+          expr: |
+            kube_deployment_spec_replicas{namespace=~"staging|production",deployment=~".*movie-api.*"}
+            !=
+            kube_deployment_status_replicas_available{namespace=~"staging|production",deployment=~".*movie-api.*"}
+          for: 10m
+          labels:
+            severity: warning
+            component: movie-api
+          annotations:
+            summary: 'Deployment {{ $labels.deployment }} has replica mismatch'
+            description: >-
+              Deployment {{ $labels.deployment }} in {{ $labels.namespace }}
+              has {{ $value }} replicas but should have {{ $labels.spec_replicas }}
+
+    - name: firestore
+      interval: 30s
+      rules:
+        # Firestore high latency (placeholder - requires custom metrics)
+        - alert: FirestoreHighLatency
+          expr: |
+            histogram_quantile(0.95,
+              sum(rate(firestore_request_duration_seconds_bucket{job="movie-api"}[5m])) by (le)
+            ) > 1.0
+          for: 5m
+          labels:
+            severity: warning
+            component: firestore
+          annotations:
+            summary: 'High Firestore latency detected'
+            description: '95th percentile latency is {{ $value }}s (threshold: 1s)'
+
+    - name: kubernetes-system
+      interval: 30s
+      rules:
+        # Node not ready
+        - alert: NodeNotReady
+          expr: |
+            kube_node_status_condition{condition="Ready",status="true"} == 0
+          for: 5m
+          labels:
+            severity: critical
+            component: kubernetes
+          annotations:
+            summary: 'Node {{ $labels.node }} is not ready'
+            description: 'Node {{ $labels.node }} has been in NotReady state for more than 5 minutes'
+
+        # Persistent volume filling up
+        - alert: PersistentVolumeFillingUp
+          expr: |
+            (
+              kubelet_volume_stats_available_bytes{namespace="monitoring"}
+              /
+              kubelet_volume_stats_capacity_bytes{namespace="monitoring"}
+            ) < 0.1
+          for: 5m
+          labels:
+            severity: warning
+            component: kubernetes
+          annotations:
+            summary: 'PersistentVolume {{ $labels.persistentvolumeclaim }} is filling up'
+            description: 'PersistentVolume has only {{ $value | humanizePercentage }} space remaining'

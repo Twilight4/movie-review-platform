@@ -9,3 +9,4 @@ resources:
   - configmap.yaml
   - serviceaccount.yaml
   - netpol.yaml
+  - prometheus-rules.yaml

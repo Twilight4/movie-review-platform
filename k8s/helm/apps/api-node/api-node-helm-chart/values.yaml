@@ -7,11 +7,11 @@ replicaCount: 2
 
 resources:
   limits:
-    cpu: "500m"
-    memory: "400Mi"
+    cpu: '500m'
+    memory: '400Mi'
   requests:
-    cpu: "250m"
-    memory: "300Mi"
+    cpu: '250m'
+    memory: '300Mi'
 
 hpa:
   minReplicas: 2
@@ -23,12 +23,12 @@ ingress:
 
 # GCP Configuration
 gcp:
-  projectId: "movie-review-platform8451"  # Override in CI/CD or values-*.yaml
+  projectId: 'movie-review-platform8451' # Override in CI/CD or values-*.yaml
 
 # Pod Disruption Budget
 pdb:
-  minAvailable: 1  # Ensure at least 1 pod is available during disruptions
+  minAvailable: 1 # Ensure at least 1 pod is available during disruptions
 
 config:
-  FIRESTORE_PROJECT_ID: "{{ .Values.gcp.projectId }}"
-  FIRESTORE_COLLECTION: "movies"
+  FIRESTORE_PROJECT_ID: '{{ .Values.gcp.projectId }}'
+  FIRESTORE_COLLECTION: 'movies'

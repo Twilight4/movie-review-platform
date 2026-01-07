@@ -110,7 +110,7 @@ discovery.docker "linux" {
 // Define a relabeling rule to create a service name from the container name.
 discovery.relabel "logs_integrations_docker" {
       targets = []
-  
+
       rule {
           source_labels = ["__meta_docker_container_name"]
           regex = "/(.*)"

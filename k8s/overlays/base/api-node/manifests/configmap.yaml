@@ -3,5 +3,5 @@ kind: ConfigMap
 metadata:
   name: movie-api-config
 data:
-  FIRESTORE_PROJECT_ID: "PROJECT_ID"
-  FIRESTORE_COLLECTION: "movies"
+  FIRESTORE_PROJECT_ID: 'PROJECT_ID'
+  FIRESTORE_COLLECTION: 'movies'

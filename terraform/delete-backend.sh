@@ -30,7 +30,7 @@ trap 'error "Script failed at line $LINENO."' ERR
 
 log "Checking if bucket exists: gs://$BUCKET_NAME"
 if gcloud storage buckets list --project "$PROJECT_ID" | grep -q "$BUCKET_NAME"; then
-  
+
   log "Deleting bucket: gs://$BUCKET_NAME (recursive)"
   gcloud storage rm -r "gs://$BUCKET_NAME" || true
 

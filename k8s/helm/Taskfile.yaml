@@ -1,49 +1,49 @@
-version: "3"
+version: '3'
 
 env:
   BORDER: double
-  BORDER_FOREGROUND: "212"
-  PADDING: "1 1"
-  MARGIN: "1 1"
+  BORDER_FOREGROUND: '212'
+  PADDING: '1 1'
+  MARGIN: '1 1'
   NODE_VERSION_1: 0.1.0
 
 tasks:
   09-search-repo:
     cmds:
       - helm search repo bitnami/api-node --versions
-    desc: "Search Bitnami repository for node-app"
+    desc: 'Search Bitnami repository for node-app'
   01-login-oci-registry:
     cmds:
       - cmd: gum style "Use your dockerhub username and password!"
         silent: true
-      - "helm registry login registry-1.docker.io"
+      - 'helm registry login registry-1.docker.io'
     desc: Login to OCI registry
   05-list-registry:
     cmds:
       - oras repo tags registry-1.docker.io/twilight4/api-node-helm-chart
-    desc: "List tags in the OCI registry"
+    desc: 'List tags in the OCI registry'
   02-build:
     cmds:
       - helm package ./api-node-helm-chart
-    desc: "Bundle helm chart as a .tgz OCI image"
+    desc: 'Bundle helm chart as a .tgz OCI image'
   03-push:
     cmds:
       - helm push api-node-helm-chart-0.1.0.tgz oci://registry-1.docker.io/twilight4
-    desc: "Push the helm chart to an oci registry"
+    desc: 'Push the helm chart to an oci registry'
   04-build-push:
     cmds:
       - task: 02-build
       - task: 03-push
-    desc: "Build & Push the helm chart to an oci registry"
+    desc: 'Build & Push the helm chart to an oci registry'
   06-pull:
     cmds:
       - helm pull oci://registry-1.docker.io/twilight4/movie-review --version=${NODE_VERSION_1}
-    desc: "Pull movie-review chart from Dockerhub repository"
+    desc: 'Pull movie-review chart from Dockerhub repository'
   07-untar:
     cmds:
       - tar -xzf movie-review-${NODE_VERSION_1}.tgz
-    desc: "Untar movie-review chart"
+    desc: 'Untar movie-review chart'
   08-show-values:
     cmds:
       - helm show values oci://registry-1.docker.io/twilight4/api-node-helm-chart --version=${NODE_VERSION_1}
-    desc: "Show values for movie-review chart"
+    desc: 'Show values for movie-review chart'

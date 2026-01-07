@@ -25,7 +25,6 @@ prometheus:
     retention: 7d
     interval: 15s
     evaluationInterval: 15s
-    serviceMonitorSelectorNilUsesHelmValues: true
     enableRemoteWriteReceiver: true
     # Prevent duplicate scraping (Alloy scrapes apps, Prometheus scrapes infra)
     podMonitorSelectorNilUsesHelmValues: false
@@ -41,7 +40,7 @@ prometheus:
       volumeClaimTemplate:
         spec:
           storageClassName: standard-rwo
-          accessModes: ["ReadWriteOnce"]
+          accessModes: ['ReadWriteOnce']
           resources:
             requests:
               storage: 10Gi
@@ -53,7 +52,7 @@ alertmanager:
       volumeClaimTemplate:
         spec:
           storageClassName: standard-rwo
-          accessModes: ["ReadWriteOnce"]
+          accessModes: ['ReadWriteOnce']
           resources:
             requests:
               storage: 2Gi

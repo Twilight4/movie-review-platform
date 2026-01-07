@@ -5,60 +5,60 @@
 version: 2
 updates:
   # Monitor npm dependencies in the Node.js API
-  - package-ecosystem: "npm"
-    directory: "/app/api-node"
+  - package-ecosystem: 'npm'
+    directory: '/app/api-node'
     schedule:
-      interval: "weekly"  # Check every week
-      day: "monday"       # On Mondays
-    open-pull-requests-limit: 5  # Max 5 PRs at a time
+      interval: 'weekly' # Check every week
+      day: 'monday' # On Mondays
+    open-pull-requests-limit: 5 # Max 5 PRs at a time
     labels:
-      - "dependencies"
-      - "automated"
+      - 'dependencies'
+      - 'automated'
     # Group minor and patch updates together to reduce PR noise
     groups:
       development-dependencies:
-        dependency-type: "development"
+        dependency-type: 'development'
         update-types:
-          - "minor"
-          - "patch"
+          - 'minor'
+          - 'patch'
       production-dependencies:
-        dependency-type: "production"
+        dependency-type: 'production'
         update-types:
-          - "patch"
+          - 'patch'
 
   # Monitor GitHub Actions versions
-  - package-ecosystem: "github-actions"
-    directory: "/"
+  - package-ecosystem: 'github-actions'
+    directory: '/'
     schedule:
-      interval: "weekly"
+      interval: 'weekly'
     labels:
-      - "github-actions"
-      - "automated"
+      - 'github-actions'
+      - 'automated'
 
   # Monitor Terraform provider versions
-  - package-ecosystem: "terraform"
-    directory: "/terraform/envs/staging"
+  - package-ecosystem: 'terraform'
+    directory: '/terraform/envs/staging'
     schedule:
-      interval: "weekly"
+      interval: 'weekly'
     labels:
-      - "terraform"
-      - "infrastructure"
-      - "automated"
+      - 'terraform'
+      - 'infrastructure'
+      - 'automated'
 
-  - package-ecosystem: "terraform"
-    directory: "/terraform/envs/production"
+  - package-ecosystem: 'terraform'
+    directory: '/terraform/envs/production'
     schedule:
-      interval: "weekly"
+      interval: 'weekly'
     labels:
-      - "terraform"
-      - "infrastructure"
-      - "automated"
+      - 'terraform'
+      - 'infrastructure'
+      - 'automated'
 
   # Monitor Docker base images
-  - package-ecosystem: "docker"
-    directory: "/app/api-node"
+  - package-ecosystem: 'docker'
+    directory: '/app/api-node'
     schedule:
-      interval: "weekly"
+      interval: 'weekly'
     labels:
-      - "docker"
-      - "automated"
+      - 'docker'
+      - 'automated'

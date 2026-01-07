@@ -13,7 +13,7 @@ fullnameOverride: null
 global:
   image:
     # -- Global image registry to use if it needs to be overridden for some specific use cases (e.g local registries, custom images, ...)
-    registry: ""
+    registry: ''
 
     # -- Optional set of global image pull secrets.
     pullSecrets: []
@@ -44,14 +44,14 @@ alloy:
     enabled: false
 
     # -- Name for the Alloy cluster. Used for differentiating between clusters.
-    name: ""
+    name: ''
 
     # -- Name for the port used for clustering, useful if running inside an Istio Mesh
     portName: http
 
   # -- Minimum stability level of components and behavior to enable. Must be
   # one of "experimental", "public-preview", or "generally-available".
-  stabilityLevel: "generally-available"
+  stabilityLevel: 'generally-available'
 
   # -- Path to where Grafana Alloy stores data (for example, the Write-Ahead Log).
   # By default, data is lost between reboots.
@@ -121,17 +121,17 @@ alloy:
   securityContext: {}
 
   # -- Resource requests and limits to apply to the Grafana Alloy container.
-  resources: {
+  resources:
     requests:
       cpu: 100m
       memory: 128Mi
     limits:
       cpu: 500m
       memory: 256Mi
-  }
 
   # -- Set lifecycle hooks for the Grafana Alloy container.
-  lifecycle: {}
+  lifecycle:
+    {}
     # preStop:
     #   exec:
     #     command:
@@ -143,7 +143,7 @@ alloy:
 
 image:
   # -- Grafana Alloy image registry (defaults to docker.io)
-  registry: "docker.io"
+  registry: 'docker.io'
   # -- Grafana Alloy image repository.
   repository: grafana/alloy
   # -- (string) Grafana Alloy image tag. When empty, the Chart's appVersion is
@@ -168,51 +168,51 @@ rbac:
   # -- The rules to create for the ClusterRole or Role objects.
   rules:
     # -- Rules required for the `discovery.kubernetes` component.
-    - apiGroups: ["", "discovery.k8s.io", "networking.k8s.io"]
-      resources: ["endpoints", "endpointslices", "ingresses", "pods", "services"]
-      verbs: ["get", "list", "watch"]
+    - apiGroups: ['', 'discovery.k8s.io', 'networking.k8s.io']
+      resources: ['endpoints', 'endpointslices', 'ingresses', 'pods', 'services']
+      verbs: ['get', 'list', 'watch']
     # -- Rules required for the `loki.source.kubernetes` component.
-    - apiGroups: [""]
-      resources: ["pods", "pods/log", "namespaces"]
-      verbs: ["get", "list", "watch"]
+    - apiGroups: ['']
+      resources: ['pods', 'pods/log', 'namespaces']
+      verbs: ['get', 'list', 'watch']
     # -- Rules required for the `loki.source.podlogs` component.
-    - apiGroups: ["monitoring.grafana.com"]
-      resources: ["podlogs"]
-      verbs: ["get", "list", "watch"]
+    - apiGroups: ['monitoring.grafana.com']
+      resources: ['podlogs']
+      verbs: ['get', 'list', 'watch']
     # -- Rules required for the `mimir.rules.kubernetes` component.
-    - apiGroups: ["monitoring.coreos.com"]
-      resources: ["prometheusrules"]
-      verbs: ["get", "list", "watch"]
+    - apiGroups: ['monitoring.coreos.com']
+      resources: ['prometheusrules']
+      verbs: ['get', 'list', 'watch']
     # -- Rules required for the `mimir.alerts.kubernetes` component.
-    - apiGroups: ["monitoring.coreos.com"]
-      resources: ["alertmanagerconfigs"]
-      verbs: ["get", "list", "watch"]
+    - apiGroups: ['monitoring.coreos.com']
+      resources: ['alertmanagerconfigs']
+      verbs: ['get', 'list', 'watch']
     # -- Rules required for the `prometheus.operator.*` components.
-    - apiGroups: ["monitoring.coreos.com"]
-      resources: ["podmonitors", "servicemonitors", "probes", "scrapeconfigs"]
-      verbs: ["get", "list", "watch"]
+    - apiGroups: ['monitoring.coreos.com']
+      resources: ['podmonitors', 'servicemonitors', 'probes', 'scrapeconfigs']
+      verbs: ['get', 'list', 'watch']
     # -- Rules required for the `loki.source.kubernetes_events` component.
-    - apiGroups: [""]
-      resources: ["events"]
-      verbs: ["get", "list", "watch"]
+    - apiGroups: ['']
+      resources: ['events']
+      verbs: ['get', 'list', 'watch']
     # -- Rules required for the `remote.kubernetes.*` components.
-    - apiGroups: [""]
-      resources: ["configmaps", "secrets"]
-      verbs: ["get", "list", "watch"]
+    - apiGroups: ['']
+      resources: ['configmaps', 'secrets']
+      verbs: ['get', 'list', 'watch']
     # -- Rules required for the `otelcol.processor.k8sattributes` component.
-    - apiGroups: ["apps", "extensions"]
-      resources: ["replicasets"]
-      verbs: ["get", "list", "watch"]
+    - apiGroups: ['apps', 'extensions']
+      resources: ['replicasets']
+      verbs: ['get', 'list', 'watch']
 
   # -- The rules to create for the ClusterRole objects.
   clusterRules:
     # -- Rules required for the `discovery.kubernetes` component.
-    - apiGroups: [""]
-      resources: ["nodes", "nodes/proxy", "nodes/metrics"]
-      verbs: ["get", "list", "watch"]
+    - apiGroups: ['']
+      resources: ['nodes', 'nodes/proxy', 'nodes/metrics']
+      verbs: ['get', 'list', 'watch']
     # -- Rules required for accessing metrics endpoint.
-    - nonResourceURLs: ["/metrics"]
-      verbs: ["get"]
+    - nonResourceURLs: ['/metrics']
+      verbs: ['get']
 
 serviceAccount:
   # -- Whether to create a service account for the Grafana Alloy deployment.
@@ -233,20 +233,20 @@ configReloader:
   enabled: true
   image:
     # -- Config reloader image registry (defaults to docker.io)
-    registry: "quay.io"
+    registry: 'quay.io'
     # -- Repository to get config reloader image from.
     repository: prometheus-operator/prometheus-config-reloader
     # -- Tag of image to use for config reloading.
     tag: v0.81.0
     # -- SHA256 digest of image to use for config reloading (either in format "sha256:XYZ" or "XYZ"). When set, will override `configReloader.image.tag`
-    digest: ""
+    digest: ''
   # -- Override the args passed to the container.
   customArgs: []
   # -- Resource requests and limits to apply to the config reloader container.
   resources:
     requests:
-      cpu: "10m"
-      memory: "50Mi"
+      cpu: '10m'
+      memory: '50Mi'
   # -- Security context to apply to the Grafana configReloader container.
   securityContext: {}
 
@@ -334,7 +334,8 @@ controller:
 
     scaleDown:
       # -- List of policies to determine the scale-down behavior.
-      policies: []
+      policies:
+        []
         # - type: Pods
         #   value: 4
         #   periodSeconds: 60
@@ -345,7 +346,8 @@ controller:
 
     scaleUp:
       # -- List of policies to determine the scale-up behavior.
-      policies: []
+      policies:
+        []
         # - type: Pods
         #   value: 4
         #   periodSeconds: 60
@@ -370,7 +372,8 @@ controller:
 
       scaleDown:
         # -- List of policies to determine the scale-down behavior.
-        policies: []
+        policies:
+          []
           # - type: Pods
           #   value: 4
           #   periodSeconds: 60
@@ -381,7 +384,8 @@ controller:
 
       scaleUp:
         # -- List of policies to determine the scale-up behavior.
-        policies: []
+        policies:
+          []
           # - type: Pods
           #   value: 4
           #   periodSeconds: 60
@@ -406,19 +410,20 @@ controller:
       resourcePolicy:
         # -- Configures the container policies for the Vertical Pod Autoscaler.
         containerPolicies:
-        - containerName: alloy
-          # -- The controlled resources for the Vertical Pod Autoscaler.
-          controlledResources:
-          - cpu
-          - memory
-          # -- The controlled values for the Vertical Pod Autoscaler. Needs to be either RequestsOnly or RequestsAndLimits.
-          controlledValues: "RequestsAndLimits"
-          # -- The maximum allowed values for the pods.
-          maxAllowed: {}
-          # cpu: 200m
-          # memory: 100Mi
-          # -- Defines the min allowed resources for the pod
-          minAllowed: {}
+          - containerName: alloy
+            # -- The controlled resources for the Vertical Pod Autoscaler.
+            controlledResources:
+              - cpu
+              - memory
+            # -- The controlled values for the Vertical Pod Autoscaler.
+            # Needs to be either RequestsOnly or RequestsAndLimits.
+            controlledValues: 'RequestsAndLimits'
+            # -- The maximum allowed values for the pods.
+            maxAllowed: {}
+            # cpu: 200m
+            # memory: 100Mi
+            # -- Defines the min allowed resources for the pod
+            minAllowed: {}
           # cpu: 200m
           # memory: 100Mi
 
@@ -475,7 +480,8 @@ service:
   clusterIP: ''
   # -- Value for internal traffic policy. 'Cluster' or 'Local'
   internalTrafficPolicy: Cluster
-  annotations: {}
+  annotations:
+    {}
     # cloud.google.com/load-balancer-type: Internal
 
 serviceMonitor:
@@ -483,7 +489,7 @@ serviceMonitor:
   # -- Additional labels for the service monitor.
   additionalLabels: {}
   # -- Scrape interval. If not set, the Prometheus default scrape interval is used.
-  interval: ""
+  interval: ''
   # -- MetricRelabelConfigs to apply to samples after scraping, but before ingestion.
   # ref: https://github.com/prometheus-operator/prometheus-operator/blob/main/Documentation/api.md#relabelconfig
   metricRelabelings: []

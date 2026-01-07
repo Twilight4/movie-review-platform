@@ -1,3 +1,10 @@
+** Overview
+This monitoring stack includes:
+- **Prometheus**: Metrics collection and alerting
+- **Grafana**: Visualization and dashboards
+- **AlertManager**: Alert routing and notification
+- **Grafana Alloy**: Application metrics collection
+
 ** Explore the Monitoring Data
 Once the stack is running, you can explore the collected metrics and
 logs:
@@ -11,8 +18,46 @@ logs:
    - Select the Prometheus data source and click Import
 3. Access Grafana Alloy UI at http://localhost:12345
 
+Recommended Dashboards to Import
+1. **Kubernetes Cluster Monitoring** (ID: 315)
+2. **Node Exporter Full** (ID: 1860)
+3. **Kubernetes Pod Resources** (ID: 6417)
+
 This community dashboard provides comprehensive system metrics including
 CPU, memory, disk, and network usage.
+
+** Alert Configuration
+The following alerts are configured in =prometheus-rules.yaml=:
+- **HighErrorRate**: Triggers when error rate > 5% for 5 minutes
+- **PodRestartLoop**: Triggers when pods restart frequently
+- **HighCPUUsage**: Triggers when CPU usage > 80% of limit
+- **HighMemoryUsage**: Triggers when memory usage > 90% of limit
+- **PodNotReady**: Triggers when pods are not in Running state
+- **DeploymentReplicaMismatch**: Triggers when deployment replicas don't match
+- **FirestoreHighLatency**: Triggers when 95th percentile latency > 1s
+- **NodeNotReady**: Triggers when nodes are not ready
+- **PersistentVolumeFillingUp**: Triggers when PV has < 10% space
+
+To receive alerts, configure =AlertManager= receivers. Example for Slack:
+#+begin_src yaml
+# Add to values.yaml under alertmanager.config
+alertmanager:
+  config:
+    global:
+      slack_api_url: '<SLACK_WEBHOOK_URL>'
+    route:
+      group_by: ['alertname', 'cluster', 'service']
+      group_wait: 10s
+      group_interval: 10s
+      repeat_interval: 12h
+      receiver: 'slack-notifications'
+    receivers:
+      - name: 'slack-notifications'
+        slack_configs:
+          - channel: '#alerts'
+            title: 'Alert: {{ .GroupLabels.alertname }}'
+            text: '{{ range .Alerts }}{{ .Annotations.description }}{{ end }}'
+#+end_src
 
 ** Viewing Logs
 Open your browser and go to

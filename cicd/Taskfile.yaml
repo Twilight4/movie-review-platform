@@ -1,4 +1,4 @@
-version: "3"
+version: '3'
 
 includes:
   github-actions:
@@ -8,4 +8,3 @@ includes:
   api-node:
     taskfile: ./argocd-gitops/apps/api-node/Taskfile.yaml
     dir: ./argocd-gitops/apps/api-node
-
