@@ -1,6 +1,7 @@
 {
   "name": "movie-review-api",
   "version": "1.0.0",
+  "type": "module",
   "description": "Starter Movie Review API for DevOps project",
   "main": "src/server.js",
   "scripts": {
@@ -20,7 +21,9 @@
     "winston": "^3.19.0"
   },
   "devDependencies": {
+    "@eslint/js": "^9.39.2",
     "eslint": "^9.39.2",
+    "globals": "^17.0.0",
     "husky": "^9.1.7",
     "jest": "^30.2.0",
     "lint-staged": "^16.2.7",
