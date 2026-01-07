@@ -3,4 +3,4 @@ kind: ConfigMap
 metadata:
   name: movie-api-config
 data:
-  FIRESTORE_PROJECT_ID: "movie-review-platform8451"
+  FIRESTORE_PROJECT_ID: 'movie-review-platform8451'

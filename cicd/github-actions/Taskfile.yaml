@@ -1,20 +1,20 @@
-version: "3"
+version: '3'
 
 vars:
-  DATABASE_URL: "postgres://postgres:foobarbaz@localhost:5432/postgres"
+  DATABASE_URL: 'postgres://postgres:foobarbaz@localhost:5432/postgres'
   IMAGE_NAME: api-node
-  IMAGE_REPO: "ghcr.io/twilight4"
-  IMAGE_TAG: ""
+  IMAGE_REPO: 'ghcr.io/twilight4'
+  IMAGE_TAG: ''
 
 tasks:
   generate-version-tag:
     cmds:
       - cmd: git describe --tags --always --first-parent --match "[0-9]*.[0-9]*.[0-9]*"
         silent: true
-    desc: "Use git describe to generate a tag based on the latest release tag"
+    desc: 'Use git describe to generate a tag based on the latest release tag'
 
   update-image-tags:
-    desc: "Recursively update image tags in files with the specified comment"
+    desc: 'Recursively update image tags in files with the specified comment'
     vars:
       EXCLUDED_FILES: |
         {{.TASKFILE_DIR}}/Taskfile.yaml
@@ -38,7 +38,7 @@ tasks:
           done
 
   check-new-tag-var:
-    desc: "Check if NEW_TAG variable is set"
+    desc: 'Check if NEW_TAG variable is set'
     cmds:
       - cmd: |
           if [ -z "{{.NEW_TAG}}" ] ; then
@@ -46,22 +46,22 @@ tasks:
           fi
 
   update-staging-image-tags:
-    desc: "Update image tags for kubectl staging config"
+    desc: 'Update image tags for kubectl staging config'
     cmds:
       - task: check-new-tag-var
       - task: update-image-tags
         vars:
-          IDENTIFIER_COMMENT: "# STAGING_IMAGE_TAG"
+          IDENTIFIER_COMMENT: '# STAGING_IMAGE_TAG'
           STARTING_PATH:
             sh: git rev-parse --show-toplevel
 
   update-production-image-tags:
-    desc: "Update image tags for kubectl production config"
+    desc: 'Update image tags for kubectl production config'
     cmds:
       - task: check-new-tag-var
       - task: update-image-tags
         vars:
-          IDENTIFIER_COMMENT: "# PRODUCTION_IMAGE_TAG"
+          IDENTIFIER_COMMENT: '# PRODUCTION_IMAGE_TAG'
           STARTING_PATH:
             sh: git rev-parse --show-toplevel
 

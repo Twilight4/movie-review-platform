@@ -2,15 +2,15 @@ name: ci-workflow
 
 on:
   push:
-    branches: ["main"]
-    tags: "[0-9]*.[0-9]*.[0-9]*"
+    branches: ['main']
+    tags: '[0-9]*.[0-9]*.[0-9]*'
     paths:
       # only rebuild when app code changes
-      - "app/**/*"
+      - 'app/**/*'
       # exclude these files
-      - "!app/README.md"
-      - "!app/Taskfile.yaml"
-      - "!app/api-node/Taskfile.yaml"
+      - '!app/README.md'
+      - '!app/Taskfile.yaml'
+      - '!app/api-node/Taskfile.yaml'
   workflow_dispatch:
 
 jobs:
@@ -24,8 +24,8 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: "18"
-          cache: "npm"
+          node-version: '18'
+          cache: 'npm'
           cache-dependency-path: app/api-node/package-lock.json
 
       - name: Install dependencies
@@ -150,4 +150,4 @@ jobs:
         with:
           base: main
           token: ${{ secrets.PR_ACTION }}
-          title: "Update image tags to (${{ needs.generate-image-tag.outputs.image_tag }})"
+          title: 'Update image tags to (${{ needs.generate-image-tag.outputs.image_tag }})'

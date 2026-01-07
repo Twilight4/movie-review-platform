@@ -3,6 +3,7 @@
 ## Overview
 
 This monitoring stack includes:
+
 - **Prometheus**: Metrics collection and alerting
 - **Grafana**: Visualization and dashboards
 - **AlertManager**: Alert routing and notification
@@ -47,17 +48,20 @@ kubectl apply -f kube-prometheus-stack/prometheus-rules.yaml
 ### Grafana
 
 **Port-forward to access locally:**
+
 ```bash
 kubectl port-forward -n monitoring svc/kube-prometheus-stack-grafana 3000:80
 ```
 
 Then open: http://localhost:3000
+
 - Username: `admin`
 - Password: (from the secret created above)
 
 ### Prometheus
 
 **Port-forward:**
+
 ```bash
 kubectl port-forward -n monitoring svc/kube-prometheus-stack-prometheus 9090:9090
 ```
@@ -67,6 +71,7 @@ Then open: http://localhost:9090
 ### AlertManager
 
 **Port-forward:**
+
 ```bash
 kubectl port-forward -n monitoring svc/kube-prometheus-stack-alertmanager 9093:9093
 ```
@@ -80,6 +85,7 @@ Then open: http://localhost:9093
 The following alerts are configured in `prometheus-rules.yaml`:
 
 #### Movie API Alerts
+
 - **HighErrorRate**: Triggers when error rate > 5% for 5 minutes
 - **PodRestartLoop**: Triggers when pods restart frequently
 - **HighCPUUsage**: Triggers when CPU usage > 80% of limit
@@ -88,9 +94,11 @@ The following alerts are configured in `prometheus-rules.yaml`:
 - **DeploymentReplicaMismatch**: Triggers when deployment replicas don't match
 
 #### Firestore Alerts
+
 - **FirestoreHighLatency**: Triggers when 95th percentile latency > 1s
 
 #### Kubernetes System Alerts
+
 - **NodeNotReady**: Triggers when nodes are not ready
 - **PersistentVolumeFillingUp**: Triggers when PV has < 10% space
 
@@ -111,11 +119,11 @@ alertmanager:
       repeat_interval: 12h
       receiver: 'slack-notifications'
     receivers:
-    - name: 'slack-notifications'
-      slack_configs:
-      - channel: '#alerts'
-        title: 'Alert: {{ .GroupLabels.alertname }}'
-        text: '{{ range .Alerts }}{{ .Annotations.description }}{{ end }}'
+      - name: 'slack-notifications'
+        slack_configs:
+          - channel: '#alerts'
+            title: 'Alert: {{ .GroupLabels.alertname }}'
+            text: '{{ range .Alerts }}{{ .Annotations.description }}{{ end }}'
 ```
 
 ## Grafana Dashboards
@@ -139,11 +147,12 @@ alertmanager:
 - **Grafana data**: Persisted to 3Gi PVC
 
 To modify retention:
+
 ```yaml
 # In values.yaml
 prometheus:
   prometheusSpec:
-    retention: 30d  # Change to 30 days
+    retention: 30d # Change to 30 days
 ```
 
 ## Troubleshooting
@@ -151,11 +160,13 @@ prometheus:
 ### Grafana Not Starting
 
 Check if secret exists:
+
 ```bash
 kubectl get secret grafana-admin-credentials -n monitoring
 ```
 
 Check Grafana logs:
+
 ```bash
 kubectl logs -n monitoring -l app.kubernetes.io/name=grafana
 ```
@@ -163,17 +174,20 @@ kubectl logs -n monitoring -l app.kubernetes.io/name=grafana
 ### Alerts Not Firing
 
 1. Check if PrometheusRule is loaded:
+
 ```bash
 kubectl get prometheusrule -n monitoring
 ```
 
 2. Check Prometheus config:
+
 ```bash
 kubectl port-forward -n monitoring svc/kube-prometheus-stack-prometheus 9090:9090
 # Open http://localhost:9090/config
 ```
 
 3. Check alert status:
+
 ```bash
 # Open http://localhost:9090/alerts
 ```
@@ -181,11 +195,13 @@ kubectl port-forward -n monitoring svc/kube-prometheus-stack-prometheus 9090:909
 ### Missing Metrics
 
 1. Check ServiceMonitor configuration:
+
 ```bash
 kubectl get servicemonitor -n monitoring
 ```
 
 2. Check target status in Prometheus:
+
 ```bash
 # Open http://localhost:9090/targets
 ```

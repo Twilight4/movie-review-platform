@@ -1,4 +1,4 @@
-version: "3"
+version: '3'
 
 env:
   CLUSTER_NAME: stg-gke
@@ -7,15 +7,15 @@ env:
   PROJECT_NAME: movie-review-platform8451
   # Set default gum style options
   BORDER: double
-  BORDER_FOREGROUND: "212"
-  PADDING: "1 1"
-  MARGIN: "1 1"
+  BORDER_FOREGROUND: '212'
+  PADDING: '1 1'
+  MARGIN: '1 1'
 
 tasks:
   gcp:01-init-cli:
     cmds:
       - gcloud init
-    desc: "Authenticate and configure the gcloud CLI"
+    desc: 'Authenticate and configure the gcloud CLI'
 
   gcp:02-enable-apis:
     cmds:
@@ -30,18 +30,18 @@ tasks:
           serviceusage.googleapis.com \
           monitoring.googleapis.com \
           logging.googleapis.com
-    desc: "Enable necessary APIs"
+    desc: 'Enable necessary APIs'
 
   gcp:03-set-region-and-zone:
     cmds:
       - gcloud config set compute/region ${GCP_REGION}
       - gcloud config set compute/zone ${GCP_ZONE}
-    desc: "Set default region and zone"
+    desc: 'Set default region and zone'
 
   gcp:04-create-vpc:
     cmds:
       - gcloud compute networks create ${CLUSTER_NAME} --subnet-mode=custom
-    desc: "Create VPC"
+    desc: 'Create VPC'
 
   gcp:05-create-subnet:
     cmds:
@@ -50,10 +50,10 @@ tasks:
           --network=${CLUSTER_NAME} \
           --region=${GCP_REGION} \
           --range=10.0.0.0/20
-    desc: "Create subnet"
+    desc: 'Create subnet'
 
   gcp:06-create-cluster:
-    desc: "Create GKE cluster"
+    desc: 'Create GKE cluster'
     cmds:
       - |
         gcloud container clusters create ${CLUSTER_NAME} \
@@ -72,10 +72,10 @@ tasks:
       - task: gcp:04-create-vpc
       - task: gcp:05-create-subnet
       - task: gcp:06-create-cluster
-    desc: "Create the GCP network, subnet, firewall rules, and cluster in sequence"
+    desc: 'Create the GCP network, subnet, firewall rules, and cluster in sequence'
 
   gcp:09-verify-all:
-    desc: "Sanity-check all GCP & GKE resources for the active environment"
+    desc: 'Sanity-check all GCP & GKE resources for the active environment'
     cmds:
       - |
         echo "===== ACTIVE CONTEXT ====="
@@ -146,29 +146,29 @@ tasks:
       - gcloud container clusters delete ${CLUSTER_NAME} --zone ${GCP_ZONE} --quiet
       - gcloud compute networks subnets delete subnet-1 --region=${GCP_REGION} --quiet
       - gcloud compute networks delete ${CLUSTER_NAME} --quiet
-    desc: "Delete the GCP network, subnet, firewall rules, and cluster in reverse sequence"
+    desc: 'Delete the GCP network, subnet, firewall rules, and cluster in reverse sequence'
 
   gcp:db:01-enable-api:
     cmds:
       - gcloud services enable firestore.googleapis.com
-    desc: "Enable the Firestore API"
+    desc: 'Enable the Firestore API'
 
   gcp:db:02-create-db:
     cmds:
       - gcloud firestore databases create --location=${GCP_REGION} --type=firestore-native
-    desc: "Create Firestore database"
+    desc: 'Create Firestore database'
 
   gcp:db:03-list-db:
     cmds:
       - gcloud firestore databases list
-    desc: "List databases"
+    desc: 'List databases'
 
   gcp:db:04-delete-db:
     cmds:
       - gcloud firestore databases delete --database '(default)'
-    desc: "Delete the database"
+    desc: 'Delete the database'
 
   gcp:08-connect-to-cluster:
     cmds:
       - gcloud container clusters get-credentials ${CLUSTER_NAME} --region ${GCP_REGION}
-    desc: "Connect to the GKE cluster"
+    desc: 'Connect to the GKE cluster'

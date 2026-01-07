@@ -1,49 +1,49 @@
-version: "3"
+version: '3'
 
 env:
   # Set default gum style options
   BORDER: double
-  BORDER_FOREGROUND: "212"
-  PADDING: "1 1"
-  MARGIN: "1 1"
+  BORDER_FOREGROUND: '212'
+  PADDING: '1 1'
+  MARGIN: '1 1'
 
 tasks:
   minikube:01-create-cluster:
     cmds:
       - minikube start --driver docker
       - kubectl create namespace ingress-nginx --dry-run=client -o yaml | kubectl apply -f -
-    desc: "Create a Kubernetes cluster using Minikube (docker driver)"
+    desc: 'Create a Kubernetes cluster using Minikube (docker driver)'
   minikube:02-enable-ingress:
     cmds:
       - minikube addons enable ingress
-    desc: "Enable Minikube ingress add-on"
+    desc: 'Enable Minikube ingress add-on'
   minikube:04-delete-cluster:
     cmds:
       - kubectl delete namespace ingress-nginx
       - minikube stop
-    desc: "Delete and existing minikube Kubernetes cluster"
+    desc: 'Delete and existing minikube Kubernetes cluster'
   minikube:03-check-status:
     cmds:
       - minikube status
-    desc: "Check minikube cluster status"
+    desc: 'Check minikube cluster status'
   kind:01-generate-config:
     cmds:
       - REPLACE_WITH_ABSOLUTE_PATH=${PWD} envsubst < kind-config.yaml.TEMPLATE > kind-config.yaml
-    desc: "Generate kind config with local absolute paths for PV mounts"
+    desc: 'Generate kind config with local absolute paths for PV mounts'
 
   kind:02-create-cluster:
     cmds:
       - kind create cluster --config kind-config.yaml
       - kubectl create namespace ingress-nginx --dry-run=client -o yaml | kubectl apply -f -
-    desc: "Create a Kubernetes cluster using kind"
+    desc: 'Create a Kubernetes cluster using kind'
 
   kind:03-run-cloud-provider-kind:
     cmds:
       - sudo cloud-provider-kind
-    desc: "Run sigs.k8s.io/cloud-provider-kind@latest to enable load balancer services with KinD"
+    desc: 'Run sigs.k8s.io/cloud-provider-kind@latest to enable load balancer services with KinD'
 
   kind:04-delete-cluster:
     cmds:
       - kubectl delete namespace ingress-nginx
       - kind delete cluster
-    desc: "Delete and existing kind Kubernetes cluster"
+    desc: 'Delete and existing kind Kubernetes cluster'

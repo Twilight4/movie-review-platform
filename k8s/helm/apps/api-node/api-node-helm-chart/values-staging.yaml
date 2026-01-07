@@ -18,11 +18,11 @@ env:
 
 resources:
   limits:
-    cpu: "500m"
-    memory: "400Mi"
+    cpu: '500m'
+    memory: '400Mi'
   requests:
-    cpu: "250m"
-    memory: "300Mi"
+    cpu: '250m'
+    memory: '300Mi'
 
 hpa:
   minReplicas: 1
@@ -34,12 +34,12 @@ ingress:
 
 # GCP Configuration
 gcp:
-  projectId: "movie-review-platform8451" # Override in CI/CD
+  projectId: 'movie-review-platform8451' # Override in CI/CD
 
 # Pod Disruption Budget - staging allows zero availability briefly
 pdb:
   minAvailable: 0
 
 config:
-  FIRESTORE_PROJECT_ID: "{{ .Values.gcp.projectId }}"
-  FIRESTORE_COLLECTION: "movies"
+  FIRESTORE_PROJECT_ID: '{{ .Values.gcp.projectId }}'
+  FIRESTORE_COLLECTION: 'movies'

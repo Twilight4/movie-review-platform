@@ -24,8 +24,8 @@ spec:
             severity: warning
             component: movie-api
           annotations:
-            summary: "High error rate detected in movie-api"
-            description: "Error rate is {{ $value | humanizePercentage }} (threshold: 5%)"
+            summary: 'High error rate detected in movie-api'
+            description: 'Error rate is {{ $value | humanizePercentage }} (threshold: 5%)'
 
         # Pod restart loop alert
         - alert: PodRestartLoop
@@ -38,7 +38,7 @@ spec:
             severity: critical
             component: movie-api
           annotations:
-            summary: "Pod {{ $labels.pod }} is in restart loop"
+            summary: 'Pod {{ $labels.pod }} is in restart loop'
             description: >-
               Pod {{ $labels.pod }} in namespace {{ $labels.namespace }}
               has restarted {{ $value }} times in the last 15 minutes
@@ -59,7 +59,7 @@ spec:
             severity: warning
             component: movie-api
           annotations:
-            summary: "High CPU usage for {{ $labels.pod }}"
+            summary: 'High CPU usage for {{ $labels.pod }}'
             description: >-
               CPU usage is at {{ $value | humanizePercentage }}
               of limit in {{ $labels.namespace }}
@@ -80,7 +80,7 @@ spec:
             severity: warning
             component: movie-api
           annotations:
-            summary: "High memory usage for {{ $labels.pod }}"
+            summary: 'High memory usage for {{ $labels.pod }}'
             description: >-
               Memory usage is at {{ $value | humanizePercentage }}
               of limit in {{ $labels.namespace }}
@@ -94,7 +94,7 @@ spec:
             severity: warning
             component: movie-api
           annotations:
-            summary: "Pod {{ $labels.pod }} is not ready"
+            summary: 'Pod {{ $labels.pod }} is not ready'
             description: >-
               Pod {{ $labels.pod }} in namespace {{ $labels.namespace }}
               has been in {{ $labels.phase }} state for more than 5 minutes
@@ -110,7 +110,7 @@ spec:
             severity: warning
             component: movie-api
           annotations:
-            summary: "Deployment {{ $labels.deployment }} has replica mismatch"
+            summary: 'Deployment {{ $labels.deployment }} has replica mismatch'
             description: >-
               Deployment {{ $labels.deployment }} in {{ $labels.namespace }}
               has {{ $value }} replicas but should have {{ $labels.spec_replicas }}
@@ -129,8 +129,8 @@ spec:
             severity: warning
             component: firestore
           annotations:
-            summary: "High Firestore latency detected"
-            description: "95th percentile latency is {{ $value }}s (threshold: 1s)"
+            summary: 'High Firestore latency detected'
+            description: '95th percentile latency is {{ $value }}s (threshold: 1s)'
 
     - name: kubernetes-system
       interval: 30s
@@ -144,8 +144,8 @@ spec:
             severity: critical
             component: kubernetes
           annotations:
-            summary: "Node {{ $labels.node }} is not ready"
-            description: "Node {{ $labels.node }} has been in NotReady state for more than 5 minutes"
+            summary: 'Node {{ $labels.node }} is not ready'
+            description: 'Node {{ $labels.node }} has been in NotReady state for more than 5 minutes'
 
         # Persistent volume filling up
         - alert: PersistentVolumeFillingUp
@@ -160,5 +160,5 @@ spec:
             severity: warning
             component: kubernetes
           annotations:
-            summary: "PersistentVolume {{ $labels.persistentvolumeclaim }} is filling up"
-            description: "PersistentVolume has only {{ $value | humanizePercentage }} space remaining"
+            summary: 'PersistentVolume {{ $labels.persistentvolumeclaim }} is filling up'
+            description: 'PersistentVolume has only {{ $value | humanizePercentage }} space remaining'

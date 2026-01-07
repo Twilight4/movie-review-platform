@@ -1,40 +1,40 @@
-version: "3"
+version: '3'
 
 tasks:
   01-render-staging:
     cmds:
       - kubectl kustomize ../staging | yq
-    desc: "Render resource yaml with staging values"
+    desc: 'Render resource yaml with staging values'
 
   01-render-production:
     cmds:
       - kubectl kustomize ../production | yq
-    desc: "Render resource yaml with production values"
+    desc: 'Render resource yaml with production values'
 
   03-delete-staging:
     cmds:
       - kubectl delete -k ../staging
       - kubectl delete -f ../../../namespaces/staging.yaml
       - kubectl delete namespace ingress-nginx
-    desc: "Render resource yaml with staging values"
+    desc: 'Render resource yaml with staging values'
 
   03-delete-production:
     cmds:
       - kubectl delete -k ../production
       - kubectl delete -f ../../../namespaces/production.yaml
       - kubectl delete namespace ingress-nginx
-    desc: "Render resource yaml with production values"
+    desc: 'Render resource yaml with production values'
 
   02-deploy-staging:
     cmds:
       - kubectl create namespace ingress-nginx --dry-run=client -o yaml | kubectl apply -f -
       - kubectl apply -f ../../../namespaces/staging.yaml
       - kubectl apply -k ../staging
-    desc: "Deploy staging configuration"
+    desc: 'Deploy staging configuration'
 
   02-deploy-production:
     cmds:
       - kubectl create namespace ingress-nginx --dry-run=client -o yaml | kubectl apply -f -
       - kubectl apply -f ../../../namespaces/production.yaml
       - kubectl apply -k ../production
-    desc: "Deploy production configuration"
+    desc: 'Deploy production configuration'

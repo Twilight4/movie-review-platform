@@ -40,7 +40,7 @@ prometheus:
       volumeClaimTemplate:
         spec:
           storageClassName: standard-rwo
-          accessModes: ["ReadWriteOnce"]
+          accessModes: ['ReadWriteOnce']
           resources:
             requests:
               storage: 10Gi
@@ -52,7 +52,7 @@ alertmanager:
       volumeClaimTemplate:
         spec:
           storageClassName: standard-rwo
-          accessModes: ["ReadWriteOnce"]
+          accessModes: ['ReadWriteOnce']
           resources:
             requests:
               storage: 2Gi

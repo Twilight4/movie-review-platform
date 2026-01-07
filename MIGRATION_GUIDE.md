@@ -108,6 +108,7 @@ terraform destroy -target=module.firestore
 ### Step 15: Configure Alert Notifications (Optional)
 
 Follow `k8s/helm/monitoring/MONITORING_SETUP.md` to:
+
 - Set up Slack notifications
 - Configure PagerDuty integration
 - Set up email alerts
@@ -217,6 +218,7 @@ pre-commit run --all-files
 ## Support
 
 For issues or questions:
+
 - Check `DEVOPS_IMPROVEMENTS.org` for detailed improvement notes
 - Review `SECURITY_AND_SECRETS.md` for security questions
 - Check `k8s/helm/monitoring/MONITORING_SETUP.md` for monitoring issues
@@ -224,6 +226,7 @@ For issues or questions:
 ## Success Criteria
 
 You've successfully migrated when:
+
 - ✅ No terraform state files in git
 - ✅ Grafana login works with secret-based password
 - ✅ Production database cannot be destroyed via terraform
