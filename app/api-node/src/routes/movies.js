@@ -1,15 +1,15 @@
-const express = require('express');
-const router = express.Router();
-const logger = require('../utils/logger');
-const {
+import express from 'express';
+import logger from '../utils/logger.js';
+import {
   validateCreateMovie,
   validateUpdateMovie,
   validateGetMovie,
   validateDeleteMovie,
   validateQueryMovies,
-} = require('../middleware/validators');
+} from '../middleware/validators.js';
+import { createItem, getItem, queryItems, updateItem, deleteItem } from '../db/firestore.js';
 
-const { createItem, getItem, queryItems, updateItem, deleteItem } = require('../db/firestore');
+const router = express.Router();
 
 /**
  * GET /movies
@@ -107,4 +107,4 @@ router.delete('/:id', validateDeleteMovie, async (req, res) => {
   }
 });
 
-module.exports = router;
+export default router;

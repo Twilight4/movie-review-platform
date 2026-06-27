@@ -1,5 +1,5 @@
-const express = require('express');
-const moviesRouter = require('./routes/movies');
+import express from 'express';
+import moviesRouter from './routes/movies.js';
 
 const app = express();
 
@@ -12,4 +12,4 @@ app.get('/health', (req, res) => {
 
 app.use('/movies', moviesRouter);
 
-module.exports = app;
+export default app;

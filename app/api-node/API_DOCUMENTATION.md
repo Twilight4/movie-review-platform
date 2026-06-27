@@ -56,9 +56,10 @@ Check if the API is running (used by Kubernetes probes).
 Retrieve a list of all movies, optionally filtered by minimum rating.
 
 **Query Parameters**
-| Parameter | Type | Required | Description |
-|-----------|------|----------|-------------|
-| minRating | integer | No | Filter movies with rating >= this value (1-5) |
+
+| Parameter | Type    | Required | Description                                   |
+| --------- | ------- | -------- | --------------------------------------------- |
+| minRating | integer | No       | Filter movies with rating >= this value (1-5) |
 
 **Example Request**
 
@@ -113,9 +114,10 @@ curl http://localhost:3000/movies?minRating=4
 Retrieve details of a specific movie by ID.
 
 **URL Parameters**
-| Parameter | Type | Required | Description |
-|-----------|------|----------|-------------|
-| id | string | Yes | The unique movie ID |
+
+| Parameter | Type   | Required | Description         |
+| --------- | ------ | -------- | ------------------- |
+| id        | string | Yes      | The unique movie ID |
 
 **Example Request**
 
@@ -151,10 +153,11 @@ curl http://localhost:3000/movies/abc123
 Create a new movie entry.
 
 **Request Body**
-| Field | Type | Required | Description |
-|-------|------|----------|-------------|
-| title | string | Yes | Movie title (1-200 characters) |
-| rating | integer | Yes | Movie rating (1-5) |
+
+| Field  | Type    | Required | Description                    |
+| ------ | ------- | -------- | ------------------------------ |
+| title  | string  | Yes      | Movie title (1-200 characters) |
+| rating | integer | Yes      | Movie rating (1-5)             |
 
 **Example Request**
 
@@ -202,15 +205,17 @@ curl -X POST http://localhost:3000/movies \
 Update an existing movie (replaces entire document).
 
 **URL Parameters**
-| Parameter | Type | Required | Description |
-|-----------|------|----------|-------------|
-| id | string | Yes | The unique movie ID |
+
+| Parameter | Type   | Required | Description         |
+| --------- | ------ | -------- | ------------------- |
+| id        | string | Yes      | The unique movie ID |
 
 **Request Body**
-| Field | Type | Required | Description |
-|-------|------|----------|-------------|
-| title | string | Yes | Movie title (1-200 characters) |
-| rating | integer | Yes | Movie rating (1-5) |
+
+| Field  | Type    | Required | Description                    |
+| ------ | ------- | -------- | ------------------------------ |
+| title  | string  | Yes      | Movie title (1-200 characters) |
+| rating | integer | Yes      | Movie rating (1-5)             |
 
 **Example Request**
 
@@ -252,9 +257,10 @@ curl -X PUT http://localhost:3000/movies/xyz789 \
 Delete a movie by ID.
 
 **URL Parameters**
-| Parameter | Type | Required | Description |
-|-----------|------|----------|-------------|
-| id | string | Yes | The unique movie ID |
+
+| Parameter | Type   | Required | Description         |
+| --------- | ------ | -------- | ------------------- |
+| id        | string | Yes      | The unique movie ID |
 
 **Example Request**
 

@@ -1,4 +1,4 @@
-const admin = require('firebase-admin');
+import admin from 'firebase-admin';
 
 /**
  * Configuration from environment variables (ConfigMap + Secret)
@@ -20,7 +20,7 @@ let collection = null;
  * Initialize Firestore connection
  * (lazy, singleton, container-friendly)
  */
-function initFirestore() {
+export function initFirestore() {
   if (db && collection) return { db, collection };
 
   console.log('🔌 Connecting to Firestore...');
@@ -46,7 +46,7 @@ function initFirestore() {
 /**
  * Create document
  */
-async function createItem(item) {
+export async function createItem(item) {
   initFirestore();
   const docRef = await collection.add(item);
   return { id: docRef.id, ...item };
@@ -55,7 +55,7 @@ async function createItem(item) {
 /**
  * Get document by ID
  */
-async function getItem(id) {
+export async function getItem(id) {
   initFirestore();
   const doc = await collection.doc(id).get();
   return doc.exists ? { id: doc.id, ...doc.data() } : null;
@@ -64,7 +64,7 @@ async function getItem(id) {
 /**
  * Query documents
  */
-async function queryItems(field, operator, value) {
+export async function queryItems(field, operator, value) {
   initFirestore();
   const snapshot = await collection.where(field, operator, value).get();
   return snapshot.docs.map((doc) => ({
@@ -76,7 +76,7 @@ async function queryItems(field, operator, value) {
 /**
  * Update document (replace semantics)
  */
-async function updateItem(id, newData) {
+export async function updateItem(id, newData) {
   initFirestore();
   await collection.doc(id).set(newData, { merge: false });
   return { id, ...newData };
@@ -85,17 +85,8 @@ async function updateItem(id, newData) {
 /**
  * Delete document
  */
-async function deleteItem(id) {
+export async function deleteItem(id) {
   initFirestore();
   await collection.doc(id).delete();
   return true;
 }
-
-module.exports = {
-  initFirestore,
-  createItem,
-  getItem,
-  queryItems,
-  updateItem,
-  deleteItem,
-};

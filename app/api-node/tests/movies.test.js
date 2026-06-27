@@ -1,5 +1,5 @@
-const request = require('supertest');
-const app = require('../src/app');
+import request from 'supertest';
+import app from '../src/app.js';
 
 describe('Movies API', () => {
   describe('GET /movies', () => {
@@ -114,9 +114,7 @@ describe('Movies API', () => {
 
   describe('DELETE /movies/:id', () => {
     it('should accept valid movie ID for deletion', async () => {
-      // This will try to delete, may fail at DB level but validation passes
       const res = await request(app).delete('/movies/test123');
-      // Either 204 (success) or 500 (DB error) is acceptable for validation test
       expect([204, 500]).toContain(res.statusCode);
     });
   });

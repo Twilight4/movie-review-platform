@@ -3,7 +3,7 @@ module.exports = {
   coverageDirectory: 'coverage',
   collectCoverageFrom: [
     'src/**/*.js',
-    '!src/server.js', // Exclude server startup file
+    '!src/server.js',
     '!**/node_modules/**',
   ],
   coverageThreshold: {

@@ -1,4 +1,4 @@
-const { body, param, query, validationResult } = require('express-validator');
+import { body, param, query, validationResult } from 'express-validator';
 
 // Middleware to handle validation errors
 const handleValidationErrors = (req, res, next) => {
@@ -17,7 +17,7 @@ const handleValidationErrors = (req, res, next) => {
 };
 
 // Validation rules for creating a movie
-const validateCreateMovie = [
+export const validateCreateMovie = [
   body('title')
     .trim()
     .notEmpty()
@@ -35,7 +35,7 @@ const validateCreateMovie = [
 ];
 
 // Validation rules for updating a movie
-const validateUpdateMovie = [
+export const validateUpdateMovie = [
   param('id').trim().notEmpty().withMessage('Movie ID is required'),
 
   body('title')
@@ -55,21 +55,21 @@ const validateUpdateMovie = [
 ];
 
 // Validation rules for getting a movie by ID
-const validateGetMovie = [
+export const validateGetMovie = [
   param('id').trim().notEmpty().withMessage('Movie ID is required'),
 
   handleValidationErrors,
 ];
 
 // Validation rules for deleting a movie
-const validateDeleteMovie = [
+export const validateDeleteMovie = [
   param('id').trim().notEmpty().withMessage('Movie ID is required'),
 
   handleValidationErrors,
 ];
 
 // Validation rules for query parameters
-const validateQueryMovies = [
+export const validateQueryMovies = [
   query('minRating')
     .optional()
     .isInt({ min: 1, max: 5 })
@@ -77,11 +77,3 @@ const validateQueryMovies = [
 
   handleValidationErrors,
 ];
-
-module.exports = {
-  validateCreateMovie,
-  validateUpdateMovie,
-  validateGetMovie,
-  validateDeleteMovie,
-  validateQueryMovies,
-};
