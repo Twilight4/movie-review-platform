@@ -116,7 +116,7 @@ jobs:
         uses: azure/setup-kubectl@v5
 
       - name: Install Helm
-        uses: azure/setup-helm@v4
+        uses: azure/setup-helm@v5
 
       - name: Install Task
         uses: arduino/setup-task@v3
