@@ -189,8 +189,6 @@ movie-review-platform
 #+end_src
 
 ** Full Architecture Diagram
-Rendered from =assets/render_architecture.py= — run =uv run assets/render_architecture.py= to regenerate =assets/architecture.png=.
-
 #+CAPTION: Full architecture — git push triggers CI; CI builds and pushes the image; CD provisions cloud infrastructure (Terraform) and syncs manifests (ArgoCD) into GKE.
 [[file:assets/architecture.png]]
 
