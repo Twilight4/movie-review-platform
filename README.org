@@ -189,92 +189,10 @@ movie-review-platform
 #+end_src
 
 ** Full Architecture Diagram
-#+begin_src shell
-                                    ┌──────────────────────────┐
-                                    │        Developers        │
-                                    └───────────┬──────────────┘
-                                                │ git push
-                                                ▼
-                                      ┌────────────────────┐
-                                      │     GitHub Repo    │
-                                      └─────────┬──────────┘
-                                                │ triggers
-                                                ▼
-                                  ┌────────────────────────────────┐
-                                  │         CI Pipeline            │
-                                  └─────────────┬──────────────────┘
-                                                │
-                                                ▼
-                                     ┌────────────────────────┐
-                                     │ Test and lint app code │
-                                     └──────────┬─────────────┘
-                                                │
-                                                ▼
-                                       ┌────────────────────┐
-                                       │ Build Docker Image │
-                                       └────────┬───────────┘
-                                                │ push
-                                                ▼
-                                      ┌──────────────────────┐
-                                      │ GCR (Artifact Reg.)  │
-                                      └─────────┬────────────┘
-                                                │ pull request triggers CD pipeline
-                                                ▼
-                                ┌─────────────────────────────────┐
-                                │  CD Pipeline (Terraform / Helm) │
-                                └───────────────┬─────────────────┘
-                                                │
-                                                ▼
-                            ┌──────────────────────────────────────────┐
-                            │  Terraform: Deploys Cloud Infrastructure │
-                            └───────────────────┬──────────────────────┘
-                                                │
-                                                ▼
-                                ┌─────────────────────────────────┐
-                                │  Bash Test Script Validation    │
-                                └───────────────┬─────────────────┘
-                                                │ Testing
-                                                ▼
-                                ┌──────────────────────────────────────┐
-                                │ Helm/ArgoCD: Deploy Manifests in GKE │
-                                └───────────────┬──────────────────────┘
-                                                │
-                                                ▼
-                      ┌──────────────────────────────────────────────────────┐
-                      │                GKE Cluster w/ ArgoCD                 │
-                      │                                                      │
-                      │   ┌────────────┐    ┌─────────────────────────────┐  │
-                      │   │ Deployment │--▶│  Horizontal Pod Autoscaler  │  │
-                      │   └────────────┘    └─────────────────────────────┘  │
-                      │          │                 │                         │
-                      │          ▼                 ▼                         │
-                      │   ┌────────────┐      ┌──────────────┐               │
-                      │   │   Service  │◀──▶│   Ingress    │               │
-                      │   └────────────┘      └──────────────┘               │
-                      │          │                                           │
-                      │          ▼                                           │
-                      │   ┌────────────┐                                     │
-                      │   │    Pods    │                                     │
-                      │   └────────────┘                                     │
-                      │                            ArgoCD watches Git repo   │
-                      └─────────────────────────┬────────────────────────────┘
-                                                │
-                                                │
-                                                ▼
-                                   ┌───────────────────────────┐
-                                   │   GCP NoSQL Firestore DB  │
-                                   └────────────┬──────────────┘
-                                                │
-                                                │
-                                                ▼
-                                   ┌──────────────────────────┐
-                                   │ Monitoring Stack on GKE  │
-                                   │ - Prometheus             │
-                                   │ - Grafana Alloy Agent    │
-                                   │ - Loki                   │
-                                   └──────────────────────────┘
+Rendered from =assets/render_architecture.py= — run =uv run assets/render_architecture.py= to regenerate =assets/architecture.png=.
 
-#+end_src
+#+CAPTION: Full architecture — git push triggers CI; CI builds and pushes the image; CD provisions cloud infrastructure (Terraform) and syncs manifests (ArgoCD) into GKE.
+[[file:assets/architecture.png]]
 
 ** Project Scope / Technologies Used
 *** Containerization
